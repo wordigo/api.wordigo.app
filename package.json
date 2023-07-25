@@ -1,0 +1,62 @@
+{
+  "name": "fastify-prisma-swagger-rest-boilerplate",
+  "version": "0.0.1",
+  "description": "Starting template to build Rest APIs, using Fastify, PrimsaJS and TypeScript. Providing OpenAPI/ SwaggerUI for docs. Also, Blazingly fast (breh!)",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "nodemon src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "debug": "nodemon --inspect=0.0.0.0:9229 src/index.ts",
+    "docker:dev": "nodemon src/index.ts",
+    "docker:prod": "pm2-runtime pm2.config.json",
+    "test": "jest test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielm/fastify-prisma-swagger-rest-boilerplate.git"
+  },
+  "keywords": [
+    "node",
+    "fastify",
+    "prisma",
+    "typescript",
+    "swagger",
+    "jest",
+    "boilerplate",
+    "recipe",
+    "javascript"
+  ],
+  "author": "Daniel Morales <daniel85mg@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/danielm/fastify-prisma-swagger-rest-boilerplate/issues"
+  },
+  "homepage": "https://github.com/danielm/fastify-prisma-swagger-rest-boilerplate",
+  "dependencies": {
+    "@fastify/compress": "^6.2.1",
+    "@fastify/cors": "^8.2.1",
+    "@fastify/env": "^4.2.0",
+    "@fastify/helmet": "^10.1.0",
+    "@fastify/swagger": "^8.3.1",
+    "@fastify/swagger-ui": "^1.8.0",
+    "@fastify/type-provider-json-schema-to-ts": "^2.2.2",
+    "@prisma/client": "^4.12.0",
+    "@sinclair/typebox": "^0.29.6",
+    "dotenv": "^16.0.3",
+    "fastify": "^4.15.0",
+    "json-schema-to-ts": "^2.9.1"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
+    "@types/node": "^18.15.11",
+    "fastify-tsconfig": "^1.0.1",
+    "nodemon": "^2.0.22",
+    "pino-pretty": "^10.0.0",
+    "prisma": "^4.12.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.3"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  }
+}
