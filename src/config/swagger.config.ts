@@ -9,7 +9,7 @@ export const swaggerConfig = {
       url: "https://swagger.io",
       description: "Find more info here",
     },
-    schemes: ["http"],
+    schemes: ["http", "https"],
     consumes: ["application/json"],
     produces: ["application/json"],
     tags: [
