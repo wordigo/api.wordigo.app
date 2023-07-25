@@ -1,13 +1,9 @@
 import { FastifyInstance } from "fastify";
 
 import { createProduct, deleteProduct, getProduct, getProducts, updateProduct } from "../controllers/products.controller";
-import { getAllSchema, getSchema, deleteSchema, createSchema, updateSchema } from "../schema/products.schema";
-import { paginationSchemav2 } from "../schema/common.schema";
+import { createSchema, deleteSchema, getAllSchema, getSchema, updateSchema } from "../schema/products.schema";
 
 export default async function (fastify: FastifyInstance) {
-  // List all products, paginated
-  fastify.get("/test", { schema: { querystring: paginationSchemav2 } }, getProducts);
-
   // List all products, paginated
   fastify.get("/", { schema: getAllSchema }, getProducts);
 
