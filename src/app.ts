@@ -1,26 +1,29 @@
-import fastify from "fastify";
-import fastifyEnv from "@fastify/env";
-import fastifyCors from "@fastify/cors";
 import fastifyCompress from "@fastify/compress";
+import fastifyCors from "@fastify/cors";
+import fastifyEnv from "@fastify/env";
 import fastifyHelmet from "@fastify/helmet";
+import fastify from "fastify";
 
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
+import fastifyPassport from "@fastify/passport";
 
-import envConfig from "./lib/env.config";
-import corsConfig from "./config/cors.config";
-import loggerConfig from "./config/logger.config";
 import compressConfig from "./config/compress.config";
-import prismaPlugin from "./plugins/prisma.plugin";
+import corsConfig from "./config/cors.config";
+import fastifyCookie from "@fastify/cookie";
 import helmetConfig from "./config/helmet.config";
+import loggerConfig from "./config/logger.config";
 import { swaggerConfig } from "./config/swagger.config";
+import envConfig from "./lib/env.config";
+import fastifySession from "@fastify/session";
+import prismaPlugin from "./plugins/prisma.plugin";
 
-import productsRoutes from "./routes/products.routes";
-import categoriesRoutes from "./routes/categories.routes";
-import { messageSchema, paramIdSchema, paginationSchema } from "./schema/common.schema";
-import { categorySchema, productSchema } from "./schema/models.schema";
 import authRoute from "./modules/auth/auth.route";
 import translateRoute from "./modules/translate/translate.route";
+import categoriesRoutes from "./routes/categories.routes";
+import productsRoutes from "./routes/products.routes";
+import { messageSchema, paginationSchema, paramIdSchema } from "./schema/common.schema";
+import { categorySchema, productSchema } from "./schema/models.schema";
 
 const main = async () => {
   const app = fastify({ logger: loggerConfig });
@@ -31,6 +34,16 @@ const main = async () => {
   await app.register(fastifyCompress, compressConfig);
   await app.register(fastifyHelmet, helmetConfig);
   await app.register(prismaPlugin);
+
+  app.register(fastifyCookie);
+
+  app.register(fastifySession, {
+    secret: "denemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedeneme",
+    saveUninitialized: false,
+  });
+
+  app.register(fastifyPassport.initialize());
+  app.register(fastifyPassport.secureSession());
 
   // Json Schemas
   app.addSchema(paginationSchema);

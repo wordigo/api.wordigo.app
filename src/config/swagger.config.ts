@@ -1,5 +1,14 @@
-export const swaggerConfig = {
+import { SwaggerOptions } from "@fastify/swagger";
+
+export const swaggerConfig: SwaggerOptions = {
   swagger: {
+    securityDefinitions: {
+      Authorization: {
+        type: "apiKey",
+        name: "Authorization",
+        in: "header",
+      },
+    },
     info: {
       title: "RESTful APIs using Fastify",
       description: "CRUDs using Swagger, Fastify and Prisma",
