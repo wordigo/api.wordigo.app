@@ -1,11 +1,11 @@
-import { FastifyReply, FastifyRequest } from "fastify";
-import { FromSchema } from "json-schema-to-ts";
-import { paginationSchemav2 } from "../schema/common.schema";
+import { FastifyReply, FastifyRequest } from "fastify"
+import { FromSchema } from "json-schema-to-ts"
+import { paginationSchemav2 } from "../schema/common.schema"
 
-type PaginationType = FromSchema<typeof paginationSchemav2>;
+type PaginationType = FromSchema<typeof paginationSchemav2>
 
 export async function getProducts(request: FastifyRequest<{ Querystring: PaginationType }>, reply: FastifyReply) {
-  const { take, from } = request.query;
+  const { take, from } = request.query
 
   let results = await request.server.prisma.product.findMany({
     cursor: from ? { id: from } : undefined,
@@ -13,42 +13,42 @@ export async function getProducts(request: FastifyRequest<{ Querystring: Paginat
     take,
     orderBy: { id: "desc" },
     include: { category: true },
-  });
+  })
 
   if (results.length === 0) {
-    return reply.status(404).send({ message: "No elements found" });
+    return reply.status(404).send({ message: "No elements found" })
   }
 
-  return reply.status(200).send({ results });
+  return reply.status(200).send({ results })
 }
 
 export async function getProduct(request: FastifyRequest<CrudIdRequest>, reply: FastifyReply) {
-  const { id } = request.params;
+  const { id } = request.params
 
   let product = await request.server.prisma.product.findUnique({
     where: { id },
     include: { category: true },
-  });
+  })
 
   if (!product) {
-    return reply.status(404).send({ message: "Product not found" });
+    return reply.status(404).send({ message: "Product not found" })
   }
 
-  return reply.status(200).send(product);
+  return reply.status(200).send(product)
 }
 
 export async function deleteProduct(request: FastifyRequest<CrudIdRequest>, reply: FastifyReply) {
-  const { id } = request.params;
+  const { id } = request.params
 
   await request.server.prisma.product.delete({
     where: { id },
-  });
+  })
 
-  return reply.status(200).send({ message: "Product deleted" });
+  return reply.status(200).send({ message: "Product deleted" })
 }
 
 export async function createProduct(request: FastifyRequest<PostProduct>, reply: FastifyReply) {
-  const { name, price, published, categoryId } = request.body;
+  const { name, price, published, categoryId } = request.body
 
   let product = await request.server.prisma.product.create({
     data: {
@@ -61,14 +61,14 @@ export async function createProduct(request: FastifyRequest<PostProduct>, reply:
         },
       },
     },
-  });
+  })
 
-  return reply.status(201).send(product);
+  return reply.status(201).send(product)
 }
 
 export async function updateProduct(request: FastifyRequest<PutProduct>, reply: FastifyReply) {
-  const { name, price, published, categoryId } = request.body;
-  const { id } = request.params;
+  const { name, price, published, categoryId } = request.body
+  const { id } = request.params
 
   let product = await request.server.prisma.product.update({
     where: { id },
@@ -82,7 +82,7 @@ export async function updateProduct(request: FastifyRequest<PutProduct>, reply: 
         },
       },
     },
-  });
+  })
 
-  return reply.status(200).send(product);
+  return reply.status(200).send(product)
 }

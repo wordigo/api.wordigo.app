@@ -1,7 +1,7 @@
 {
-  "name": "fastify-prisma-swagger-rest-boilerplate",
+  "name": "wordigo-backend",
   "version": "0.0.1",
-  "description": "Starting template to build Rest APIs, using Fastify, PrimsaJS and TypeScript. Providing OpenAPI/ SwaggerUI for docs. Also, Blazingly fast (breh!)",
+  "description": "Wordigo Backend",
   "main": "src/index.ts",
   "scripts": {
     "start": "nodemon src/index.ts",
@@ -9,11 +9,14 @@
     "debug": "nodemon --inspect=0.0.0.0:9229 src/index.ts",
     "docker:dev": "nodemon src/index.ts",
     "docker:prod": "pm2-runtime pm2.config.json",
-    "test": "jest test"
+    "test": "jest test",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push --skip-generate",
+    "db:dashboard": "prisma studio --port 1708"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/danielm/fastify-prisma-swagger-rest-boilerplate.git"
+    "url": "git+https://github.com/wordigo/api.wordigo.app.git"
   },
   "keywords": [
     "node",
@@ -26,12 +29,12 @@
     "recipe",
     "javascript"
   ],
-  "author": "Daniel Morales <daniel85mg@gmail.com>",
+  "author": "Sefa Kapısız <m.sefa06@hotmail.com> & Osman Delişmen",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/danielm/fastify-prisma-swagger-rest-boilerplate/issues"
+    "url": "https://github.com/wordigo/api.wordigo.app/issues"
   },
-  "homepage": "https://github.com/danielm/fastify-prisma-swagger-rest-boilerplate",
+  "homepage": "https://github.com/wordigo/api.wordigo.app",
   "dependencies": {
     "@fastify/compress": "^6.2.1",
     "@fastify/cors": "^8.2.1",

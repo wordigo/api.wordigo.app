@@ -1,33 +1,91 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl"]
 }
 
 datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
-model Category {
-  id         String     @id @default(auto()) @map("_id") @db.ObjectId
-  name       String
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime?  @updatedAt
-  products   Product[]
+model UserWords {
+  id             Int                @id @default(autoincrement())
+  wordId         Int
+  word           Words              @relation(fields: [wordId], references: [id], onDelete: Cascade)
+  learningStatus Int                @default(0)
+  authorId       String
+  author         Users?             @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  createdDate    DateTime           @default(now())
+  updatedDate    DateTime           @default(now()) @updatedAt
+  Dictionary     DictAndUserWords[]
 }
 
-model Product {
-  id         String     @id @default(auto()) @map("_id") @db.ObjectId
-  name       String
-  price      Float
-  published  Boolean    @default(false)
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime?  @updatedAt
-
-  category   Category?   @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  categoryId String?     @db.ObjectId
+model Dictionaries {
+  id          Int                @id @default(autoincrement())
+  title       String
+  subscribers Int                @default(0)
+  published   Boolean            @default(false)
+  authorId    String
+  author      Users?             @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  createdDate DateTime           @default(now())
+  updatedDate DateTime           @default(now()) @updatedAt
+  UserWords   DictAndUserWords[]
+  SubDics     SubscribedDics[]
 }
 
+model Users {
+  id             String           @id @default(cuid())
+  username       String?
+  name           String
+  avatar_url     String?
+  nativeLanguage String?
+  targetLanguage String?
+  createdDate    DateTime         @default(now())
+  updatedDate    DateTime         @default(now()) @updatedAt
+  UserWords      UserWords[]
+  Dictionaries   Dictionaries[]
+  SubDics        SubscribedDics[]
+}
+
+model SubscribedDics {
+  id           Int          @id @default(autoincrement())
+  user         Users        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
+  Dictionary   Dictionaries @relation(fields: [dictionaryId], references: [id], onDelete: Cascade)
+  dictionaryId Int
+  createdDate  DateTime     @default(now())
+  updatedDate  DateTime     @default(now()) @updatedAt
+
+  //@@id([userId, dictionaryId])
+}
+
+model Words {
+  id             Int         @id @default(autoincrement())
+  text           String
+  status         Int         @default(0)
+  translatedText String
+  nativeLanguage String
+  targetLanguage String
+  createdDate    DateTime    @default(now())
+  updatedDate    DateTime    @default(now()) @updatedAt
+  UserWords      UserWords[]
+}
+
+model DictAndUserWords {
+  userWord     UserWords    @relation(fields: [userWordId], references: [id], onDelete: Cascade)
+  userWordId   Int
+  Dictionary   Dictionaries @relation(fields: [dictionaryId], references: [id], onDelete: Cascade)
+  dictionaryId Int
+  createdDate  DateTime     @default(now())
+  updatedDate  DateTime     @default(now()) @updatedAt
+
+  @@id([userWordId, dictionaryId])
+}
+
+model SubscribedUsers {
+  id          Int      @id @default(autoincrement())
+  email       String
+  createdDate DateTime @default(now())
+  updatedDate DateTime @default(now()) @updatedAt
+}
