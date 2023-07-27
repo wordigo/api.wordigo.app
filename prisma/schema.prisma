@@ -38,6 +38,7 @@ model Users {
   id             String           @id @default(cuid())
   username       String?
   name           String
+  provider       String
   avatar_url     String?
   nativeLanguage String?
   targetLanguage String?
