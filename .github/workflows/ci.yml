@@ -1,7 +1,8 @@
 name: Book Lovers Deployment
 
-on: {}
-
+on:
+  workflow_dispatch:
+  
 jobs:
   Deploy_to_GAE:
     runs-on: ubuntu-latest
