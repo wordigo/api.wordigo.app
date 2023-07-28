@@ -1,0 +1,45 @@
+name: Book Lovers Deployment
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  Deploy_to_GAE:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      # - name: Load Config Files
+      #   run: |
+      #     echo "${{secrets.GAE_CONFIG}}" | base64 --decode > config/gae.env
+      #     echo "${{secrets.GCP_SA_KEY}}" > config/booklovers-v1-5606eddf4394.json
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Tests
+        run: npm run test
+
+      - name: Setup Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0.2.0
+        with:
+          project_id: ${{secrets.GCP_PROJECT}}
+          service_account_key: ${{secrets.GCP_CREDENTIALS}}
+
+      - name: Deploy to Google App Engine
+        uses: google-github-actions/deploy-appengine@v0.2.0
+        with:
+          deliverables: app.yaml
+          project_id: ${{ secrets.GCP_PROJECT }}
+          credentials: ${{ secrets.GCP_SA_KEY }}
+          promote: true
+          version: v1

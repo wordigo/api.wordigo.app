@@ -18,6 +18,8 @@ export async function GetUserMe(request: FastifyRequest<{ Body: LoginSchemaType 
 }
 
 export const GoogleOAuth = async (request: FastifyRequest<{ Querystring: GoogleAuthSchemaType }>, reply: FastifyReply) => {
+  console.log(request.headers)
+
   const { accessToken } = request.query
 
   const googleRequest = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
