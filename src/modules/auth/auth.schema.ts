@@ -1,42 +1,7 @@
 import { JSONSchema } from 'json-schema-to-ts'
 import { tags } from '../../utils/constants/Tags'
 
-export const SignUpValidationSchema = {
-  type: 'object',
-  properties: {
-    email: {
-      type: 'string',
-    },
-    password: {
-      type: 'string',
-    },
-    name: {
-      type: 'string',
-    },
-    surname: {
-      type: 'string',
-    },
-  },
-  required: ['email', 'password', 'name', 'surname'],
-} as const satisfies JSONSchema
-
-export const SignUpSchema = {
-  body: SignUpValidationSchema,
-  tags: [tags.Authentication],
-  security: [{ apiKey: [] }],
-  description: 'Sign Up API',
-  response: {
-    // 200: {
-    //   type: "object",
-    //   properties: {
-    //     results: { type: "array", items: { $ref: "productSchema#" } },
-    //   },
-    // },
-    404: { $ref: 'messageResponseSchema#' },
-  },
-}
-
-export const SignInValidationSchema = {
+export const LoginValidationSchema = {
   type: 'object',
   properties: {
     email: {
@@ -49,10 +14,10 @@ export const SignInValidationSchema = {
   required: ['email', 'password'],
 } as const satisfies JSONSchema
 
-export const SignInSchema = {
-  body: SignInValidationSchema,
+export const LoginSchema = {
+  body: LoginValidationSchema,
   tags: [tags.Authentication],
-  description: 'Sign In request',
+  description: 'Authentication login request',
   response: {
     // 200: {
     //   type: "object",
@@ -64,7 +29,7 @@ export const SignInSchema = {
   },
 }
 
-export const GoogleAuthValidationSchema = {
+export const GoogleAuthSchema = {
   type: 'object',
   properties: {
     accessToken: {
@@ -72,13 +37,12 @@ export const GoogleAuthValidationSchema = {
     },
   },
   required: ['accessToken'],
-  description: 'OAuth 2.0 with Google',
 } as const satisfies JSONSchema
 
-export const GoogleAuthSchema = {
-  query: GoogleAuthValidationSchema,
+export const GoogleAuthValidation = {
+  query: GoogleAuthSchema,
   tags: [tags.Authentication],
-  description: 'Google Authentication',
+  description: 'Google Auth',
   response: {
     // 200: {
     //   type: "object",
