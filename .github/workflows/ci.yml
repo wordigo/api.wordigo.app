@@ -16,11 +16,11 @@ jobs:
         with:
           node-version: 16
 
-       - name: Install Dependencies
-         run: npm install
-         
-       - name: Build Node.js Project
-         run: npm run build
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Node.js Project
+        run: npm run build
 
       - name: Setup Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.2.0
