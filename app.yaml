@@ -4,7 +4,6 @@ manual_scaling:
 env_variables:
   PROJECT_NAME: fastify-rest
   NODE_ENV: development
-  BIND_PORT: 8080
   BIND_ADDR: 127.0.0.1
   ENABLE_SWAGGER: 'true'
   DATABASE_URL: postgresql://postgres:test123@35.184.34.109:5432/postgres?pgbouncer=true&schema=public&connect_timeout=5

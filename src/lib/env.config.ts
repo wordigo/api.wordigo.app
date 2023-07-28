@@ -4,6 +4,10 @@ const Config = {
     type: 'object',
     required: ['DATABASE_URL'],
     properties: {
+      PORT: {
+        type: 'number',
+        default: 5000,
+      },
       BIND_PORT: {
         type: 'number',
         default: 5000,
