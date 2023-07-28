@@ -18,7 +18,7 @@ main()
      * Start me up...
      */
     app
-      .listen({ port: 4000, host: app.config.BIND_ADDR })
+      .listen({ port: app.config.BIND_PORT, host: app.config.BIND_ADDR })
       .then((_) => {
         app.log.info('Ready, Waiting for connections...')
       })
