@@ -23,7 +23,6 @@ export const SignUpValidationSchema = {
 export const SignUpSchema = {
   body: SignUpValidationSchema,
   tags: [tags.Authentication],
-  security: [{ apiKey: [] }],
   description: 'Sign Up API',
   response: {
     // 200: {

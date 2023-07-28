@@ -6,7 +6,7 @@ import fastify from 'fastify'
 
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUi from '@fastify/swagger-ui'
-import fastifyPassport from '@fastify/passport'
+//import fastifyPassport from '@fastify/passport'
 
 import compressConfig from './config/compress.config'
 import corsConfig from './config/cors.config'
@@ -23,6 +23,7 @@ import translateRoute from './modules/translate/translate.route'
 //import productsRoutes from "./routes/products.routes";
 import { messageSchema, paginationSchema, paramIdSchema } from './schema/common.schema'
 import { categorySchema, productSchema } from './schema/models.schema'
+import jwt from '@fastify/jwt'
 
 const main = async () => {
   const app = fastify({ logger: loggerConfig })
@@ -34,15 +35,19 @@ const main = async () => {
   await app.register(fastifyHelmet, helmetConfig)
   await app.register(prismaPlugin)
 
+  app.register(jwt, {
+    secret: process.env['JWT_SECRET'] as string,
+  })
   app.register(fastifyCookie)
 
   app.register(fastifySession, {
-    secret: 'denemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedeneme',
+    secret:
+      'denemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedenemedeneme',
     saveUninitialized: false,
   })
 
-  app.register(fastifyPassport.initialize())
-  app.register(fastifyPassport.secureSession())
+  //app.register(fastifyPassport.initialize())
+  //app.register(fastifyPassport.secureSession())
 
   // Json Schemas
   app.addSchema(paginationSchema)

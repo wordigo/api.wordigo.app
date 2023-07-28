@@ -40,9 +40,9 @@ model Users {
   username       String?
   name           String
   surname        String
-  passwordHash   String
-  passwordSalt   String
-  provider       String
+  passwordHash   String?
+  passwordSalt   String?
+  provider       Int
   avatar_url     String?
   nativeLanguage String?
   targetLanguage String?

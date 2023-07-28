@@ -8,15 +8,9 @@ export const fastifyPreValidationJwt: any = {
 }
 
 export default async function (fastify: FastifyInstance) {
-  // // Get User Me
-  // fastify.get('/getUserMe', fastifyPreValidationJwt, GetUserMe)
-
-  // SignIn
   fastify.post('/signIn', { schema: SignInSchema }, SignIn)
 
-  // SignUp
   fastify.post('/signUp', { schema: SignUpSchema }, SignUp)
 
-  // Google Auth
   fastify.get('/googleAuth', { schema: GoogleAuthSchema }, GoogleOAuth)
 }

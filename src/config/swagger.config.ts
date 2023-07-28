@@ -3,7 +3,7 @@ import { SwaggerOptions } from '@fastify/swagger'
 export const swaggerConfig: SwaggerOptions = {
   swagger: {
     securityDefinitions: {
-      Authorization: {
+      JWT: {
         type: 'apiKey',
         name: 'Authorization',
         in: 'header',
@@ -18,12 +18,8 @@ export const swaggerConfig: SwaggerOptions = {
       url: 'https://swagger.io',
       description: 'Find more info here',
     },
-    schemes: ['http', 'https'], // Both HTTP and HTTPS are supported
+    schemes: ['http', 'https'],
     consumes: ['application/json'],
     produces: ['application/json'],
-    tags: [
-      { name: 'categories', description: 'Category related end-points' },
-      { name: 'products', description: 'Product related end-points' },
-    ],
   },
 }
