@@ -1,2 +1,3 @@
 runtime: nodejs18
 env: flex
+version: v2
