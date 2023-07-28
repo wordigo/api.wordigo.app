@@ -3,6 +3,7 @@ import { FastifyInstance } from 'fastify'
 declare module 'fastify' {
   interface FastifyInstance {
     config: {
+      PORT: number
       NODE_ENV: 'development' | 'production' | 'test'
       BIND_PORT: number
       BIND_ADDR: string
