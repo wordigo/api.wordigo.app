@@ -2,7 +2,7 @@ import fastifyCompress from '@fastify/compress'
 import fastifyCors from '@fastify/cors'
 import fastifyEnv from '@fastify/env'
 import fastifyHelmet from '@fastify/helmet'
-import fastify from 'fastify'
+import fastify, { FastifyReply, FastifyRequest } from 'fastify'
 
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUi from '@fastify/swagger-ui'
@@ -59,6 +59,10 @@ const main = async () => {
       routePrefix: '/docs',
     })
   }
+
+  app.get('/', (req: FastifyRequest, reply: FastifyReply) => {
+    reply.send('Hello World')
+  })
 
   // API Endpoint routes
   await app.register(
