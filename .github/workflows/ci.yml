@@ -1,9 +1,6 @@
 name: Book Lovers Deployment
 
-on:
-  push:
-    branches:
-      - production
+on: {}
 
 jobs:
   Deploy_to_GAE:
