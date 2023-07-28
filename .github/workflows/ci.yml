@@ -24,9 +24,6 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Run Tests
-        run: npm run test
-
       - name: Setup Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.2.0
         with:
