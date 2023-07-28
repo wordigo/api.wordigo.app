@@ -52,7 +52,6 @@
     "@sinclair/typebox": "^0.29.6",
     "@types/axios": "^0.14.0",
     "axios": "^1.4.0",
-    "crypto": "^1.0.1",
     "dotenv": "^16.0.3",
     "fastify": "^4.15.0",
     "googleapis": "^123.0.0",
