@@ -1,3 +1,13 @@
 runtime: nodejs18
-env: flex
-version: v2
+manual_scaling:
+  instances: 1
+env_variables:
+  PROJECT_NAME: fastify-rest
+  NODE_ENV: development
+  BIND_PORT: 8080
+  BIND_ADDR: 127.0.0.1
+  ENABLE_SWAGGER: true
+  DATABASE_URL: postgresql://postgres:test123@35.184.34.109:5432/postgres?pgbouncer=true&schema=public&connect_timeout=5
+  DIRECT_URL: postgresql://postgres:test123@35.184.34.109:5432/postgres?schema=public&connect_timeout=5
+  CLOUD_TRANSLATE_PROJECT_ID: organic-dryad-390907
+  CLOUD_TRANSLATE_API_KEY: AIzaSyBHYMp6uc4CXfmB1nirO1hftKDEpa_gu0M
