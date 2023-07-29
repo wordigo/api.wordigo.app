@@ -1,15 +1,12 @@
 {
   "name": "wordigo-backend",
-  "version": "0.0.1",
   "description": "Wordigo Backend",
-  "main": "src/index.ts",
+  "version": "0.0.1",
   "scripts": {
     "start": "node dist/src/index",
     "dev": "ts-node-dev -r tsconfig-paths/register ./src/index.ts",
     "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist",
     "debug": "nodemon --inspect=0.0.0.0:9229 src/index.ts",
-    "docker:dev": "nodemon src/index.ts",
-    "docker:prod": "pm2-runtime pm2.config.json",
     "test": "jest test",
     "db:generate": "prisma generate",
     "db:push": "prisma db push --skip-generate",
@@ -64,7 +61,8 @@
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "ts-node-dev": "^2.0.0",
-    "tsconfig-paths": "^4.2.0"
+    "tsconfig-paths": "^4.2.0",
+    "tscpaths": "^0.0.9"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",

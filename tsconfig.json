@@ -1,35 +1,37 @@
 {
-  "extends": "fastify-tsconfig",
+  "ts-node": {
+    "files": true
+  },
+  "include": [
+    "/src/**/*.ts"
+  ],
+  "files": [
+    "src/index.ts",
+    "src/types/config.d.ts",
+    "src/types/prisma.d.ts",
+    "src/types/requests.d.ts"
+  ],
   "compilerOptions": {
-    "target": "es2017",
+    "target": "es2016",
     "module": "commonjs",
-    "baseUrl": "./",
-    "declaration": true,
-    "sourceMap": true,
+    "moduleResolution": "node",
+    "typeRoots": [
+      "./node _module/@types",
+      "./src/types"
+    ],
+    "types": [
+      "node"
+    ],
     "outDir": "./dist",
-    "removeComments": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
     "skipLibCheck": true,
-    "types": [
-      "./src/types/config.d.ts",
-      "./src/types/prisma.d.ts",
-      "./src/types/requests.d.ts",
-    ],
+    "baseUrl": "./",
     "paths": {
       "@/*": [
         "./src/*"
       ]
     }
-  },
-  "exclude": [
-    "node_modules",
-    "dist"
-  ],
-  "ts-node": {
-    "files": true
   }
 }
