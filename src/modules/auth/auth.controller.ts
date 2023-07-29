@@ -107,6 +107,8 @@ export const GoogleOAuth = async (
     },
   })
 
+  console.log(Providers.Google)
+
   if (!user)
     user = await prisma.users.create({
       data: {
