@@ -18,7 +18,7 @@ main()
      * Start me up...
      */
     app
-      .listen({ port: 4000, host: app.config.BIND_ADDR })
+      .listen({ port: app.config.PORT, host: app.config.BIND_ADDR })
       .then((_) => {
         app.log.info('Ready, Waiting for connections...')
       })
@@ -26,7 +26,7 @@ main()
         app.log.error(
           {
             addr: app.config.BIND_ADDR,
-            port: app.config.BIND_PORT,
+            port: process.env.PORT,
             error: err.message,
           },
           'Failed to start server'
