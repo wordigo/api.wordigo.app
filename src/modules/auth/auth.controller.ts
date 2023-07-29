@@ -84,7 +84,9 @@ export async function SignIn(
     expiresIn: '1h',
   })
 
-  return reply.send(successResult({ token }, messages.success, messages.success_code))
+  return reply.send(
+    successResult({ user, accessToken: token }, messages.success, messages.success_code)
+  )
 }
 
 export const GoogleOAuth = async (
@@ -107,14 +109,14 @@ export const GoogleOAuth = async (
     },
   })
 
-  console.log(Providers.Google)
-
   if (!user)
     user = await prisma.users.create({
       data: {
         email: googleUser.email as string,
-        name: googleUser.email as string,
-        surname: googleUser.email as string,
+        name: googleUser.name as string,
+        surname: googleUser.name as string,
+        avatar_url: googleUser.picture,
+        nativeLanguage: googleUser.locale,
         provider: Providers.Google,
       },
     })
