@@ -1,4 +1,4 @@
 export enum Providers {
-  Local,
-  Google,
+  Local = 'local',
+  Google = 'googl',
 }
