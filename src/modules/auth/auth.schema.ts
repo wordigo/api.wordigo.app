@@ -1,7 +1,40 @@
 import { JSONSchema } from 'json-schema-to-ts'
 import { tags } from '../../utils/constants/Tags'
 
-export const LoginValidationSchema = {
+export const SignUpValidationSchema = {
+  type: 'object',
+  properties: {
+    email: {
+      type: 'string',
+    },
+    password: {
+      type: 'string',
+    },
+    name: {
+      type: 'string',
+    },
+    surname: {
+      type: 'string',
+    },
+  },
+  required: ['email', 'password', 'name', 'surname'],
+} as const satisfies JSONSchema
+
+export const SignUpSchema = {
+  body: SignUpValidationSchema,
+  tags: [tags.Authentication],
+  description: 'Sign Up API',
+  response: {
+    // 200: {
+    //   type: "object",
+    //   properties: {
+    //     results: { type: "array", items: { $ref: "productSchema#" } },
+    //   },
+    // },
+  },
+}
+
+export const SignInValidationSchema = {
   type: 'object',
   properties: {
     email: {
@@ -14,22 +47,13 @@ export const LoginValidationSchema = {
   required: ['email', 'password'],
 } as const satisfies JSONSchema
 
-export const LoginSchema = {
-  body: LoginValidationSchema,
+export const SignInSchema = {
+  body: SignInValidationSchema,
   tags: [tags.Authentication],
-  description: 'Authentication login request',
-  response: {
-    // 200: {
-    //   type: "object",
-    //   properties: {
-    //     results: { type: "array", items: { $ref: "productSchema#" } },
-    //   },
-    // },
-    404: { $ref: 'messageResponseSchema#' },
-  },
+  description: 'Sign In request',
 }
 
-export const GoogleAuthSchema = {
+export const GoogleAuthValidationSchema = {
   type: 'object',
   properties: {
     accessToken: {
@@ -37,12 +61,13 @@ export const GoogleAuthSchema = {
     },
   },
   required: ['accessToken'],
+  description: 'OAuth 2.0 with Google',
 } as const satisfies JSONSchema
 
-export const GoogleAuthValidation = {
-  query: GoogleAuthSchema,
+export const GoogleAuthSchema = {
+  query: GoogleAuthValidationSchema,
   tags: [tags.Authentication],
-  description: 'Google Auth',
+  description: 'Google Authentication',
   response: {
     // 200: {
     //   type: "object",
@@ -50,6 +75,5 @@ export const GoogleAuthValidation = {
     //     results: { type: "array", items: { $ref: "productSchema#" } },
     //   },
     // },
-    404: { $ref: 'messageResponseSchema#' },
   },
 }
