@@ -15,10 +15,6 @@
     "target": "es2016",
     "module": "commonjs",
     "moduleResolution": "node",
-    "typeRoots": [
-      "./node _module/@types",
-      "./src/types"
-    ],
     "types": [
       "node"
     ],

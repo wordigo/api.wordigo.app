@@ -3,7 +3,7 @@
   "description": "Wordigo Backend",
   "version": "0.0.1",
   "scripts": {
-    "start": "node dist/src/index.js",
+    "start": "node ./dist/index.js",
     "dev": "ts-node-dev -r tsconfig-paths/register ./src/index.ts",
     "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist",
     "debug": "nodemon --inspect=0.0.0.0:9229 src/index.ts",
