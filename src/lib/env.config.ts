@@ -6,11 +6,7 @@ const Config = {
     properties: {
       PORT: {
         type: 'number',
-        default: 5000,
-      },
-      BIND_PORT: {
-        type: 'number',
-        default: 5000,
+        default: 4000,
       },
       BIND_ADDR: {
         type: 'string',
@@ -25,6 +21,12 @@ const Config = {
         default: 'fastify-rest',
       },
       DATABASE_URL: {
+        type: 'string',
+      },
+      JWT_SECRET: {
+        type: 'string',
+      },
+      SESSION_SECRET: {
         type: 'string',
       },
       ENABLE_SWAGGER: {

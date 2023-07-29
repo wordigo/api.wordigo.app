@@ -42,7 +42,7 @@ model Users {
   surname        String
   passwordHash   String?
   passwordSalt   String?
-  provider       Int
+  provider       String?
   avatar_url     String?
   nativeLanguage String?
   targetLanguage String?
