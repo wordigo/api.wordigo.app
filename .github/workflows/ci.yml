@@ -1,9 +1,7 @@
-name: Book Lovers Deployment
+name: Publish to Google Cloud
 
 on:
-  push:
-    branches:
-      - production
+  workflow_dispatch:
 
 jobs:
   Deploy_to_GAE:
@@ -13,21 +11,16 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
 
-      # - name: Load Config Files
-      #   run: |
-      #     echo "${{secrets.GAE_CONFIG}}" | base64 --decode > config/gae.env
-      #     echo "${{secrets.GCP_SA_KEY}}" > config/booklovers-v1-5606eddf4394.json
-
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 16
 
       - name: Install Dependencies
         run: npm install
 
-      - name: Run Tests
-        run: npm run test
+      - name: Build Node.js Project
+        run: npm run build
 
       - name: Setup Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.2.0

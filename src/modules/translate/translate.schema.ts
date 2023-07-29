@@ -1,5 +1,5 @@
 import { JSONSchema } from 'json-schema-to-ts'
-import { tags } from '../../utils/constants/Tags'
+import { tags } from '@/utils/constants/Tags'
 
 export const TranslationValidationBody = {
   type: 'object',
@@ -24,7 +24,4 @@ export const TranslationValidation = {
   body: TranslationValidationBody,
   tags: [tags.Translate],
   description: 'Translate request endpoint',
-  response: {
-    404: { $ref: 'messageResponseSchema#' },
-  },
 }
