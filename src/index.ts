@@ -1,11 +1,11 @@
-import { setupAuth } from './config/auth.config'
-import { main } from './app'
-import { gracefullyShutdown, unexpectedErrorHandler } from './lib/exit-handler'
+import { main } from '@/app'
+import { setupFastifyPassport } from '@/lib/fastify-passport'
+import { gracefullyShutdown, unexpectedErrorHandler } from '@/lib/exit-handler'
 
 /*
  * Build service
  */
-setupAuth()
+setupFastifyPassport()
 main()
   .then((app) => {
     // At this point we should be able to gracefully handle all this... We hope

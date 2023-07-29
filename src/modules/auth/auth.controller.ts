@@ -7,11 +7,11 @@ import {
 import { FromSchema } from 'json-schema-to-ts'
 import axios, { HttpStatusCode } from 'axios'
 import { sign } from 'jsonwebtoken'
-import { errorResult, successResult } from '../../utils/constants/results'
-import messages from '../../utils/constants/messages'
+import { errorResult, successResult } from '@/utils/constants/results'
+import messages from '@/utils/constants/messages'
 import { PrismaClient } from '@prisma/client'
-import { createPasswordHash, verifyPasswordHash } from '../../utils/helpers/password.helper'
-import { Providers } from '../../utils/constants/enums'
+import { createPasswordHash, verifyPasswordHash } from '@/utils/helpers/password.helper'
+import { Providers } from '@/utils/constants/enums'
 import { IGoogleUser } from './auth.types'
 
 const prisma = new PrismaClient()
@@ -91,7 +91,6 @@ export const GoogleOAuth = async (
   request: FastifyRequest<{ Querystring: GoogleAuthValidationSchemaType }>,
   reply: FastifyReply
 ) => {
-
   const { accessToken } = request.query
 
   const googleRequest = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {

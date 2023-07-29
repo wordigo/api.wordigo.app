@@ -31,7 +31,6 @@ export const SignUpSchema = {
     //     results: { type: "array", items: { $ref: "productSchema#" } },
     //   },
     // },
-    404: { $ref: 'messageResponseSchema#' },
   },
 }
 
@@ -52,15 +51,6 @@ export const SignInSchema = {
   body: SignInValidationSchema,
   tags: [tags.Authentication],
   description: 'Sign In request',
-  response: {
-    // 200: {
-    //   type: "object",
-    //   properties: {
-    //     results: { type: "array", items: { $ref: "productSchema#" } },
-    //   },
-    // },
-    404: { $ref: 'messageResponseSchema#' },
-  },
 }
 
 export const GoogleAuthValidationSchema = {
@@ -85,6 +75,5 @@ export const GoogleAuthSchema = {
     //     results: { type: "array", items: { $ref: "productSchema#" } },
     //   },
     // },
-    404: { $ref: 'messageResponseSchema#' },
   },
 }
