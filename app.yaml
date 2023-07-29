@@ -1,5 +1,4 @@
 runtime: nodejs18
-entrypoint: node dist/src/index.js
 manual_scaling:
   instances: 1
 env_variables:
