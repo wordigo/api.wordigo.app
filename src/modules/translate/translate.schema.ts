@@ -27,4 +27,5 @@ export const TranslationValidation = {
   response: {
     404: { $ref: 'messageResponseSchema#' },
   },
+  security: [{ JWT: [] }],
 }
