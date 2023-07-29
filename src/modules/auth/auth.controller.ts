@@ -91,6 +91,7 @@ export const GoogleOAuth = async (
   request: FastifyRequest<{ Querystring: GoogleAuthValidationSchemaType }>,
   reply: FastifyReply
 ) => {
+
   const { accessToken } = request.query
 
   const googleRequest = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
