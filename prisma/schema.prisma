@@ -38,8 +38,8 @@ model Users {
   id             String           @id @default(cuid())
   email          String
   username       String?
-  name           String
-  surname        String
+  name           String?
+  surname        String?
   passwordHash   String?
   passwordSalt   String?
   provider       String?

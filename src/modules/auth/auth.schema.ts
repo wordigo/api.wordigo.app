@@ -10,14 +10,11 @@ export const SignUpValidationSchema = {
     password: {
       type: 'string',
     },
-    name: {
-      type: 'string',
-    },
-    surname: {
+    username: {
       type: 'string',
     },
   },
-  required: ['email', 'password', 'name', 'surname'],
+  required: ['username', 'email', 'password'],
 } as const satisfies JSONSchema
 
 export const SignUpSchema = {

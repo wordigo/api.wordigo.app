@@ -24,7 +24,7 @@ export async function SignUp(
   request: FastifyRequest<{ Body: SignUpSchemaType }>,
   reply: FastifyReply
 ) {
-  const { email, password, name, surname } = request.body
+  const { email, password, username } = request.body
 
   const isEmailExists = await prisma.users.findFirst({
     where: {
@@ -36,13 +36,23 @@ export async function SignUp(
       errorResult(null, messages.user_already_exists, messages.user_already_exists_code)
     )
 
+  const isUserNameExists = await prisma.users.findFirst({
+    where: {
+      username,
+    },
+  })
+  if (isUserNameExists)
+    return reply.send(
+      errorResult(null, messages.user_already_exists, messages.user_already_exists_code)
+    )
+
   const passwordHashAndSalt = await createPasswordHash(password)
 
-  await prisma.users.create({
+  const newUser = await prisma.users.create({
     data: {
       email,
-      name,
-      surname,
+      name: username,
+      username,
       passwordHash: passwordHashAndSalt.hash,
       passwordSalt: passwordHashAndSalt.salt,
       provider: Providers.Local,
