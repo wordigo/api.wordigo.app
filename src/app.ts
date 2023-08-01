@@ -22,6 +22,7 @@ import authRoute from '@/modules/auth/auth.route'
 import translateRoute from '@/modules/translate/translate.route'
 import usersRoute from '@/modules/user/users.route'
 import dictionaryRoute from '@/modules/dictionary/dictionaries.route'
+import path from 'path'
 
 const main = async () => {
   const app = fastify({ logger: loggerConfig })
@@ -29,6 +30,11 @@ const main = async () => {
   await app.register(import('@fastify/rate-limit'), {
     max: 100,
     timeWindow: '1 minute',
+  })
+
+  app.register(require('@fastify/static'), {
+    root: path.join(__dirname, '..', 'public'),
+    prefix: '/public/',
   })
 
   app.addSchema({
