@@ -50,6 +50,7 @@ export async function SignUp(
 
   await prisma.users.create({
     data: {
+      avatar_url: `https://wordigo.app/api/dynamic-avatar?username=${username}?size=256`,
       email,
       name: username,
       username,

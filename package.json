@@ -10,7 +10,9 @@
     "test": "jest test",
     "db:generate": "prisma generate",
     "db:push": "prisma db push --skip-generate",
-    "db:dashboard": "prisma studio --port 1708"
+    "db:dashboard": "prisma studio --port 1708",
+    "dev:mail": "email dev",
+    "export:mail": "email export"
   },
   "repository": {
     "type": "git",
@@ -43,11 +45,13 @@
     "@fastify/passport": "^2.3.0",
     "@fastify/rate-limit": "^8.0.3",
     "@fastify/session": "^10.4.0",
+    "@fastify/static": "^6.10.2",
     "@fastify/swagger": "^8.3.1",
     "@fastify/swagger-ui": "^1.8.0",
     "@fastify/type-provider-json-schema-to-ts": "^2.2.2",
     "@google-cloud/translate": "^7.2.2",
     "@prisma/client": "^4.12.0",
+    "@react-email/components": "0.0.6",
     "@sinclair/typebox": "^0.29.6",
     "@types/axios": "^0.14.0",
     "@types/passport-jwt": "^3.0.9",
@@ -61,6 +65,7 @@
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
+    "react-email": "1.9.3",
     "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.2.0",
     "tscpaths": "^0.0.9"
