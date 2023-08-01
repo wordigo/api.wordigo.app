@@ -26,6 +26,11 @@ import dictionaryRoute from '@/modules/dictionary/dictionaries.route'
 const main = async () => {
   const app = fastify({ logger: loggerConfig })
 
+  await app.register(import('@fastify/rate-limit'), {
+    max: 100,
+    timeWindow: '2 minute',
+  })
+
   app.addSchema({
     $id: 'getDicById',
     type: 'object',
