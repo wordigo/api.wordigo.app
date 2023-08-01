@@ -22,4 +22,10 @@ export default {
 
   dictionary_already_exists: 'Dictionary Already Exists!',
   dictionary_already_exists_code: 'dictionary_already_exists',
+
+  word_not_found: "Word Couldn't Found!",
+  word_not_found_code: 'word_not_found',
+
+  userWord_not_found: "UserWord Couldn't Found!",
+  userWord_not_found_code: 'userWord_not_found',
 }

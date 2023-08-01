@@ -1,6 +1,10 @@
 import { JSONSchema } from 'json-schema-to-ts'
 import { tags } from '../../utils/constants/Tags'
 
+GetWordsValidationSchema,
+  AddWordValidationSchema,
+  DeleteWordValidationSchema,
+
 export const GetUserDictionariesSchema = {
   tags: [tags.Dictionaries],
   description: 'Get User Dictionaries',
@@ -71,45 +75,5 @@ export const UpdateDictionarySchema = {
   body: UpdateDictionaryValidationSchema,
   tags: [tags.Dictionaries],
   description: 'Update Operation of Dictionary',
-  security: [{ JWT: [] }],
-}
-
-export const AddWordValidationSchema = {
-  type: 'object',
-  properties: {
-    dictionaryId: {
-      type: 'number',
-    },
-    wordId: {
-      type: 'number',
-    },
-  },
-  required: ['dictionaryId', 'wordId'],
-} as const satisfies JSONSchema
-
-export const AddWordSchema = {
-  body: AddWordValidationSchema,
-  tags: [tags.Dictionaries],
-  description: 'Adding Word From Dictionary',
-  security: [{ JWT: [] }],
-}
-
-export const RemoveWordValidationSchema = {
-  type: 'object',
-  properties: {
-    dictionaryId: {
-      type: 'number',
-    },
-    wordId: {
-      type: 'number',
-    },
-  },
-  required: ['dictionaryId', 'wordId'],
-} as const satisfies JSONSchema
-
-export const RemoveWordSchema = {
-  body: RemoveWordValidationSchema,
-  tags: [tags.Dictionaries],
-  description: 'Removing Word From Dictionary',
   security: [{ JWT: [] }],
 }
