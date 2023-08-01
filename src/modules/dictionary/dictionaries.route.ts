@@ -21,7 +21,7 @@ export default async (fastify: FastifyInstance) => {
   fastify.get(
     '/getUserDictionaryById',
     {
-      schema: { querystring: GetUserDictionaryByIdSchema },
+      schema: GetUserDictionaryByIdSchema,
       preValidation: authMiddleware,
     },
     GetUserDictionaryById

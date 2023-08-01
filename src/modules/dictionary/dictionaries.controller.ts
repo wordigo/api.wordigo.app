@@ -1,10 +1,8 @@
-// import { PrismaClient } from '@prisma/client'
 import { FastifyReply, FastifyRequest } from 'fastify'
-import messages from '../../utils/constants/messages'
-import { successResult } from '../../utils/constants/results'
+import messages from '@/utils/constants/messages'
+import { successResult } from '@/utils/constants/results'
 import { GetUserDictionaryByIdValidationSchema } from './dictionaries.schema'
 import { FromSchema } from 'json-schema-to-ts'
-import { Users } from '@prisma/client'
 
 type GetUserDictionaryByIdSchemaType = FromSchema<typeof GetUserDictionaryByIdValidationSchema>
 

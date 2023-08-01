@@ -6,14 +6,6 @@ export const GetUserDictionariesSchema = {
   tags: [tags.Dictionaries],
   description: 'Get User Dictionaries',
   security: [{ JWT: [] }],
-  response: {
-    // 200: {
-    //   type: "object",
-    //   properties: {
-    //     results: { type: "array", items: { $ref: "productSchema#" } },
-    //   },
-    // },
-  },
 }
 
 export const GetUserDictionaryByIdValidationSchema = {
@@ -27,7 +19,7 @@ export const GetUserDictionaryByIdValidationSchema = {
 } as const satisfies JSONSchema
 
 export const GetUserDictionaryByIdSchema = {
-  params: GetUserDictionaryByIdValidationSchema,
+  query: GetUserDictionaryByIdValidationSchema,
   tags: [tags.Dictionaries],
   description: 'Get User Dictionary By Id',
   security: [{ JWT: [] }],
