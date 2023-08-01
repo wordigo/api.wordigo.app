@@ -5,22 +5,36 @@ import {
   GetUserDictionariesSchema,
   GetUserDictionaryByIdSchema,
   UpdateDictionarySchema,
-  AddWordSchema,
-  RemoveWordSchema,
-} from './dictionaries.schema'
+} from './dictionaryWords.schema'
 import {
   Create,
   Delete,
   GetUserDictionaries,
   GetUserDictionaryById,
   Update,
-  AddWord,
-  RemoveWord,
-} from './dictionaries.controller'
+} from './dictionaryWords.controller'
 import fastifyPassport from '@fastify/passport'
 import { authMiddleware } from '@/lib/fastify-passport'
 
 export default async (fastify: FastifyInstance) => {
+  fastify.get(
+    '/getUserDictionaries',
+    {
+      schema: GetUserDictionariesSchema,
+      preValidation: authMiddleware,
+    },
+    GetUserDictionaries
+  )
+
+  fastify.get(
+    '/getUserDictionaryById',
+    {
+      schema: GetUserDictionaryByIdSchema,
+      preValidation: authMiddleware,
+    },
+    GetUserDictionaryById
+  )
+
   fastify.post(
     '/create',
     {
@@ -46,41 +60,5 @@ export default async (fastify: FastifyInstance) => {
       preValidation: authMiddleware,
     },
     Delete
-  )
-
-  fastify.get(
-    '/getUserDictionaries',
-    {
-      schema: GetUserDictionariesSchema,
-      preValidation: authMiddleware,
-    },
-    GetUserDictionaries
-  )
-
-  fastify.get(
-    '/getUserDictionaryById',
-    {
-      schema: GetUserDictionaryByIdSchema,
-      preValidation: authMiddleware,
-    },
-    GetUserDictionaryById
-  )
-
-  fastify.post(
-    '/addWord',
-    {
-      schema: AddWordSchema,
-      preValidation: authMiddleware,
-    },
-    AddWord
-  )
-
-  fastify.delete(
-    '/removeWord',
-    {
-      schema: RemoveWordSchema,
-      preValidation: authMiddleware,
-    },
-    RemoveWord
   )
 }

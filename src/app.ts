@@ -22,6 +22,8 @@ import authRoute from '@/modules/auth/auth.route'
 import translateRoute from '@/modules/translate/translate.route'
 import usersRoute from '@/modules/user/users.route'
 import dictionaryRoute from '@/modules/dictionary/dictionaries.route'
+//import dictionaryWordRouteRoute from '@/modules/dictionaryWord/dictionaryWords.route'
+
 import path from 'path'
 
 const main = async () => {
@@ -77,6 +79,7 @@ const main = async () => {
       api.register(authRoute, { prefix: '/auth' })
       api.register(translateRoute, { prefix: '/translation' })
       api.register(dictionaryRoute, { prefix: '/dictionaries' })
+      //api.register(dictionaryWordRoute, { prefix: '/dictionaryWords' })
     },
     { prefix: '/api/v1' }
   )
