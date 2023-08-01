@@ -28,7 +28,7 @@ const main = async () => {
 
   await app.register(import('@fastify/rate-limit'), {
     max: 100,
-    timeWindow: '2 minute',
+    timeWindow: '1 minute',
   })
 
   app.addSchema({
