@@ -10,6 +10,8 @@ const jwtConfig = {
   secretOrKey: process.env.JWT_SECRET,
 }
 
+export const authMiddleware = fastifyPassport.authenticate('jwt', { session: false }) as any
+
 export interface IJWTPayload {
   email: string
   id: string
