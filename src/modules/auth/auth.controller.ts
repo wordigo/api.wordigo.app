@@ -48,7 +48,7 @@ export async function SignUp(
 
   const passwordHashAndSalt = await createPasswordHash(password)
 
-  const newUser = await prisma.users.create({
+  await prisma.users.create({
     data: {
       email,
       name: username,
