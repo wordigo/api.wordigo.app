@@ -16,4 +16,10 @@ export default {
 
   user_signed_dif_provider: 'You Used a Different Provider!',
   user_signed_dif_provider_code: 'user_signed_dif_provider',
+
+  dictionary_not_found: "Dictionary Couldn't Found!",
+  dictionary_not_found_code: 'dictionary_not_found',
+
+  dictionary_already_exists: 'Dictionary Already Exists!',
+  dictionary_already_exists_code: 'dictionary_already_exists',
 }
