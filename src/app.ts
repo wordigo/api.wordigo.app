@@ -20,10 +20,19 @@ import prismaPlugin from '@/plugins/prisma.plugin'
 import fastifyPassport from '@fastify/passport'
 import authRoute from '@/modules/auth/auth.route'
 import translateRoute from '@/modules/translate/translate.route'
-import usersRoute from '@/modules/users/users.route'
+import usersRoute from '@/modules/user/users.route'
+import dictionaryRoute from '@/modules/dictionary/dictionaries.route'
 
 const main = async () => {
   const app = fastify({ logger: loggerConfig })
+
+  app.addSchema({
+    $id: 'getDicById',
+    type: 'object',
+    properties: {
+      dictionaryId: { type: 'number' },
+    },
+  })
 
   // Now we setup our app, plugins and such
   await app.register(fastifyEnv, envConfig)
@@ -56,6 +65,7 @@ const main = async () => {
       api.register(usersRoute, { prefix: '/users' })
       api.register(authRoute, { prefix: '/auth' })
       api.register(translateRoute, { prefix: '/translation' })
+      api.register(dictionaryRoute, { prefix: '/dictionaries' })
     },
     { prefix: '/api/v1' }
   )
