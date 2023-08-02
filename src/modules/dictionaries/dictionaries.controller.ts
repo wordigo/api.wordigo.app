@@ -33,6 +33,8 @@ export const Create = async (
       errorResult(null, messages.dictionary_already_exists, messages.dictionary_already_exists_code)
     )
 
+  console.log('devam ediyor')
+
   const newDictionary = await prisma.dictionaries.create({
     data: {
       title: title.trim().toLowerCase(),

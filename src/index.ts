@@ -1,11 +1,9 @@
 import { main } from '@/app'
-import { setupFastifyPassport } from '@/lib/fastify-passport'
 import { gracefullyShutdown, unexpectedErrorHandler } from '@/lib/exit-handler'
 
 /*
  * Build service
  */
-setupFastifyPassport()
 main()
   .then((app) => {
     // At this point we should be able to gracefully handle all this... We hope

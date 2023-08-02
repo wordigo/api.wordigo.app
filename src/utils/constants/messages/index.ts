@@ -5,6 +5,12 @@ export default {
   error: 'Operation Has Failed!',
   error_code: 'error',
 
+  no_authorization: 'No Authorization.',
+  no_authorization_code: 'no_authorization',
+
+  wrong_authorization: 'Wrong authorization.',
+  wrong_authorization_code: 'wrong_authorization',
+
   user_already_exists: 'User already exists!',
   user_already_exists_code: 'user_already_exists',
 

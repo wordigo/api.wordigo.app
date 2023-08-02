@@ -7,6 +7,7 @@ declare module 'fastify' {
     user: Users
   }
   interface FastifyInstance {
+    authVerify: Function<void>
     config: {
       PORT: number
       NODE_ENV: 'development' | 'production' | 'test'

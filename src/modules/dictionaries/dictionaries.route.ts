@@ -1,37 +1,24 @@
 import { FastifyInstance } from 'fastify'
+import { AddWord, Create, Delete, GetSubscribedList, GetUserDictionaries, GetUserDictionaryById, GetWords, RemoveWord, Subscribe, Update } from './dictionaries.controller'
 import {
+  AddWordSchema,
   CreateDictionarySchema,
   DeleteDictionarySchema,
+  GetSubscribedListSchema,
   GetUserDictionariesSchema,
   GetUserDictionaryByIdSchema,
-  UpdateDictionarySchema,
-  AddWordSchema,
-  RemoveWordSchema,
   GetWordsSchema,
+  RemoveWordSchema,
   SubscribeSchema,
-  GetSubscribedListSchema,
+  UpdateDictionarySchema,
 } from './dictionaries.schema'
-import {
-  Create,
-  Delete,
-  GetUserDictionaries,
-  GetUserDictionaryById,
-  Update,
-  AddWord,
-  RemoveWord,
-  GetWords,
-  Subscribe,
-  GetSubscribedList,
-} from './dictionaries.controller'
-
-import { authMiddleware } from '@/lib/fastify-passport'
 
 export default async (fastify: FastifyInstance) => {
   fastify.post(
     '/create',
     {
       schema: CreateDictionarySchema,
-      preValidation: authMiddleware,
+      preValidation: fastify.authVerify,
     },
     Create
   )
@@ -40,7 +27,7 @@ export default async (fastify: FastifyInstance) => {
     '/addWord',
     {
       schema: AddWordSchema,
-      preValidation: authMiddleware,
+      preValidation: fastify.authVerify,
     },
     AddWord
   )
@@ -49,7 +36,7 @@ export default async (fastify: FastifyInstance) => {
     '/subscribe',
     {
       schema: SubscribeSchema,
-      preValidation: authMiddleware,
+      preValidation: fastify.authVerify,
     },
     Subscribe
   )
@@ -58,7 +45,7 @@ export default async (fastify: FastifyInstance) => {
     '/update',
     {
       schema: UpdateDictionarySchema,
-      preValidation: authMiddleware,
+      preValidation: fastify.authVerify,
     },
     Update
   )
@@ -67,7 +54,7 @@ export default async (fastify: FastifyInstance) => {
     '/delete',
     {
       schema: DeleteDictionarySchema,
-      preValidation: authMiddleware,
+      preValidation: fastify.authVerify,
     },
     Delete
   )
@@ -76,7 +63,7 @@ export default async (fastify: FastifyInstance) => {
     '/removeWord',
     {
       schema: RemoveWordSchema,
-      preValidation: authMiddleware,
+      preValidation: fastify.authVerify,
     },
     RemoveWord
   )
@@ -85,7 +72,7 @@ export default async (fastify: FastifyInstance) => {
     '/getUserDictionaries',
     {
       schema: GetUserDictionariesSchema,
-      preValidation: authMiddleware,
+      preValidation: fastify.authVerify,
     },
     GetUserDictionaries
   )
@@ -94,7 +81,7 @@ export default async (fastify: FastifyInstance) => {
     '/getUserDictionaryById',
     {
       schema: GetUserDictionaryByIdSchema,
-      preValidation: authMiddleware,
+      preValidation: fastify.authVerify,
     },
     GetUserDictionaryById
   )
@@ -103,7 +90,7 @@ export default async (fastify: FastifyInstance) => {
     '/getWords',
     {
       schema: GetWordsSchema,
-      preValidation: authMiddleware,
+      preValidation: fastify.authVerify,
     },
     GetWords
   )
@@ -112,7 +99,7 @@ export default async (fastify: FastifyInstance) => {
     '/getSubscribedList',
     {
       schema: GetSubscribedListSchema,
-      preValidation: authMiddleware,
+      preValidation: fastify.authVerify,
     },
     GetSubscribedList
   )
