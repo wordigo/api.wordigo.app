@@ -26,7 +26,7 @@ export async function SignUp(
 ) {
   const { email, password, username } = request.body
 
-  const isEmailExists = await prisma.users.findFirst({
+  const isEmailExists = await request.server.prisma.users.findFirst({
     where: {
       email,
     },
@@ -69,7 +69,7 @@ export async function SignIn(
 ) {
   const { email, password } = request.body
 
-  const user = await prisma.users.findFirst({ where: { email } })
+  const user = await request.server.prisma.users.findFirst({ where: { email } })
 
   if (!user)
     return reply.send(errorResult(null, messages.user_not_found, messages.user_not_found_code))
@@ -114,14 +114,14 @@ export const GoogleOAuth = async (
 
   const googleUser = googleRequest.data as IGoogleUser
 
-  let user = await prisma.users.findFirst({
+  let user = await request.server.prisma.users.findFirst({
     where: {
       email: googleUser.email as string,
     },
   })
 
   if (!user)
-    user = await prisma.users.create({
+    user = await request.server.prisma.users.create({
       data: {
         email: googleUser.email as string,
         name: googleUser.name as string,

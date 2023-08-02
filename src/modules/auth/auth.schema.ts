@@ -36,9 +36,11 @@ export const SignInValidationSchema = {
   properties: {
     email: {
       type: 'string',
+      default: 'deneme@gmail.com',
     },
     password: {
       type: 'string',
+      default: 'deneme',
     },
   },
   required: ['email', 'password'],
