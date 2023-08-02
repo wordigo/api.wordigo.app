@@ -7,6 +7,9 @@ import {
   UpdateDictionarySchema,
   AddWordSchema,
   RemoveWordSchema,
+  GetWordsSchema,
+  SubscribeSchema,
+  GetSubscribedListSchema,
 } from './dictionaries.schema'
 import {
   Create,
@@ -16,8 +19,11 @@ import {
   Update,
   AddWord,
   RemoveWord,
+  GetWords,
+  Subscribe,
+  GetSubscribedList,
 } from './dictionaries.controller'
-import fastifyPassport from '@fastify/passport'
+
 import { authMiddleware } from '@/lib/fastify-passport'
 
 export default async (fastify: FastifyInstance) => {
@@ -28,6 +34,24 @@ export default async (fastify: FastifyInstance) => {
       preValidation: authMiddleware,
     },
     Create
+  )
+
+  fastify.post(
+    '/addWord',
+    {
+      schema: AddWordSchema,
+      preValidation: authMiddleware,
+    },
+    AddWord
+  )
+
+  fastify.post(
+    '/subscribe',
+    {
+      schema: SubscribeSchema,
+      preValidation: authMiddleware,
+    },
+    Subscribe
   )
 
   fastify.put(
@@ -48,6 +72,15 @@ export default async (fastify: FastifyInstance) => {
     Delete
   )
 
+  fastify.delete(
+    '/removeWord',
+    {
+      schema: RemoveWordSchema,
+      preValidation: authMiddleware,
+    },
+    RemoveWord
+  )
+
   fastify.get(
     '/getUserDictionaries',
     {
@@ -66,21 +99,21 @@ export default async (fastify: FastifyInstance) => {
     GetUserDictionaryById
   )
 
-  fastify.post(
-    '/addWord',
+  fastify.get(
+    '/getWords',
     {
-      schema: AddWordSchema,
+      schema: GetWordsSchema,
       preValidation: authMiddleware,
     },
-    AddWord
+    GetWords
   )
 
-  fastify.delete(
-    '/removeWord',
+  fastify.get(
+    '/getSubscribedList',
     {
-      schema: RemoveWordSchema,
+      schema: GetSubscribedListSchema,
       preValidation: authMiddleware,
     },
-    RemoveWord
+    GetSubscribedList
   )
 }

@@ -8,6 +8,9 @@ export default {
   user_already_exists: 'User already exists!',
   user_already_exists_code: 'user_already_exists',
 
+  user_already_subscribed: 'User already subscribed!',
+  user_already_subscribed_code: 'user_already_subscribed',
+
   user_not_found: "User Couldn't Found!",
   user_not_found_code: 'user_not_found',
 
@@ -28,4 +31,13 @@ export default {
 
   userWord_not_found: "UserWord Couldn't Found!",
   userWord_not_found_code: 'userWord_not_found',
+
+  language_not_found: "Language Couldn't Found!",
+  language_not_found_code: 'language_not_found',
+
+  languages_cant_same: "Native and Target Language can't be the same!",
+  languages_cant_same_code: 'languages_cant_same',
+
+  subscription_own_dic: "You can't subscribe your own dictionary!",
+  subscription_own_dic_code: 'subscription_own_dic',
 }

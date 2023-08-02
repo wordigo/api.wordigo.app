@@ -2,52 +2,22 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import messages from '@/utils/constants/messages'
 import { errorResult, successResult } from '@/utils/constants/results'
 import {
-  AddWordValidationSchema,
-  CreateDictionaryValidationSchema,
-  GetDictionaryByIdValidationSchema,
-  RemoveWordValidationSchema,
-  UpdateDictionaryValidationSchema,
+  AddWordValidation,
+  CreateDictionaryValidation,
+  GetDictionaryByIdValidation,
+  RemoveWordValidation,
+  UpdateDictionaryValidation,
 } from './dictionaries.schema'
 import { FromSchema } from 'json-schema-to-ts'
 
-type GetDictionaryByIdSchemaType = FromSchema<typeof GetDictionaryByIdValidationSchema>
-type CreateDictionarySchemaType = FromSchema<typeof CreateDictionaryValidationSchema>
-type UpdateDictionarySchemaType = FromSchema<typeof UpdateDictionaryValidationSchema>
-type RemoveWordSchemaType = FromSchema<typeof RemoveWordValidationSchema>
-type AddWordSchemaType = FromSchema<typeof AddWordValidationSchema>
-
-export const GetUserDictionaries = async (request: FastifyRequest, reply: FastifyReply) => {
-  const userId = request.user?.id
-  const prisma = request.server.prisma
-
-  const userDictionaries = await prisma.dictionaries.findMany({
-    where: {
-      authorId: userId,
-    },
-  })
-
-  return reply.send(successResult(userDictionaries, messages.success, messages.success_code))
-}
-
-export const GetUserDictionaryById = async (
-  req: FastifyRequest<{ Querystring: GetDictionaryByIdSchemaType }>,
-  reply: FastifyReply
-) => {
-  const { dictionaryId } = req.query
-  const prisma = req.server.prisma
-
-  const userDictionaries = await prisma.dictionaries.findMany({
-    where: {
-      authorId: req.user?.id,
-      id: dictionaryId,
-    },
-  })
-
-  return reply.send(successResult(userDictionaries, messages.success, messages.success_code))
-}
+type GetDictionaryByIdType = FromSchema<typeof GetDictionaryByIdValidation>
+type CreateDictionaryType = FromSchema<typeof CreateDictionaryValidation>
+type UpdateDictionaryType = FromSchema<typeof UpdateDictionaryValidation>
+type RemoveWordType = FromSchema<typeof RemoveWordValidation>
+type AddWordType = FromSchema<typeof AddWordValidation>
 
 export const Create = async (
-  req: FastifyRequest<{ Body: CreateDictionarySchemaType }>,
+  req: FastifyRequest<{ Body: CreateDictionaryType }>,
   reply: FastifyReply
 ) => {
   const userId = req.user?.id
@@ -75,7 +45,7 @@ export const Create = async (
 }
 
 export const Update = async (
-  req: FastifyRequest<{ Body: UpdateDictionarySchemaType }>,
+  req: FastifyRequest<{ Body: UpdateDictionaryType }>,
   reply: FastifyReply
 ) => {
   const userId = req.user?.id
@@ -107,7 +77,7 @@ export const Update = async (
 }
 
 export const Delete = async (
-  req: FastifyRequest<{ Querystring: GetDictionaryByIdSchemaType }>,
+  req: FastifyRequest<{ Querystring: GetDictionaryByIdType }>,
   reply: FastifyReply
 ) => {
   const userId = req.user?.id
@@ -129,8 +99,38 @@ export const Delete = async (
   return reply.send(successResult(null, messages.success, messages.success_code))
 }
 
+export const GetUserDictionaries = async (request: FastifyRequest, reply: FastifyReply) => {
+  const userId = request.user?.id
+  const prisma = request.server.prisma
+
+  const userDictionaries = await prisma.dictionaries.findMany({
+    where: {
+      authorId: userId,
+    },
+  })
+
+  return reply.send(successResult(userDictionaries, messages.success, messages.success_code))
+}
+
+export const GetUserDictionaryById = async (
+  req: FastifyRequest<{ Querystring: GetDictionaryByIdType }>,
+  reply: FastifyReply
+) => {
+  const { dictionaryId } = req.query
+  const prisma = req.server.prisma
+
+  const userDictionaries = await prisma.dictionaries.findMany({
+    where: {
+      authorId: req.user?.id,
+      id: dictionaryId,
+    },
+  })
+
+  return reply.send(successResult(userDictionaries, messages.success, messages.success_code))
+}
+
 export const RemoveWord = async (
-  req: FastifyRequest<{ Body: RemoveWordSchemaType }>,
+  req: FastifyRequest<{ Body: RemoveWordType }>,
   reply: FastifyReply
 ) => {
   const userId = req.user?.id
@@ -172,10 +172,7 @@ export const RemoveWord = async (
   return reply.send(successResult(null, messages.success, messages.success_code))
 }
 
-export const AddWord = async (
-  req: FastifyRequest<{ Body: AddWordSchemaType }>,
-  reply: FastifyReply
-) => {
+export const AddWord = async (req: FastifyRequest<{ Body: AddWordType }>, reply: FastifyReply) => {
   const userId = req.user?.id
   const { wordId, dictionaryId } = req.body
   const prisma = req.server.prisma
@@ -221,6 +218,97 @@ export const AddWord = async (
 
   await prisma.dictAndUserWords.create({
     data: dictUserWord,
+  })
+
+  return reply.send(successResult(null, messages.success, messages.success_code))
+}
+
+export const GetWords = async (
+  req: FastifyRequest<{ Querystring: GetDictionaryByIdType }>,
+  reply: FastifyReply
+) => {
+  const { dictionaryId } = req.query
+  const userId = req.user?.id
+  const prisma = req.server.prisma
+
+  const dictionary = await prisma.dictionaries.findFirst({
+    where: { authorId: userId, id: dictionaryId },
+    include: {
+      UserWords: {
+        include: {
+          userWord: {
+            include: {
+              word: true,
+            },
+          },
+        },
+      },
+    },
+  })
+
+  const responseData = {
+    dictionary,
+    numberOfWords: dictionary?.UserWords.length,
+  }
+
+  if (!dictionary)
+    return reply.send(
+      errorResult(null, messages.dictionary_not_found, messages.dictionary_not_found_code)
+    )
+
+  return reply.send(successResult(responseData, messages.success, messages.success_code))
+}
+
+export const Subscribe = async (
+  req: FastifyRequest<{ Querystring: GetDictionaryByIdType }>,
+  reply: FastifyReply
+) => {
+  const { dictionaryId } = req.query
+  const userId = req.user?.id
+  const prisma = req.server.prisma
+
+  const dictionary = await prisma.dictionaries.findFirst({
+    where: {
+      id: dictionaryId,
+    },
+  })
+
+  if (!dictionary)
+    return errorResult(null, messages.dictionary_not_found, messages.dictionary_not_found_code)
+
+  if (dictionary.authorId === userId)
+    return errorResult(null, messages.subscription_own_dic, messages.subscription_own_dic_code)
+
+  await prisma.dictionaries.update({
+    where: {
+      id: dictionaryId,
+    },
+    data: {
+      subscribers: dictionary.subscribers + 1,
+    },
+  })
+
+  await prisma.subscribedDics.create({
+    data: {
+      dictionaryId,
+      userId: userId as string,
+    },
+  })
+
+  return successResult(null, messages.success, messages.success_code)
+}
+
+export const GetSubscribedList = async (req: FastifyRequest, reply: FastifyReply) => {
+  const userId = req.user?.id
+  const prisma = req.server.prisma
+
+  const subbedDics = await prisma.subscribedDics.findMany({
+    where: {
+      userId,
+    },
+    include: {
+      Dictionary: true,
+    },
   })
 
   return reply.send(successResult(null, messages.success, messages.success_code))
