@@ -38,9 +38,9 @@ export const Create = async (
   }
 
   const doLangsExist = AllCountryLanguages.filter((lang) => {
-    return reply.send(
+    return (
       lang.code.toLowerCase() === nativeLanguage.trim().toLowerCase() ||
-        lang.code.toLowerCase() === targetLanguage.trim().toLowerCase()
+      lang.code.toLowerCase() === targetLanguage.trim().toLowerCase()
     )
   })
 
@@ -136,5 +136,5 @@ export const Create = async (
       })
   }
 
-  return reply.send(successResult(true, messages.success, messages.success_code))
+  return reply.send(successResult(null, messages.success, messages.success_code))
 }
