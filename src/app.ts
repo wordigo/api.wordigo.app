@@ -19,10 +19,12 @@ import prismaPlugin from '@/plugins/prisma.plugin'
 
 import fastifyPassport from '@fastify/passport'
 import authRoute from '@/modules/auth/auth.route'
-import translateRoute from '@/modules/translate/translate.route'
-import usersRoute from '@/modules/user/users.route'
-import dictionaryRoute from '@/modules/dictionary/dictionaries.route'
-//import dictionaryWordRouteRoute from '@/modules/dictionaryWord/dictionaryWords.route'
+import translateRoute from '@/modules/translation/translate.route'
+import usersRoute from '@/modules/users/users.route'
+import dictionaryRoute from '@/modules/dictionaries/dictionaries.route'
+import subscribedUserRoute from '@/modules/subscribedUsers/subscribedUsers.route'
+import wordRoute from '@/modules/words/words.route'
+import userWordRoute from '@/modules/userWords/userWords.route'
 
 import path from 'path'
 
@@ -79,7 +81,9 @@ const main = async () => {
       api.register(authRoute, { prefix: '/auth' })
       api.register(translateRoute, { prefix: '/translation' })
       api.register(dictionaryRoute, { prefix: '/dictionaries' })
-      //api.register(dictionaryWordRoute, { prefix: '/dictionaryWords' })
+      api.register(subscribedUserRoute, { prefix: '/subscribedUsers' })
+      api.register(wordRoute, { prefix: '/words' })
+      api.register(userWordRoute, { prefix: '/userWords' })
     },
     { prefix: '/api/v1' }
   )

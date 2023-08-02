@@ -7,7 +7,7 @@ export const GetUserDictionariesSchema = {
   security: [{ JWT: [] }],
 }
 
-export const GetDictionaryByIdValidationSchema = {
+export const GetDictionaryByIdValidation = {
   type: 'object',
   properties: {
     dictionaryId: {
@@ -18,20 +18,20 @@ export const GetDictionaryByIdValidationSchema = {
 } as const satisfies JSONSchema
 
 export const GetUserDictionaryByIdSchema = {
-  query: GetDictionaryByIdValidationSchema,
+  querystring: GetDictionaryByIdValidation,
   tags: [tags.Dictionaries],
   description: "Getting User's Dictionary By Id",
   security: [{ JWT: [] }],
 }
 
 export const DeleteDictionarySchema = {
-  querystring: GetDictionaryByIdValidationSchema,
+  querystring: GetDictionaryByIdValidation,
   tags: [tags.Dictionaries],
   description: 'Delete Operation of Dictionary',
   security: [{ JWT: [] }],
 }
 
-export const CreateDictionaryValidationSchema = {
+export const CreateDictionaryValidation = {
   type: 'object',
   properties: {
     title: {
@@ -45,13 +45,13 @@ export const CreateDictionaryValidationSchema = {
 } as const satisfies JSONSchema
 
 export const CreateDictionarySchema = {
-  body: CreateDictionaryValidationSchema,
+  body: CreateDictionaryValidation,
   tags: [tags.Dictionaries],
   description: 'Create Operation of Dictionary',
   security: [{ JWT: [] }],
 }
 
-export const UpdateDictionaryValidationSchema = {
+export const UpdateDictionaryValidation = {
   type: 'object',
   properties: {
     dictionaryId: {
@@ -68,13 +68,13 @@ export const UpdateDictionaryValidationSchema = {
 } as const satisfies JSONSchema
 
 export const UpdateDictionarySchema = {
-  body: UpdateDictionaryValidationSchema,
+  body: UpdateDictionaryValidation,
   tags: [tags.Dictionaries],
   description: 'Update Operation of Dictionary',
   security: [{ JWT: [] }],
 }
 
-export const AddWordValidationSchema = {
+export const AddWordValidation = {
   type: 'object',
   properties: {
     dictionaryId: {
@@ -88,13 +88,13 @@ export const AddWordValidationSchema = {
 } as const satisfies JSONSchema
 
 export const AddWordSchema = {
-  body: AddWordValidationSchema,
+  body: AddWordValidation,
   tags: [tags.Dictionaries],
   description: 'Adding Word From Dictionary',
   security: [{ JWT: [] }],
 }
 
-export const RemoveWordValidationSchema = {
+export const RemoveWordValidation = {
   type: 'object',
   properties: {
     dictionaryId: {
@@ -108,8 +108,29 @@ export const RemoveWordValidationSchema = {
 } as const satisfies JSONSchema
 
 export const RemoveWordSchema = {
-  body: RemoveWordValidationSchema,
+  body: RemoveWordValidation,
   tags: [tags.Dictionaries],
   description: 'Removing Word From Dictionary',
+  security: [{ JWT: [] }],
+}
+
+export const GetWordsSchema = {
+  querystring: GetDictionaryByIdValidation,
+  tags: [tags.Dictionaries],
+  description: 'Get Words of Dictionary',
+  security: [{ JWT: [] }],
+}
+
+export const SubscribeSchema = {
+  querystring: GetDictionaryByIdValidation,
+  tags: [tags.Dictionaries],
+  description: 'Subscription',
+  security: [{ JWT: [] }],
+}
+
+export const GetSubscribedListSchema = {
+  querystring: GetDictionaryByIdValidation,
+  tags: [tags.Dictionaries],
+  description: 'Getting Subscribed Dictionaries',
   security: [{ JWT: [] }],
 }
