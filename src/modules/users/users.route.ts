@@ -1,8 +1,11 @@
 import { FastifyInstance } from 'fastify'
-import { GetUserByIdSchema, GetUserMeSchema } from './users.schema'
-import { GetUserById, GetUserMe } from './users.controller'
+import { GetByIdSchema, GetMeSchema, DeleteSchema } from './users.schema'
+import { GetById, GetMe, Delete } from './users.controller'
 
 export default async (fastify: FastifyInstance) => {
-  fastify.get('/getUserMe', { schema: GetUserMeSchema, preValidation: fastify.authVerify }, GetUserMe)
-  fastify.get('/getUserById', { schema: GetUserByIdSchema, preValidation: fastify.authVerify }, GetUserById)
+  fastify.get('/getMe', { schema: GetMeSchema, preValidation: fastify.authVerify }, GetMe)
+
+  fastify.get('/getById', { schema: GetByIdSchema, preValidation: fastify.authVerify }, GetById)
+
+  fastify.delete('/delete', { schema: DeleteSchema, preValidation: fastify.authVerify }, Delete)
 }

@@ -2,16 +2,16 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import messages from '@/utils/constants/messages'
 import { errorResult, successResult } from '@/utils/constants/results'
-import { GetUserByIdValidation } from './users.schema'
+import { GetByIdValidation } from './users.schema'
 import { FromSchema } from 'json-schema-to-ts'
 
-type GetUserByIdType = FromSchema<typeof GetUserByIdValidation>
+type GetByIdType = FromSchema<typeof GetByIdValidation>
 
-export const GetUserMe = async (req: FastifyRequest, reply: FastifyReply) => {
+export const GetMe = async (req: FastifyRequest, reply: FastifyReply) => {
   return reply.send(successResult(req.user, messages.success, messages.success_code))
 }
 
-export const GetUserById = async (req: FastifyRequest<{ Querystring: GetUserByIdType }>, reply: FastifyReply) => {
+export const GetById = async (req: FastifyRequest<{ Querystring: GetByIdType }>, reply: FastifyReply) => {
   const prisma = req.server.prisma
   const { id } = req.query
 
@@ -20,4 +20,21 @@ export const GetUserById = async (req: FastifyRequest<{ Querystring: GetUserById
   if (!user) return reply.send(errorResult(null, messages.user_not_found, messages.user_not_found_code))
 
   return reply.send(successResult(user, messages.success, messages.success_code))
+}
+
+export const Delete = async (req: FastifyRequest<{ Querystring: GetByIdType }>, reply: FastifyReply) => {
+  const prisma = req.server.prisma
+  const { id } = req.query
+
+  const user = await prisma.users.findFirst({ where: { id } })
+
+  if (!user) return reply.send(errorResult(null, messages.user_not_found, messages.user_not_found_code))
+
+  await prisma.users.delete({
+    where: {
+      id,
+    },
+  })
+
+  return reply.send(successResult(null, messages.success, messages.success_code))
 }

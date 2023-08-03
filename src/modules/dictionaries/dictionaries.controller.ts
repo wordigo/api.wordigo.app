@@ -13,9 +13,9 @@ type RemoveWordType = FromSchema<typeof RemoveWordValidation>
 type AddWordType = FromSchema<typeof AddWordValidation>
 type GetPublicDictionariesType = FromSchema<typeof GetPublicDictionariesValidation>
 
-export const Create = async (req: FastifyRequest<{ Body: CreateDictionaryType }>, reply: FastifyReply) => {
+export const Create = async (req: FastifyRequest<{ Querystring: CreateDictionaryType }>, reply: FastifyReply) => {
   const userId = req.user?.id
-  const { title, published } = req.body
+  const { title } = req.query
   const prisma = req.server.prisma
 
   const dictionaryFromDb = await prisma.dictionaries.findFirst({
@@ -30,7 +30,6 @@ export const Create = async (req: FastifyRequest<{ Body: CreateDictionaryType }>
     data: {
       title: title.trim().toLowerCase(),
       authorId: userId,
-      published,
     },
   })
 
