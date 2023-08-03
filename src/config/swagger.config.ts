@@ -7,6 +7,7 @@ export const swaggerConfig: SwaggerOptions = {
         type: 'apiKey',
         name: 'Authorization',
         in: 'header',
+        description: 'Enter your JWT token in the format **&lt;token>**',
       },
     },
     info: {
