@@ -9,18 +9,12 @@ import { LearningStatuses } from '@/utils/constants/enums'
 
 type CreateWordType = FromSchema<typeof CreateWordValidation>
 
-export const Create = async (
-  req: FastifyRequest<{ Body: CreateWordType }>,
-  reply: FastifyReply
-) => {
+export const Create = async (req: FastifyRequest<{ Body: CreateWordType }>, reply: FastifyReply) => {
   const { text, translatedText, nativeLanguage, targetLanguage, dictionaryId } = req.body
   const userId = req.user?.id
   const prisma = req.server.prisma
 
-  if (nativeLanguage?.trim().toLowerCase() === targetLanguage?.trim().toLowerCase())
-    return reply.send(
-      errorResult(null, messages.languages_cant_same, messages.languages_cant_same_code)
-    )
+  if (nativeLanguage?.trim().toLowerCase() === targetLanguage?.trim().toLowerCase()) return reply.send(errorResult(null, messages.languages_cant_same, messages.languages_cant_same_code))
 
   if ((dictionaryId as number) > 0) {
     const dicFromDb = await prisma.dictionaries.findFirst({
@@ -31,23 +25,16 @@ export const Create = async (
     })
 
     if (!dicFromDb) {
-      return reply.send(
-        errorResult(null, messages.dictionary_not_found, messages.dictionary_not_found_code)
-      )
+      return reply.send(errorResult(null, messages.dictionary_not_found, messages.dictionary_not_found_code))
     }
   }
 
   const doLangsExist = AllCountryLanguages.filter((lang) => {
-    return (
-      lang.code.toLowerCase() === nativeLanguage.trim().toLowerCase() ||
-      lang.code.toLowerCase() === targetLanguage.trim().toLowerCase()
-    )
+    return lang.code.toLowerCase() === nativeLanguage.trim().toLowerCase() || lang.code.toLowerCase() === targetLanguage.trim().toLowerCase()
   })
 
   if (doLangsExist.length !== 2) {
-    return reply.send(
-      errorResult(null, messages.language_not_found, messages.language_not_found_code)
-    )
+    return reply.send(errorResult(null, messages.language_not_found, messages.language_not_found_code))
   }
 
   const wordFromDb = await prisma.words.findFirst({
@@ -65,8 +52,8 @@ export const Create = async (
       data: {
         text: text.trim().toLowerCase(),
         translatedText: translatedText.trim().toLowerCase(),
-        nativeLanguage,
-        targetLanguage,
+        nativeLanguage: nativeLanguage.trim().toLowerCase(),
+        targetLanguage: targetLanguage.trim().toLowerCase(),
       },
     })
   else word = wordFromDb
