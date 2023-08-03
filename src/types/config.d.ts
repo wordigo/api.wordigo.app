@@ -2,7 +2,6 @@ import { Users } from '@prisma/client'
 import { FastifyInstance, PassportUser } from 'fastify'
 
 declare module 'fastify' {
-  interface PassportUser extends Users {}
   interface FastifyRequest {
     user: Users
   }
