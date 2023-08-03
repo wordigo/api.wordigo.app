@@ -148,3 +148,16 @@ export const GetPublicDictionariesSchema = {
   summary: 'Getting Public Dictionaries',
   security: [{ JWT: [] }],
 } as FastifySchema
+
+export const GetListSchema = {
+  tags: [tags.Dictionaries],
+  summary: 'Getting List of Dictionary',
+  security: [{ JWT: [] }],
+} as FastifySchema
+
+export const UnsubscribeSchema = {
+  querystring: GetDictionaryByIdValidation,
+  tags: [tags.Dictionaries],
+  summary: 'Unsubscribe from Dictionary',
+  security: [{ JWT: [] }],
+} as FastifySchema

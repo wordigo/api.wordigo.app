@@ -3,7 +3,7 @@ export const tags = {
   Authentication: 'Authentication',
   Users: 'Users',
   Dictionaries: 'Dictionaries',
-  Subscription: 'Subscription',
+  UserSubscription: 'User Subscription',
   Words: 'Words',
   UserWords: 'UserWords',
 }

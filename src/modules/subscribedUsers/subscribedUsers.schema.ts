@@ -13,12 +13,12 @@ export const SubscriptionValidation = {
 
 export const SubscriptionSchema = {
   querystring: SubscriptionValidation,
-  tags: [tags.Subscription],
+  tags: [tags.UserSubscription],
   description: 'Subscription',
 }
 
 export const SubscribersSchema = {
-  tags: [tags.Subscription],
+  tags: [tags.UserSubscription],
   description: 'Subscribers',
   security: [{ JWT: [] }],
 }
