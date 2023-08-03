@@ -1,9 +1,11 @@
 import { JSONSchema } from 'json-schema-to-ts'
 import { tags } from '../../utils/constants/Tags'
+import { TypesOfPublics } from './dictionaries.types'
+import { FastifySchema } from 'fastify'
 
 export const GetUserDictionariesSchema = {
   tags: [tags.Dictionaries],
-  description: 'Get User Dictionaries',
+  summary: 'Get User Dictionaries',
   security: [{ JWT: [] }],
 }
 
@@ -20,14 +22,14 @@ export const GetDictionaryByIdValidation = {
 export const GetUserDictionaryByIdSchema = {
   querystring: GetDictionaryByIdValidation,
   tags: [tags.Dictionaries],
-  description: "Getting User's Dictionary By Id",
+  summary: "Getting User's Dictionary By Id",
   security: [{ JWT: [] }],
 }
 
 export const DeleteDictionarySchema = {
   querystring: GetDictionaryByIdValidation,
   tags: [tags.Dictionaries],
-  description: 'Delete Operation of Dictionary',
+  summary: 'Delete Operation of Dictionary',
   security: [{ JWT: [] }],
 }
 
@@ -47,7 +49,7 @@ export const CreateDictionaryValidation = {
 export const CreateDictionarySchema = {
   body: CreateDictionaryValidation,
   tags: [tags.Dictionaries],
-  description: 'Create Operation of Dictionary',
+  summary: 'Create Operation of Dictionary',
   security: [{ JWT: [] }],
 }
 
@@ -70,7 +72,7 @@ export const UpdateDictionaryValidation = {
 export const UpdateDictionarySchema = {
   body: UpdateDictionaryValidation,
   tags: [tags.Dictionaries],
-  description: 'Update Operation of Dictionary',
+  summary: 'Update Operation of Dictionary',
   security: [{ JWT: [] }],
 }
 
@@ -90,7 +92,7 @@ export const AddWordValidation = {
 export const AddWordSchema = {
   body: AddWordValidation,
   tags: [tags.Dictionaries],
-  description: 'Adding Word From Dictionary',
+  summary: 'Adding Word From Dictionary',
   security: [{ JWT: [] }],
 }
 
@@ -110,27 +112,39 @@ export const RemoveWordValidation = {
 export const RemoveWordSchema = {
   body: RemoveWordValidation,
   tags: [tags.Dictionaries],
-  description: 'Removing Word From Dictionary',
+  summary: 'Removing Word From Dictionary',
   security: [{ JWT: [] }],
 }
 
 export const GetWordsSchema = {
   querystring: GetDictionaryByIdValidation,
   tags: [tags.Dictionaries],
-  description: 'Get Words of Dictionary',
+  summary: 'Get Words of Dictionary',
   security: [{ JWT: [] }],
 }
 
 export const SubscribeSchema = {
   querystring: GetDictionaryByIdValidation,
   tags: [tags.Dictionaries],
-  description: 'Subscription',
+  summary: 'Subscription',
   security: [{ JWT: [] }],
 }
 
-export const GetSubscribedListSchema = {
-  querystring: GetDictionaryByIdValidation,
+export const GetPublicDictionariesValidation = {
+  type: 'object',
+  properties: {
+    type: {
+      type: 'string',
+      default: TypesOfPublics.All,
+      description: 'Valid Types \n all, subscribed, notSubscribed',
+    },
+  },
+  required: ['type'],
+} as const satisfies JSONSchema
+
+export const GetPublicDictionariesSchema = {
+  querystring: GetPublicDictionariesValidation,
   tags: [tags.Dictionaries],
-  description: 'Getting Subscribed Dictionaries',
+  summary: 'Getting Public Dictionaries',
   security: [{ JWT: [] }],
-}
+} as FastifySchema

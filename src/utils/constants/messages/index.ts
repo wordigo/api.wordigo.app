@@ -46,4 +46,10 @@ export default {
 
   subscription_own_dic: "You can't subscribe your own dictionary!",
   subscription_own_dic_code: 'subscription_own_dic',
+
+  dictionary_invalid_type: 'Invalid Public Type for Getting Dictionaries!',
+  dictionary_invalid_type_code: 'dictionary_invalid_type',
+
+  dictionary_already_subscribed: 'Dictionary was Already Subscribed!',
+  dictionary_already_subscribed_code: 'dictionary_already_subscribed',
 }

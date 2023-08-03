@@ -1,7 +1,7 @@
 import messages from '@/utils/constants/messages'
 import { errorResult } from '@/utils/constants/results'
 import { Users } from '@prisma/client'
-import fastify, { DoneFuncWithErrOrRes, FastifyReply, FastifyRequest, PassportUser } from 'fastify'
+import fastify, { DoneFuncWithErrOrRes, FastifyReply, FastifyRequest } from 'fastify'
 import { JwtPayload, verify } from 'jsonwebtoken'
 
 const checkAuthMiddleware = async (request: FastifyRequest, reply: FastifyReply, done: DoneFuncWithErrOrRes) => {
