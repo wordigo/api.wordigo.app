@@ -4,6 +4,7 @@ import { errorResult, successResult } from '@/utils/constants/results'
 import { AddWordValidation, CreateDictionaryValidation, GetDictionaryByIdValidation, GetPublicDictionariesValidation, RemoveWordValidation, UpdateDictionaryValidation } from './dictionaries.schema'
 import { FromSchema } from 'json-schema-to-ts'
 import { TypesOfPublics } from './dictionaries.types'
+import { Words } from '@prisma/client'
 
 type GetDictionaryByIdType = FromSchema<typeof GetDictionaryByIdValidation>
 type CreateDictionaryType = FromSchema<typeof CreateDictionaryValidation>
@@ -221,9 +222,11 @@ export const GetWords = async (req: FastifyRequest<{ Querystring: GetDictionaryB
   })
 
   const responseData = {
-    dictionary,
+    words: [] as Words[],
     numberOfWords: dictionary?.UserWords.length,
   }
+
+  dictionary?.UserWords.map((w) => responseData.words.push(w.userWord.word))
 
   if (!dictionary) return reply.send(errorResult(null, messages.dictionary_not_found, messages.dictionary_not_found_code))
 
