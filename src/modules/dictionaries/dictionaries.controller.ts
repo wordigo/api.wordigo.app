@@ -81,6 +81,13 @@ export const Delete = async (req: FastifyRequest<{ Querystring: GetDictionaryByI
   return reply.send(successResult(null, messages.success, messages.success_code))
 }
 
+export const GetList = async (req: FastifyRequest, reply: FastifyReply) => {
+  const prisma = req.server.prisma
+  const dictionaries = prisma.dictionaries.findMany()
+
+  return reply.send(successResult(dictionaries, messages.success, messages.success_code))
+}
+
 export const GetUserDictionaries = async (request: FastifyRequest, reply: FastifyReply) => {
   const userId = request.user?.id
   const prisma = request.server.prisma
@@ -264,6 +271,25 @@ export const Subscribe = async (req: FastifyRequest<{ Querystring: GetDictionary
   })
 
   return successResult(null, messages.success, messages.success_code)
+}
+
+export const Unsubscribe = async (req: FastifyRequest<{ Querystring: GetDictionaryByIdType }>, reply: FastifyReply) => {
+  const { dictionaryId } = req.query
+  const userId = req.user?.id
+  const prisma = req.server.prisma
+
+  const subbedDics = await prisma.subscribedDics.findFirst({
+    where: {
+      userId,
+      dictionaryId,
+    },
+  })
+
+  if (!subbedDics) return reply.send(errorResult(null, messages.dictionary_not_found, messages.dictionary_not_found_code))
+
+  await prisma.subscribedDics.delete({ where: { id: subbedDics.id } })
+
+  return reply.send(successResult(null, messages.success, messages.success_code))
 }
 
 export const GetPublicDictionaries = async (req: FastifyRequest<{ Querystring: GetPublicDictionariesType }>, reply: FastifyReply) => {

@@ -63,7 +63,7 @@ export const SignIn = async (request: FastifyRequest<{ Body: SignInSchemaType }>
   if (!passwordVerification) return reply.status(HttpStatusCode.Unauthorized).send(errorResult(null, messages.user_wrong_password, messages.user_wrong_password_code))
 
   const token = sign({ email: user.email, id: user.id }, process.env['JWT_SECRET'] as string, {
-    expiresIn: '1h',
+    expiresIn: '3d',
   })
 
   return reply.send(successResult({ user, accessToken: token }, messages.success, messages.success_code))
