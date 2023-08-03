@@ -2,7 +2,7 @@ import { FastifySchema } from 'fastify'
 import { tags } from '../../utils/constants/Tags'
 import { JSONSchema } from 'json-schema-to-ts'
 
-export const GetUserByIdValidation = {
+export const GetByIdValidation = {
   type: 'object',
   properties: {
     id: {
@@ -12,16 +12,23 @@ export const GetUserByIdValidation = {
   required: ['id'],
 } as const satisfies JSONSchema
 
-export const GetUserMeSchema: FastifySchema = {
+export const GetMeSchema: FastifySchema = {
   // headers: GetUserMeValidation,
   tags: [tags.Users],
-  description: 'Get user information',
+  summary: 'Getting User Information',
   security: [{ JWT: [] }],
 }
 
-export const GetUserByIdSchema: FastifySchema = {
-  querystring: GetUserByIdValidation,
+export const GetByIdSchema: FastifySchema = {
+  querystring: GetByIdValidation,
   tags: [tags.Users],
-  description: 'Getting User By Id',
+  summary: 'Getting User By Id',
+  security: [{ JWT: [] }],
+}
+
+export const DeleteSchema: FastifySchema = {
+  querystring: GetByIdValidation,
+  tags: [tags.Users],
+  summary: 'User Deleting Operation',
   security: [{ JWT: [] }],
 }

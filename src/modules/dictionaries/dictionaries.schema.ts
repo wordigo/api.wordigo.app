@@ -39,15 +39,12 @@ export const CreateDictionaryValidation = {
     title: {
       type: 'string',
     },
-    published: {
-      type: 'boolean',
-    },
   },
-  required: ['title', 'published'],
+  required: ['title'],
 } as const satisfies JSONSchema
 
 export const CreateDictionarySchema = {
-  body: CreateDictionaryValidation,
+  querystring: CreateDictionaryValidation,
   tags: [tags.Dictionaries],
   summary: 'Create Operation of Dictionary',
   security: [{ JWT: [] }],
