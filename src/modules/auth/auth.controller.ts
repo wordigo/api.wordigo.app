@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { SignUpValidationSchema, GoogleAuthValidationSchema, SignInValidationSchema } from './auth.schema'
+import { SignUpValidation, GoogleAuthValidation, SignInValidation } from './auth.schema'
 import { FromSchema } from 'json-schema-to-ts'
 import axios, { HttpStatusCode } from 'axios'
 import { sign } from 'jsonwebtoken'
@@ -9,15 +9,17 @@ import { PrismaClient } from '@prisma/client'
 import { createPasswordHash, verifyPasswordHash } from '@/utils/helpers/password.helper'
 import { Providers } from '@/utils/constants/enums'
 import { IGoogleUser } from './auth.types'
+import { randomUUID } from 'crypto'
+import slugify from 'slugify'
 
 const prisma = new PrismaClient()
 
-type SignInSchemaType = FromSchema<typeof SignInValidationSchema>
-type GoogleAuthValidationSchemaType = FromSchema<typeof GoogleAuthValidationSchema>
-type SignUpSchemaType = FromSchema<typeof SignUpValidationSchema>
+type SignInValidationType = FromSchema<typeof SignInValidation>
+type GoogleAuthValidationType = FromSchema<typeof GoogleAuthValidation>
+type SignUpValidationType = FromSchema<typeof SignUpValidation>
 
-export const SignUp = async (request: FastifyRequest<{ Body: SignUpSchemaType }>, reply: FastifyReply) => {
-  const { email, password, username } = request.body
+export const SignUp = async (request: FastifyRequest<{ Body: SignUpValidationType }>, reply: FastifyReply) => {
+  const { email, password, name } = request.body
 
   const isEmailExists = await request.server.prisma.users.findFirst({
     where: {
@@ -26,20 +28,31 @@ export const SignUp = async (request: FastifyRequest<{ Body: SignUpSchemaType }>
   })
   if (isEmailExists) return reply.send(errorResult(null, messages.user_already_exists, messages.user_already_exists_code))
 
-  const isUserNameExists = await prisma.users.findFirst({
-    where: {
-      username,
-    },
-  })
-  if (isUserNameExists) return reply.send(errorResult(null, messages.user_already_exists, messages.user_already_exists_code))
-
   const passwordHashAndSalt = await createPasswordHash(password)
+
+  const username = slugify(`${name}-${randomUUID()}`, {
+    replacement: '-', // replace spaces with replacement character, defaults to `-`
+    remove: undefined, // remove characters that match regex, defaults to `undefined`
+    lower: true, // convert to lower case, defaults to `false`
+    strict: false, // strip special characters except replacement, defaults to `false`
+    locale: 'vi', // language code of the locale to use
+    trim: true, // trim leading and trailing replacement chars, defaults to `true`
+  })
+
+  const avatarName = slugify(name, {
+    replacement: '-', // replace spaces with replacement character, defaults to `-`
+    remove: undefined, // remove characters that match regex, defaults to `undefined`
+    lower: true, // convert to lower case, defaults to `false`
+    strict: false, // strip special characters except replacement, defaults to `false`
+    locale: 'vi', // language code of the locale to use
+    trim: true, // trim leading and trailing replacement chars, defaults to `true`
+  })
 
   await prisma.users.create({
     data: {
-      avatar_url: `https://wordigo.app/api/dynamic-avatar?username=${username}?size=256`,
+      avatar_url: `https://wordigo.app/api/dynamic-avatar?username=${avatarName}?size=256`,
       email,
-      name: username,
+      name,
       username,
       passwordHash: passwordHashAndSalt.hash,
       passwordSalt: passwordHashAndSalt.salt,
@@ -50,7 +63,7 @@ export const SignUp = async (request: FastifyRequest<{ Body: SignUpSchemaType }>
   return reply.send(successResult(null, messages.success, messages.success_code))
 }
 
-export const SignIn = async (request: FastifyRequest<{ Body: SignInSchemaType }>, reply: FastifyReply) => {
+export const SignIn = async (request: FastifyRequest<{ Body: SignInValidationType }>, reply: FastifyReply) => {
   const { email, password } = request.body
 
   const user = await request.server.prisma.users.findFirst({ where: { email } })
@@ -69,7 +82,7 @@ export const SignIn = async (request: FastifyRequest<{ Body: SignInSchemaType }>
   return reply.send(successResult({ user, accessToken: token }, messages.success, messages.success_code))
 }
 
-export const GoogleOAuth = async (request: FastifyRequest<{ Querystring: GoogleAuthValidationSchemaType }>, reply: FastifyReply) => {
+export const GoogleOAuth = async (request: FastifyRequest<{ Querystring: GoogleAuthValidationType }>, reply: FastifyReply) => {
   const { accessToken } = request.query
 
   const googleRequest = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
