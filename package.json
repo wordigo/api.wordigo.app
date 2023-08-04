@@ -65,6 +65,7 @@
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "react-email": "1.9.3",
+    "slugify": "^1.6.6",
     "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.2.0",
     "tscpaths": "^0.0.9"

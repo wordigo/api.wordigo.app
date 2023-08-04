@@ -1,7 +1,8 @@
 import { JSONSchema } from 'json-schema-to-ts'
 import { tags } from '../../utils/constants/Tags'
+import { FastifySchema } from 'fastify'
 
-export const SignUpValidationSchema = {
+export const SignUpValidation = {
   type: 'object',
   properties: {
     email: {
@@ -10,28 +11,20 @@ export const SignUpValidationSchema = {
     password: {
       type: 'string',
     },
-    username: {
+    name: {
       type: 'string',
     },
   },
-  required: ['username', 'email', 'password'],
+  required: ['name', 'email', 'password'],
 } as const satisfies JSONSchema
 
 export const SignUpSchema = {
-  body: SignUpValidationSchema,
+  body: SignUpValidation,
   tags: [tags.Authentication],
-  description: 'Sign Up API',
-  response: {
-    // 200: {
-    //   type: "object",
-    //   properties: {
-    //     results: { type: "array", items: { $ref: "productSchema#" } },
-    //   },
-    // },
-  },
+  summary: 'Sign Up API',
 }
 
-export const SignInValidationSchema = {
+export const SignInValidation = {
   type: 'object',
   properties: {
     email: {
@@ -46,13 +39,13 @@ export const SignInValidationSchema = {
   required: ['email', 'password'],
 } as const satisfies JSONSchema
 
-export const SignInSchema = {
-  body: SignInValidationSchema,
+export const SignInSchema: FastifySchema = {
+  body: SignInValidation,
   tags: [tags.Authentication],
-  description: 'Sign In request',
+  summary: 'Sign In request',
 }
 
-export const GoogleAuthValidationSchema = {
+export const GoogleAuthValidation = {
   type: 'object',
   properties: {
     accessToken: {
@@ -63,16 +56,8 @@ export const GoogleAuthValidationSchema = {
   description: 'OAuth 2.0 with Google',
 } as const satisfies JSONSchema
 
-export const GoogleAuthSchema = {
-  query: GoogleAuthValidationSchema,
+export const GoogleAuthSchema: FastifySchema = {
+  querystring: GoogleAuthValidation,
   tags: [tags.Authentication],
-  description: 'Google Authentication',
-  response: {
-    // 200: {
-    //   type: "object",
-    //   properties: {
-    //     results: { type: "array", items: { $ref: "productSchema#" } },
-    //   },
-    // },
-  },
+  summary: 'Google Authentication',
 }
