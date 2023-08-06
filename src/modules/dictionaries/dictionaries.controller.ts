@@ -5,6 +5,7 @@ import { AddWordValidation, CreateDictionaryValidation, GetDictionaryByIdValidat
 import { FromSchema } from 'json-schema-to-ts'
 import { TypesOfPublics } from './dictionaries.types'
 import { Words } from '@prisma/client'
+import slugify from 'slugify'
 
 type GetDictionaryByIdType = FromSchema<typeof GetDictionaryByIdValidation>
 type CreateDictionaryType = FromSchema<typeof CreateDictionaryValidation>
@@ -13,9 +14,9 @@ type RemoveWordType = FromSchema<typeof RemoveWordValidation>
 type AddWordType = FromSchema<typeof AddWordValidation>
 type GetPublicDictionariesType = FromSchema<typeof GetPublicDictionariesValidation>
 
-export const Create = async (req: FastifyRequest<{ Querystring: CreateDictionaryType }>, reply: FastifyReply) => {
+export const Create = async (req: FastifyRequest<{ Body: CreateDictionaryType }>, reply: FastifyReply) => {
   const userId = req.user?.id
-  const { title } = req.query
+  const { title, image, description, level } = req.body
   const prisma = req.server.prisma
 
   const dictionaryFromDb = await prisma.dictionaries.findFirst({
@@ -24,12 +25,23 @@ export const Create = async (req: FastifyRequest<{ Querystring: CreateDictionary
 
   if (dictionaryFromDb) return reply.send(errorResult(null, messages.dictionary_already_exists, messages.dictionary_already_exists_code))
 
-  console.log('devam ediyor')
+  const slug = slugify(title, {
+    replacement: '-', // replace spaces with replacement character, defaults to `-`
+    remove: undefined, // remove characters that match regex, defaults to `undefined`
+    lower: true, // convert to lower case, defaults to `false`
+    strict: false, // strip special characters except replacement, defaults to `false`
+    locale: 'vi', // language code of the locale to use
+    trim: true, // trim leading and trailing replacement chars, defaults to `true`
+  })
 
   const newDictionary = await prisma.dictionaries.create({
     data: {
       title: title.trim().toLowerCase(),
       authorId: userId,
+      image,
+      description,
+      level,
+      slug
     },
   })
 
@@ -38,7 +50,7 @@ export const Create = async (req: FastifyRequest<{ Querystring: CreateDictionary
 
 export const Update = async (req: FastifyRequest<{ Body: UpdateDictionaryType }>, reply: FastifyReply) => {
   const userId = req.user?.id
-  const { dictionaryId, title, published } = req.body
+  const { dictionaryId, title, published, description, rate, level, image } = req.body
   const prisma = req.server.prisma
 
   const dictionaryFromDb = await prisma.dictionaries.findFirst({
@@ -55,7 +67,7 @@ export const Update = async (req: FastifyRequest<{ Body: UpdateDictionaryType }>
 
   const updatedDictionary = await prisma.dictionaries.update({
     where: { id: dictionaryId },
-    data: { title, published },
+    data: { title, published, rate, description, level, image },
   })
 
   return reply.send(successResult(updatedDictionary, messages.success, messages.success_code))
