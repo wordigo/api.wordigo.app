@@ -31,7 +31,7 @@ export const DeleteDictionarySchema = {
   tags: [tags.Dictionaries],
   summary: 'Delete Operation of Dictionary',
   security: [{ JWT: [] }],
-}
+} as FastifySchema
 
 export const CreateDictionaryValidation = {
   type: 'object',
@@ -39,16 +39,25 @@ export const CreateDictionaryValidation = {
     title: {
       type: 'string',
     },
+    image: {
+      type: 'string',
+    },
+    description: {
+      type: 'string',
+    },
+    level: {
+      type: 'number',
+    },
   },
-  required: ['title'],
+  required: ['title', 'image', 'description', 'level'],
 } as const satisfies JSONSchema
 
 export const CreateDictionarySchema = {
-  querystring: CreateDictionaryValidation,
+  body: CreateDictionaryValidation,
   tags: [tags.Dictionaries],
   summary: 'Create Operation of Dictionary',
   security: [{ JWT: [] }],
-}
+} as FastifySchema
 
 export const UpdateDictionaryValidation = {
   type: 'object',
@@ -59,11 +68,23 @@ export const UpdateDictionaryValidation = {
     title: {
       type: 'string',
     },
+    image: {
+      type: 'string',
+    },
+    description: {
+      type: 'string',
+    },
+    level: {
+      type: 'number',
+    },
+    rate: {
+      type: 'number',
+    },
     published: {
       type: 'boolean',
     },
   },
-  required: ['dictionaryId', 'title', 'published'],
+  required: ['dictionaryId', 'title', 'published', 'rate', 'image', 'description', 'level'],
 } as const satisfies JSONSchema
 
 export const UpdateDictionarySchema = {
@@ -91,7 +112,7 @@ export const AddWordSchema = {
   tags: [tags.Dictionaries],
   summary: 'Adding Word From Dictionary',
   security: [{ JWT: [] }],
-}
+} as FastifySchema
 
 export const RemoveWordValidation = {
   type: 'object',
