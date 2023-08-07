@@ -24,6 +24,8 @@ model UserWords {
 model Dictionaries {
   id          Int                @id @default(autoincrement())
   title       String
+  sourceLang  String             @default("")
+  targetLang  String             @default("")
   slug        String             @default("")
   image       String             @default("")
   description String             @default("")
