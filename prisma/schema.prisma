@@ -26,7 +26,7 @@ model Dictionaries {
   title       String
   sourceLang  String             @default("")
   targetLang  String             @default("")
-  slug        String             @default("")
+  slug        String
   image       String             @default("")
   description String             @default("")
   rate        Int                @default(0)

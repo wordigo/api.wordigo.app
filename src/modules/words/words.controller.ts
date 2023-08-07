@@ -4,7 +4,8 @@ import { errorResult, successResult } from '@/utils/constants/results'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { FromSchema } from 'json-schema-to-ts'
 import { CreateWordValidation } from './words.schema'
-import { AllCountryLanguages, DictionaryInitialTitle } from './words.types'
+import { AllCountryLanguages } from './words.types'
+import { DictionaryInitialTitle } from '../dictionaries/dictionaries.types'
 import { LearningStatuses } from '@/utils/constants/enums'
 
 type CreateWordType = FromSchema<typeof CreateWordValidation>

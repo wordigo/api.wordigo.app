@@ -52,4 +52,10 @@ export default {
 
   dictionary_already_subscribed: 'Dictionary was Already Subscribed!',
   dictionary_already_subscribed_code: 'dictionary_already_subscribed',
+
+  dictionary_initial_update: "Initial dictionary can't be change!",
+  dictionary_initial_update_code: 'dictionary_initial_update',
+
+  only_subscribers: 'Only Subscribers are allowed!',
+  only_subscribers_code: 'only_subscribers',
 }
