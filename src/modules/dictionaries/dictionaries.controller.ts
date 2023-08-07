@@ -16,7 +16,7 @@ type GetPublicDictionariesType = FromSchema<typeof GetPublicDictionariesValidati
 
 export const Create = async (req: FastifyRequest<{ Body: CreateDictionaryType }>, reply: FastifyReply) => {
   const userId = req.user?.id
-  const { title, image, description, level } = req.body
+  const { title, targetLang, sourceLang } = req.body
   const prisma = req.server.prisma
 
   const dictionaryFromDb = await prisma.dictionaries.findFirst({
@@ -25,7 +25,7 @@ export const Create = async (req: FastifyRequest<{ Body: CreateDictionaryType }>
 
   if (dictionaryFromDb) return reply.send(errorResult(null, messages.dictionary_already_exists, messages.dictionary_already_exists_code))
 
-  const slug = slugify(title, {
+  const slug = slugify(title.trim().toLowerCase(), {
     replacement: '-', // replace spaces with replacement character, defaults to `-`
     remove: undefined, // remove characters that match regex, defaults to `undefined`
     lower: true, // convert to lower case, defaults to `false`
@@ -38,10 +38,9 @@ export const Create = async (req: FastifyRequest<{ Body: CreateDictionaryType }>
     data: {
       title: title.trim().toLowerCase(),
       authorId: userId,
-      image,
-      description,
-      level,
-      slug
+      slug,
+      targetLang,
+      sourceLang,
     },
   })
 
@@ -50,14 +49,16 @@ export const Create = async (req: FastifyRequest<{ Body: CreateDictionaryType }>
 
 export const Update = async (req: FastifyRequest<{ Body: UpdateDictionaryType }>, reply: FastifyReply) => {
   const userId = req.user?.id
-  const { dictionaryId, title, published, description, rate, level, image } = req.body
+  const { dictionaryId, title, published, description, rate, level, image, targetLang, sourceLang } = req.body
   const prisma = req.server.prisma
 
-  const dictionaryFromDb = await prisma.dictionaries.findFirst({
-    where: { title: title.trim().toLowerCase() },
-  })
+  if (title) {
+    const dictionaryFromDb = await prisma.dictionaries.findFirst({
+      where: { title: title?.trim().toLowerCase() },
+    })
 
-  if (dictionaryFromDb) return reply.send(errorResult(null, messages.dictionary_already_exists, messages.dictionary_already_exists_code))
+    if (dictionaryFromDb) return reply.send(errorResult(null, messages.dictionary_already_exists, messages.dictionary_already_exists_code))
+  }
 
   const dictionary = await prisma.dictionaries.findFirst({
     where: { authorId: userId, id: dictionaryId },
@@ -67,7 +68,7 @@ export const Update = async (req: FastifyRequest<{ Body: UpdateDictionaryType }>
 
   const updatedDictionary = await prisma.dictionaries.update({
     where: { id: dictionaryId },
-    data: { title, published, rate, description, level, image },
+    data: { title, published, rate, description, level, image, targetLang, sourceLang },
   })
 
   return reply.send(successResult(updatedDictionary, messages.success, messages.success_code))

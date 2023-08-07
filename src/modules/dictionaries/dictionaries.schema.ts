@@ -39,17 +39,14 @@ export const CreateDictionaryValidation = {
     title: {
       type: 'string',
     },
-    image: {
+    sourceLang: {
       type: 'string',
     },
-    description: {
+    targetLang: {
       type: 'string',
-    },
-    level: {
-      type: 'number',
     },
   },
-  required: ['title', 'image', 'description', 'level'],
+  required: ['title'],
 } as const satisfies JSONSchema
 
 export const CreateDictionarySchema = {
@@ -83,8 +80,14 @@ export const UpdateDictionaryValidation = {
     published: {
       type: 'boolean',
     },
+    sourceLang: {
+      type: 'string',
+    },
+    targetLang: {
+      type: 'string',
+    },
   },
-  required: ['dictionaryId', 'title', 'published', 'rate', 'image', 'description', 'level'],
+  required: ['dictionaryId'],
 } as const satisfies JSONSchema
 
 export const UpdateDictionarySchema = {
