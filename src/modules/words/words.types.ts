@@ -1,5 +1,3 @@
-export const DictionaryInitialTitle = 'Initial'
-
 export interface ILanguage {
   code: string
   name: string

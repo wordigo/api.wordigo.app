@@ -3,3 +3,5 @@ export enum TypesOfPublics {
   Subscribed = 'subscribed',
   NotSubscribed = 'notSubscribed',
 }
+
+export const DictionaryInitialTitle = 'Initial'

@@ -6,6 +6,7 @@ import { FromSchema } from 'json-schema-to-ts'
 import { TypesOfPublics } from './dictionaries.types'
 import { Words } from '@prisma/client'
 import slugify from 'slugify'
+import { DictionaryInitialTitle } from './dictionaries.types'
 
 type GetDictionaryByIdType = FromSchema<typeof GetDictionaryByIdValidation>
 type CreateDictionaryType = FromSchema<typeof CreateDictionaryValidation>
@@ -49,7 +50,7 @@ export const Create = async (req: FastifyRequest<{ Body: CreateDictionaryType }>
 
 export const Update = async (req: FastifyRequest<{ Body: UpdateDictionaryType }>, reply: FastifyReply) => {
   const userId = req.user?.id
-  const { dictionaryId, title, published, description, rate, level, image, targetLang, sourceLang } = req.body
+  let { dictionaryId, title, published, description, rate, level, image, targetLang, sourceLang } = req.body
   const prisma = req.server.prisma
 
   if (title) {
@@ -65,6 +66,8 @@ export const Update = async (req: FastifyRequest<{ Body: UpdateDictionaryType }>
   })
 
   if (!dictionary) return errorResult(null, messages.dictionary_not_found, messages.dictionary_not_found_code)
+
+  if (dictionary.title === DictionaryInitialTitle) return reply.send(errorResult(null, messages.dictionary_initial_update, messages.dictionary_initial_update_code))
 
   const updatedDictionary = await prisma.dictionaries.update({
     where: { id: dictionaryId },
