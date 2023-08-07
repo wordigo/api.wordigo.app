@@ -82,14 +82,15 @@ export const Create = async (req: FastifyRequest<{ Body: CreateWordType }>, repl
       title: DictionaryInitialTitle,
     },
   })
-  if (!initialDictionary) {
-    initialDictionary = await prisma.dictionaries.create({
-      data: {
-        title: DictionaryInitialTitle,
-        authorId: userId,
-      },
-    })
-  }
+
+  // if (!initialDictionary) {
+  //   initialDictionary = await prisma.dictionaries.create({
+  //     data: {
+  //       title: DictionaryInitialTitle,
+  //       authorId: userId,
+  //     },
+  //   })
+  // }
 
   const initialDicExisting = await prisma.dictAndUserWords.findFirst({
     where: {
@@ -102,7 +103,7 @@ export const Create = async (req: FastifyRequest<{ Body: CreateWordType }>, repl
     await prisma.dictAndUserWords.create({
       data: {
         userWordId: userWord.id,
-        dictionaryId: initialDictionary?.id,
+        dictionaryId: initialDictionary?.id as number,
       },
     })
 
