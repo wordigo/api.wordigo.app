@@ -130,7 +130,12 @@ export const GetUserDictionaries = async (request: FastifyRequest, reply: Fastif
   })
 
   const result = userDictionaries.map((dic) => {
-    return { ...dic, UserWords: dic.UserWords.length }
+    let numberOfWords = dic.UserWords.length
+
+    //@ts-ignore
+    delete dic.UserWords
+
+    return { ...dic, numberOfWords }
   })
 
   return reply.send(successResult(result, messages.success, messages.success_code))
