@@ -112,30 +112,31 @@ export const GetUserDictionaries = async (request: FastifyRequest, reply: Fastif
     where: {
       authorId: userId,
     },
-    // include: {
-    //   UserWords: {
-    //     include: {
-    //       userWord: {
-    //         include: {
-    //           word: {
-    //             select: {
-    //               id: true,
-    //             },
-    //           },
-    //         },
-    //       },
-    //     },
-    //   },
-    // },
+    include: {
+      UserWords: {
+        include: {
+          userWord: {
+            include: {
+              word: {
+                select: {
+                  id: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   })
 
-  const result = [] as any
+  const result = userDictionaries.map((dic) => {
+    let numberOfWords = dic.UserWords.length
 
-  for (const dic of userDictionaries) {
-    let numberOfWords = await prisma.dictAndUserWords.count({ where: { dictionaryId: dic.id } })
+    //@ts-ignore
+    delete dic.UserWords
 
-    result.push({ ...dic, numberOfWords })
-  }
+    return { ...dic, numberOfWords }
+  })
 
   return reply.send(successResult(result, messages.success, messages.success_code))
 }
