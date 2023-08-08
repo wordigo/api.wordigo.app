@@ -4,7 +4,7 @@ import { errorResult, successResult } from '@/utils/constants/results'
 import { AddWordValidation, CreateDictionaryValidation, GetDictionaryByIdValidation, GetPublicDictionariesValidation, RemoveWordValidation, UpdateDictionaryValidation } from './dictionaries.schema'
 import { FromSchema } from 'json-schema-to-ts'
 import { TypesOfPublics } from './dictionaries.types'
-import { Words } from '@prisma/client'
+import { Dictionaries, Words } from '@prisma/client'
 import slugify from 'slugify'
 import { DictionaryInitialTitle } from './dictionaries.types'
 
@@ -112,9 +112,28 @@ export const GetUserDictionaries = async (request: FastifyRequest, reply: Fastif
     where: {
       authorId: userId,
     },
+    include: {
+      UserWords: {
+        include: {
+          userWord: {
+            include: {
+              word: {
+                select: {
+                  id: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   })
 
-  return reply.send(successResult(userDictionaries, messages.success, messages.success_code))
+  const result = userDictionaries.map((dic) => {
+    return { ...dic, UserWords: dic.UserWords.length }
+  })
+
+  return reply.send(successResult(result, messages.success, messages.success_code))
 }
 
 export const GetUserDictionaryById = async (req: FastifyRequest<{ Querystring: GetDictionaryByIdType }>, reply: FastifyReply) => {
