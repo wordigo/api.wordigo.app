@@ -31,8 +31,8 @@ export const GetDictionaryValidation = {
   },
 } as const satisfies JSONSchema
 
-export const GetUserDictionarySchema = {
-  querystring: GetDictionaryValidation,
+export const GetUserDictionaryByIdSchema = {
+  querystring: GetDictionaryByIdValidation,
   tags: [tags.Dictionaries],
   summary: "Getting User's Dictionary By Id/Slug",
   security: [{ JWT: [] }],
@@ -150,7 +150,7 @@ export const RemoveWordSchema = {
 }
 
 export const GetWordsSchema = {
-  querystring: GetDictionaryByIdValidation,
+  querystring: GetDictionaryValidation,
   tags: [tags.Dictionaries],
   summary: 'Get Words of Dictionary',
   security: [{ JWT: [] }],
