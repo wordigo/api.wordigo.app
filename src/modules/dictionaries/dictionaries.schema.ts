@@ -19,10 +19,22 @@ export const GetDictionaryByIdValidation = {
   required: ['dictionaryId'],
 } as const satisfies JSONSchema
 
-export const GetUserDictionaryByIdSchema = {
-  querystring: GetDictionaryByIdValidation,
+export const GetDictionaryValidation = {
+  type: 'object',
+  properties: {
+    dictionaryId: {
+      type: 'number',
+    },
+    slug: {
+      type: 'string',
+    },
+  },
+} as const satisfies JSONSchema
+
+export const GetUserDictionarySchema = {
+  querystring: GetDictionaryValidation,
   tags: [tags.Dictionaries],
-  summary: "Getting User's Dictionary By Id",
+  summary: "Getting User's Dictionary By Id/Slug",
   security: [{ JWT: [] }],
 }
 

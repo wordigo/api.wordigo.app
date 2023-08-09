@@ -141,14 +141,14 @@ export const GetUserDictionaries = async (request: FastifyRequest, reply: Fastif
   return reply.send(successResult(result, messages.success, messages.success_code))
 }
 
-export const GetUserDictionaryById = async (req: FastifyRequest<{ Querystring: GetDictionaryByIdType }>, reply: FastifyReply) => {
-  const { dictionaryId } = req.query
+export const GetUserDictionary = async (req: FastifyRequest<{ Querystring: GetDictionaryByIdType }>, reply: FastifyReply) => {
+  const { dictionaryId, slug } = req.query
   const prisma = req.server.prisma
 
   const userDictionaries = await prisma.dictionaries.findMany({
     where: {
       authorId: req.user?.id,
-      id: dictionaryId,
+      OR: [{ id: dictionaryId, slug: slug as string }],
     },
   })
 
