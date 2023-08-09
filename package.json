@@ -55,6 +55,7 @@
     "@types/axios": "^0.14.0",
     "@types/passport-jwt": "^3.0.9",
     "axios": "^1.4.0",
+    "cross-env": "^7.0.3",
     "crypto": "^1.0.1",
     "dotenv": "^16.0.3",
     "fastify": "^4.15.0",
