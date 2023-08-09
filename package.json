@@ -3,8 +3,8 @@
   "description": "Wordigo Backend",
   "version": "0.0.1",
   "scripts": {
-    "start": "node ./dist/index.js",
-    "dev": "ts-node-dev -r tsconfig-paths/register ./src/index.ts",
+    "start": "cross-env NODE_ENV=production node ./dist/index.js",
+    "dev": "cross-env NODE_ENV=development ts-node-dev -r tsconfig-paths/register ./src/index.ts",
     "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist",
     "debug": "nodemon --inspect=0.0.0.0:9229 src/index.ts",
     "test": "jest test",

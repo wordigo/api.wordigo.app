@@ -1,5 +1,7 @@
 import { SwaggerOptions } from '@fastify/swagger'
 
+const httpOption = process.env.NODE_ENV === 'development' ? 'http' : 'https'
+
 export const swaggerConfig: SwaggerOptions = {
   swagger: {
     securityDefinitions: {
@@ -19,6 +21,7 @@ export const swaggerConfig: SwaggerOptions = {
       url: 'https://swagger.io',
       description: 'Find more info here',
     },
+    schemes: [httpOption],
     consumes: ['application/json'],
     produces: ['application/json'],
   },
