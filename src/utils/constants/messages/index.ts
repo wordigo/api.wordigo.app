@@ -58,4 +58,7 @@ export default {
 
   only_subscribers: 'Only Subscribers are allowed!',
   only_subscribers_code: 'only_subscribers',
+
+  uploading_file: 'File Uploading Failed!',
+  uploading_file_code: 'uploading_file',
 }

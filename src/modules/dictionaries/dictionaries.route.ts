@@ -1,5 +1,19 @@
 import { FastifyInstance } from 'fastify'
-import { AddWord, Create, Delete, GetList, GetPublicDictionaries, GetUserDictionaries, GetUserDictionaryById, GetWords, RemoveWord, Subscribe, Unsubscribe, Update } from './dictionaries.controller'
+import {
+  AddWord,
+  Create,
+  Delete,
+  GetList,
+  GetPublicDictionaries,
+  GetUserDictionaries,
+  GetUserDictionaryById,
+  GetWords,
+  RemoveWord,
+  Subscribe,
+  Unsubscribe,
+  Update,
+  UpdateImage,
+} from './dictionaries.controller'
 import {
   AddWordSchema,
   CreateDictionarySchema,
@@ -13,6 +27,7 @@ import {
   SubscribeSchema,
   UnsubscribeSchema,
   UpdateDictionarySchema,
+  UpdateImageSchema,
 } from './dictionaries.schema'
 
 export default async (fastify: FastifyInstance) => {
@@ -25,6 +40,8 @@ export default async (fastify: FastifyInstance) => {
   fastify.post('/unsubscribe', { schema: UnsubscribeSchema, preValidation: fastify.authVerify }, Unsubscribe)
 
   fastify.put('/update', { schema: UpdateDictionarySchema, preValidation: fastify.authVerify }, Update)
+
+  fastify.put('/updateImage', { schema: UpdateImageSchema, preValidation: fastify.authVerify }, UpdateImage)
 
   fastify.delete('/delete', { schema: DeleteDictionarySchema, preValidation: fastify.authVerify }, Delete)
 

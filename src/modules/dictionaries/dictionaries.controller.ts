@@ -1,4 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
+import { FromSchema } from 'json-schema-to-ts'
+import slugify from 'slugify'
+
 import messages from '@/utils/constants/messages'
 import { errorResult, successResult } from '@/utils/constants/results'
 import {
@@ -9,12 +12,12 @@ import {
   GetPublicDictionariesValidation,
   RemoveWordValidation,
   UpdateDictionaryValidation,
+  UpdateImageValidation,
 } from './dictionaries.schema'
-import { FromSchema } from 'json-schema-to-ts'
 import { TypesOfPublics } from './dictionaries.types'
-import { Dictionaries, Words } from '@prisma/client'
-import slugify from 'slugify'
+import { Words } from '@prisma/client'
 import { DictionaryInitialTitle } from './dictionaries.types'
+import { UploadingType, uploadImage } from '../../utils/helpers/fileUploading'
 
 type GetDictionaryByIdType = FromSchema<typeof GetDictionaryByIdValidation>
 type GetDictionaryType = FromSchema<typeof GetDictionaryValidation>
@@ -23,6 +26,7 @@ type UpdateDictionaryType = FromSchema<typeof UpdateDictionaryValidation>
 type RemoveWordType = FromSchema<typeof RemoveWordValidation>
 type AddWordType = FromSchema<typeof AddWordValidation>
 type GetPublicDictionariesType = FromSchema<typeof GetPublicDictionariesValidation>
+type UpdateImageValidationType = FromSchema<typeof UpdateImageValidation>
 
 export const Create = async (req: FastifyRequest<{ Body: CreateDictionaryType }>, reply: FastifyReply) => {
   const userId = req.user?.id
@@ -76,7 +80,8 @@ export const Update = async (req: FastifyRequest<{ Body: UpdateDictionaryType }>
 
   if (!dictionary) return errorResult(null, messages.dictionary_not_found, messages.dictionary_not_found_code)
 
-  if (dictionary.title === DictionaryInitialTitle) return reply.send(errorResult(null, messages.dictionary_initial_update, messages.dictionary_initial_update_code))
+  if (dictionary.title === DictionaryInitialTitle)
+    return reply.send(errorResult(null, messages.dictionary_initial_update, messages.dictionary_initial_update_code))
 
   const updatedDictionary = await prisma.dictionaries.update({
     where: { id: dictionaryId },
@@ -392,4 +397,27 @@ export const GetPublicDictionaries = async (req: FastifyRequest<{ Querystring: G
   }
 
   return reply.send(successResult(publicDics, messages.success, messages.success_code))
+}
+
+export const UpdateImage = async (req: FastifyRequest<{ Body: UpdateImageValidationType }>, reply: FastifyReply) => {
+  const { dictionaryId, encodedImage } = req.body
+  const prisma = req.server.prisma
+
+  const dictionary = await prisma.dictionaries.findFirst({ where: { id: dictionaryId } })
+  if (!dictionary) {
+    return reply.send(errorResult(null, messages.dictionary_not_found, messages.dictionary_not_found_code))
+  }
+
+  const resultOfUploading: UploadingType = uploadImage('dictionary', dictionary.slug, encodedImage as string)
+  if (!resultOfUploading.success) {
+    return reply.send(errorResult(null, messages.uploading_file, messages.uploading_file_code))
+  }
+
+  const image = resultOfUploading.url
+
+  await prisma.dictionaries.update({ data: { image }, where: { id: dictionaryId } })
+
+  if (resultOfUploading) {
+    return reply.send(successResult({ image }, messages.success, messages.success_code))
+  }
 }

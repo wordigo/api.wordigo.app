@@ -194,3 +194,23 @@ export const UnsubscribeSchema = {
   summary: 'Unsubscribe from Dictionary',
   security: [{ JWT: [] }],
 } as FastifySchema
+
+export const UpdateImageValidation = {
+  type: 'object',
+  properties: {
+    dictionaryId: {
+      type: 'number',
+    },
+    encodedImage: {
+      type: 'string',
+    },
+  },
+} as const satisfies JSONSchema
+
+export const UpdateImageSchema = {
+  body: UpdateImageValidation,
+  tags: [tags.Dictionaries],
+  summary: 'Updating Image of Dictionary',
+  description: 'Valid format of encodedImage\n\n\tdata:image/"extension";base64,"base64string"',
+  security: [{ JWT: [] }],
+} as FastifySchema
