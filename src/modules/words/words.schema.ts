@@ -1,7 +1,7 @@
 import { JSONSchema } from 'json-schema-to-ts'
 import { tags } from '../../utils/constants/Tags'
 
-export const CreateWordValidation = {
+export const CreateValidation = {
   type: 'object',
   properties: {
     text: {
@@ -23,9 +23,14 @@ export const CreateWordValidation = {
   required: ['text', 'translatedText', 'nativeLanguage', 'targetLanguage'],
 } as const satisfies JSONSchema
 
-export const CreateWordSchema = {
-  body: CreateWordValidation,
+export const CreateSchema = {
+  body: CreateValidation,
   tags: [tags.Words],
-  description: 'Creation Operation of Word',
+  summary: 'Creation Operation of Word',
   security: [{ JWT: [] }],
+}
+
+export const GetListSchema = {
+  tags: [tags.Words],
+  summary: 'Creation Operation of Word',
 }

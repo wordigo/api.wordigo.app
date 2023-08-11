@@ -9,37 +9,35 @@ export const GetUserDictionariesSchema = {
   security: [{ JWT: [] }],
 }
 
-export const GetDictionaryByIdValidation = {
+export const GetDictionaryBySlugValidation = {
   type: 'object',
   properties: {
-    dictionaryId: {
-      type: 'number',
+    slug: {
+      type: 'string',
     },
   },
-  required: ['dictionaryId'],
+  required: ['slug'],
 } as const satisfies JSONSchema
 
 export const GetDictionaryValidation = {
   type: 'object',
   properties: {
-    dictionaryId: {
-      type: 'number',
-    },
     slug: {
       type: 'string',
     },
   },
+  required: ['slug'],
 } as const satisfies JSONSchema
 
-export const GetUserDictionaryByIdSchema = {
-  querystring: GetDictionaryByIdValidation,
+export const GetUserDictionaryBySlugSchema = {
+  querystring: GetDictionaryBySlugValidation,
   tags: [tags.Dictionaries],
-  summary: "Getting User's Dictionary By Id/Slug",
+  summary: "Getting User's Dictionary By Slug",
   security: [{ JWT: [] }],
 }
 
 export const DeleteDictionarySchema = {
-  querystring: GetDictionaryByIdValidation,
+  querystring: GetDictionaryBySlugValidation,
   tags: [tags.Dictionaries],
   summary: 'Delete Operation of Dictionary',
   security: [{ JWT: [] }],
@@ -71,13 +69,10 @@ export const CreateDictionarySchema = {
 export const UpdateDictionaryValidation = {
   type: 'object',
   properties: {
-    dictionaryId: {
-      type: 'number',
-    },
-    title: {
+    slug: {
       type: 'string',
     },
-    image: {
+    title: {
       type: 'string',
     },
     description: {
@@ -99,7 +94,7 @@ export const UpdateDictionaryValidation = {
       type: 'string',
     },
   },
-  required: ['dictionaryId'],
+  required: ['slug'],
 } as const satisfies JSONSchema
 
 export const UpdateDictionarySchema = {
@@ -112,14 +107,14 @@ export const UpdateDictionarySchema = {
 export const AddWordValidation = {
   type: 'object',
   properties: {
-    dictionaryId: {
-      type: 'number',
+    slug: {
+      type: 'string',
     },
     wordId: {
       type: 'number',
     },
   },
-  required: ['dictionaryId', 'wordId'],
+  required: ['slug', 'wordId'],
 } as const satisfies JSONSchema
 
 export const AddWordSchema = {
@@ -132,14 +127,14 @@ export const AddWordSchema = {
 export const RemoveWordValidation = {
   type: 'object',
   properties: {
-    dictionaryId: {
-      type: 'number',
+    slug: {
+      type: 'string',
     },
     wordId: {
       type: 'number',
     },
   },
-  required: ['dictionaryId', 'wordId'],
+  required: ['slug', 'wordId'],
 } as const satisfies JSONSchema
 
 export const RemoveWordSchema = {
@@ -157,7 +152,7 @@ export const GetWordsSchema = {
 }
 
 export const SubscribeSchema = {
-  querystring: GetDictionaryByIdValidation,
+  querystring: GetDictionaryBySlugValidation,
   tags: [tags.Dictionaries],
   summary: 'Subscription',
   security: [{ JWT: [] }],
@@ -189,7 +184,7 @@ export const GetListSchema = {
 } as FastifySchema
 
 export const UnsubscribeSchema = {
-  querystring: GetDictionaryByIdValidation,
+  querystring: GetDictionaryBySlugValidation,
   tags: [tags.Dictionaries],
   summary: 'Unsubscribe from Dictionary',
   security: [{ JWT: [] }],
