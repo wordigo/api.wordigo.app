@@ -1,21 +1,21 @@
-// import { PrismaClient } from '@prisma/client'
 import messages from '@/utils/constants/messages'
 import { errorResult, successResult } from '@/utils/constants/results'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { FromSchema } from 'json-schema-to-ts'
-import { CreateWordValidation } from './words.schema'
+import { CreateValidation } from './words.schema'
 import { AllCountryLanguages } from './words.types'
 import { DictionaryInitialTitle } from '../dictionaries/dictionaries.types'
 import { LearningStatuses } from '@/utils/constants/enums'
 
-type CreateWordType = FromSchema<typeof CreateWordValidation>
+type CreateType = FromSchema<typeof CreateValidation>
 
-export const Create = async (req: FastifyRequest<{ Body: CreateWordType }>, reply: FastifyReply) => {
+export const Create = async (req: FastifyRequest<{ Body: CreateType }>, reply: FastifyReply) => {
   const { text, translatedText, nativeLanguage, targetLanguage, dictionaryId } = req.body
   const userId = req.user?.id
   const prisma = req.server.prisma
 
-  if (nativeLanguage?.trim().toLowerCase() === targetLanguage?.trim().toLowerCase()) return reply.send(errorResult(null, messages.languages_cant_same, messages.languages_cant_same_code))
+  if (nativeLanguage?.trim().toLowerCase() === targetLanguage?.trim().toLowerCase())
+    return reply.send(errorResult(null, messages.languages_cant_same, messages.languages_cant_same_code))
 
   if ((dictionaryId as number) > 0) {
     const dicFromDb = await prisma.dictionaries.findFirst({
@@ -126,4 +126,12 @@ export const Create = async (req: FastifyRequest<{ Body: CreateWordType }>, repl
   }
 
   return reply.send(successResult(null, messages.success, messages.success_code))
+}
+
+export const GetList = async (req: FastifyRequest, reply: FastifyReply) => {
+  const prisma = req.server.prisma
+
+  const words = await prisma.words.findMany()
+
+  return reply.send(successResult(words, messages.success, messages.success_code))
 }
