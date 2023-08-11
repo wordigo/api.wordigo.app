@@ -46,7 +46,6 @@ model Users {
   email          String
   username       String?
   name           String?
-  surname        String?
   passwordHash   String?
   passwordSalt   String?
   provider       String?

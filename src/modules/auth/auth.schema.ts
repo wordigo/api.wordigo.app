@@ -27,16 +27,18 @@ export const SignUpSchema = {
 export const SignInValidation = {
   type: 'object',
   properties: {
+    username: {
+      type: 'string',
+    },
     email: {
       type: 'string',
-      default: 'deneme@gmail.com',
     },
     password: {
       type: 'string',
       default: 'deneme',
     },
   },
-  required: ['email', 'password'],
+  required: ['password'],
 } as const satisfies JSONSchema
 
 export const SignInSchema: FastifySchema = {
