@@ -32,3 +32,20 @@ export const DeleteSchema: FastifySchema = {
   summary: 'User Deleting Operation',
   security: [{ JWT: [] }],
 }
+
+export const UpdateAvatarValidation = {
+  type: 'object',
+  properties: {
+    encodedAvatar: {
+      type: 'string',
+    },
+  },
+} as const satisfies JSONSchema
+
+export const UpdateAvatarSchema = {
+  body: UpdateAvatarValidation,
+  tags: [tags.Users],
+  summary: 'Updating Avatar of User',
+  description: 'Valid format of encodedAvatar\n\n\tdata:image/"extension";base64,"base64string"',
+  security: [{ JWT: [] }],
+} as FastifySchema

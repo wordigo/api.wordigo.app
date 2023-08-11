@@ -39,18 +39,9 @@ export const SignUp = async (request: FastifyRequest<{ Body: SignUpValidationTyp
     trim: true, // trim leading and trailing replacement chars, defaults to `true`
   })
 
-  const avatarName = slugify(name, {
-    replacement: '-', // replace spaces with replacement character, defaults to `-`
-    remove: undefined, // remove characters that match regex, defaults to `undefined`
-    lower: true, // convert to lower case, defaults to `false`
-    strict: false, // strip special characters except replacement, defaults to `false`
-    locale: 'vi', // language code of the locale to use
-    trim: true, // trim leading and trailing replacement chars, defaults to `true`
-  })
-
   await prisma.users.create({
     data: {
-      avatar_url: `https://wordigo.app/api/dynamic-avatar?username=${avatarName}?size=256`,
+      avatar_url: `https://wordigo.app/api/dynamic-avatar?username=${username}?size=256`,
       email,
       name,
       username,
@@ -63,10 +54,11 @@ export const SignUp = async (request: FastifyRequest<{ Body: SignUpValidationTyp
   return reply.send(successResult(null, messages.success, messages.success_code))
 }
 
-export const SignIn = async (request: FastifyRequest<{ Body: SignInValidationType }>, reply: FastifyReply) => {
-  const { email, password } = request.body
+export const SignIn = async (req: FastifyRequest<{ Body: SignInValidationType }>, reply: FastifyReply) => {
+  const { email, username, password } = req.body
+  const prisma = req.server.prisma
 
-  const user = await request.server.prisma.users.findFirst({ where: { email } })
+  const user = await prisma.users.findFirst({ where: { OR: [{ email, username }] } })
 
   if (!user) return reply.send(errorResult(null, messages.user_not_found, messages.user_not_found_code))
   else if (user?.provider === Providers.Google)
@@ -103,12 +95,21 @@ export const GoogleOAuth = async (request: FastifyRequest<{ Querystring: GoogleA
     },
   })
 
+  const username = slugify(`${googleUser.name}-${randomUUID()}`, {
+    replacement: '-', // replace spaces with replacement character, defaults to `-`
+    remove: undefined, // remove characters that match regex, defaults to `undefined`
+    lower: true, // convert to lower case, defaults to `false`
+    strict: false, // strip special characters except replacement, defaults to `false`
+    locale: 'vi', // language code of the locale to use
+    trim: true, // trim leading and trailing replacement chars, defaults to `true`
+  })
+
   if (!user)
     user = await request.server.prisma.users.create({
       data: {
         email: googleUser.email as string,
         name: googleUser.name as string,
-        surname: googleUser.name as string,
+        username,
         avatar_url: googleUser.picture,
         nativeLanguage: googleUser.locale,
         provider: Providers.Google,
