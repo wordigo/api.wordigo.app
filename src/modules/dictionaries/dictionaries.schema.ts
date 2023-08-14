@@ -158,7 +158,7 @@ export const SubscribeSchema = {
   security: [{ JWT: [] }],
 }
 
-export const GetPublicDictionariesValidation = {
+export const GetUserPublicDictionariesValidation = {
   type: 'object',
   properties: {
     type: {
@@ -170,11 +170,16 @@ export const GetPublicDictionariesValidation = {
   required: ['type'],
 } as const satisfies JSONSchema
 
+export const GetUserPublicDictionariesSchema = {
+  querystring: GetUserPublicDictionariesValidation,
+  tags: [tags.Dictionaries],
+  summary: 'Getting Public Dictionaries According to User',
+  security: [{ JWT: [] }],
+} as FastifySchema
+
 export const GetPublicDictionariesSchema = {
-  querystring: GetPublicDictionariesValidation,
   tags: [tags.Dictionaries],
   summary: 'Getting Public Dictionaries',
-  security: [{ JWT: [] }],
 } as FastifySchema
 
 export const GetListSchema = {
