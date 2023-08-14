@@ -9,7 +9,7 @@ import {
   CreateDictionaryValidation,
   GetDictionaryBySlugValidation,
   GetDictionaryValidation,
-  GetPublicDictionariesValidation,
+  GetUserPublicDictionariesValidation,
   RemoveWordValidation,
   UpdateDictionaryValidation,
   UpdateImageValidation,
@@ -26,7 +26,7 @@ type CreateDictionaryType = FromSchema<typeof CreateDictionaryValidation>
 type UpdateDictionaryType = FromSchema<typeof UpdateDictionaryValidation>
 type RemoveWordType = FromSchema<typeof RemoveWordValidation>
 type AddWordType = FromSchema<typeof AddWordValidation>
-type GetPublicDictionariesType = FromSchema<typeof GetPublicDictionariesValidation>
+type GetUserPublicDictionariesType = FromSchema<typeof GetUserPublicDictionariesValidation>
 type UpdateImageValidationType = FromSchema<typeof UpdateImageValidation>
 
 export const Create = async (req: FastifyRequest<{ Body: CreateDictionaryType }>, reply: FastifyReply) => {
@@ -347,7 +347,7 @@ export const Unsubscribe = async (req: FastifyRequest<{ Querystring: GetDictiona
   return reply.send(successResult(null, messages.success, messages.success_code))
 }
 
-export const GetPublicDictionaries = async (req: FastifyRequest<{ Querystring: GetPublicDictionariesType }>, reply: FastifyReply) => {
+export const GetUserPublicDictionaries = async (req: FastifyRequest<{ Querystring: GetUserPublicDictionariesType }>, reply: FastifyReply) => {
   const prisma = req.server.prisma
   const userId = req.user.id
   const { type } = req.query
@@ -391,6 +391,18 @@ export const GetPublicDictionaries = async (req: FastifyRequest<{ Querystring: G
     default:
       return reply.send(errorResult(null, messages.dictionary_invalid_type, messages.dictionary_invalid_type_code))
   }
+
+  return reply.send(successResult(publicDics, messages.success, messages.success_code))
+}
+
+export const GetPublicDictionaries = async (req: FastifyRequest, reply: FastifyReply) => {
+  const prisma = req.server.prisma
+
+  const publicDics = await prisma.dictionaries.findMany({
+    where: {
+      published: true,
+    },
+  })
 
   return reply.send(successResult(publicDics, messages.success, messages.success_code))
 }
