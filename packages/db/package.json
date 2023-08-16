@@ -1,0 +1,14 @@
+{
+  "name": "@wordigo/db",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.ts",
+  "license": "MIT",
+  "scripts": {},
+  "dependencies": {
+    "@prisma/client": "latest"
+  },
+  "devDependencies": {
+    "prisma": "^5.1.1"
+  }
+}
