@@ -6,6 +6,7 @@
     "dev": "dotenv -- turbo dev --parallel --no-cache --continue --filter=...api",
     "start": "dotenv -- turbo run start --parallel --no-cache --continue --filter=...api",
     "lint": "turbo run lint",
+    "clean": "git clean -xdf node_modules",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {

@@ -1,6 +1,12 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
+    "@wordigo/api#build": {
+      "dependsOn": [
+        "@wordigo/db#build",
+        "@wordigo/email#build"
+      ]
+    },
     "build": {
       "dependsOn": [
         "^build"
