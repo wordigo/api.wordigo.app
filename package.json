@@ -2,9 +2,9 @@
   "name": "api.wordigo.app",
   "private": true,
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo dev --parallel --no-cache --continue --filter=...api",
-    "start": "turbo run start",
+    "build": "turbo run build --filter=...api",
+    "dev": "dotenv -- turbo dev --parallel --no-cache --continue --filter=...api",
+    "start": "dotenv -- turbo run start --parallel --no-cache --continue --filter=...api",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
@@ -12,7 +12,8 @@
     "@turbo/gen": "^1.9.7",
     "eslint": "^7.32.0",
     "prettier": "^2.5.1",
-    "turbo": "latest"
+    "turbo": "latest",
+    "dotenv-cli": "latest"
   },
   "packageManager": "yarn@1.22.19",
   "workspaces": [

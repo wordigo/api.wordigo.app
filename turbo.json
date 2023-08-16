@@ -1,8 +1,5 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": [
-    "**/.env"
-  ],
   "pipeline": {
     "build": {
       "dependsOn": [
@@ -15,12 +12,6 @@
     },
     "lint": {},
     "dev": {
-      "env": [
-        "SESSION_SECRET"
-      ],
-      "dotEnv": [
-        ".env"
-      ],
       "cache": false,
       "persistent": true
     },
@@ -31,8 +22,5 @@
   },
   "globalDotEnv": [
     ".env"
-  ],
-  "globalEnv": [
-    "SESSION_SECRET"
   ]
 }

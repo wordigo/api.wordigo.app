@@ -2,11 +2,19 @@
   "name": "@wordigo/db",
   "version": "1.0.0",
   "main": "./dist/index.js",
-  "types": "./dist/index.ts",
+  "types": "./dist/index.d.ts",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "build": "tsup index.ts --format esm,cjs --dts",
+    "dev": "tsup index.ts --format esm,cjs --watch --dts",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "prisma:studio": "prisma studio",
+    "prisma:generate": "prisma generate --schema",
+    "prisma:push": "prisma db push --skip-generate"
+  },
   "dependencies": {
-    "@prisma/client": "latest"
+    "@prisma/client": "latest",
+    "tsup": "^7.2.0"
   },
   "devDependencies": {
     "prisma": "^5.1.1"
