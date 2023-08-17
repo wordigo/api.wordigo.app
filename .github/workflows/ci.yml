@@ -11,6 +11,20 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Prisma Generate
+        run: cd ./packages/db && npx prisma generate
+
+      - name: Build Node.js Project
+        run: npm run build
+
       - name: Setup Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.2.0
         with:
