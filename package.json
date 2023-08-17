@@ -16,9 +16,9 @@
     "turbo": "latest",
     "dotenv-cli": "latest"
   },
-  "packageManager": "yarn@1.22.19",
+  "packageManager": "npm@9.5.0",
   "workspaces": [
     "apps/**",
-    "packages/**"
+    "packages/*"
   ]
 }
