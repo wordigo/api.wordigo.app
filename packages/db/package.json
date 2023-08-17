@@ -5,7 +5,7 @@
   "types": "./dist/index.d.ts",
   "license": "MIT",
   "scripts": {
-    "build": "tsup index.ts --format esm,cjs --dts",
+    "build": "tsup index.ts --format esm,cjs --dts && prisma generate",
     "dev": "tsup index.ts --format esm,cjs --watch --dts",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "prisma:studio": "prisma studio",
