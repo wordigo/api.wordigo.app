@@ -1,5 +1,5 @@
 {
-  "name": "api.wordigo.app",
+  "name": "wordigo_back",
   "private": true,
   "scripts": {
     "build": "turbo run build --filter=...api",
