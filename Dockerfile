@@ -26,6 +26,7 @@ RUN npm run build
 
 FROM node:16-alpine as runner
 WORKDIR /app
+EXPOSE 4000
 COPY --from=sourcer /app/ .
 COPY .env .env
 CMD npm run start
