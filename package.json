@@ -10,13 +10,15 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "prisma:generate": "cd ./packages/db && npx prisma generate"
   },
+  "dependencies": {
+    "turbo": "latest",
+    "dotenv": "^16.3.1",
+    "dotenv-cli": "^7.3.0"
+  },
   "devDependencies": {
     "@turbo/gen": "^1.9.7",
-    "dotenv": "^16.3.1",
-    "dotenv-cli": "^7.3.0",
     "eslint": "^7.32.0",
-    "prettier": "^2.5.1",
-    "turbo": "latest"
+    "prettier": "^2.5.1"
   },
   "packageManager": "npm@9.5.0",
   "workspaces": [
