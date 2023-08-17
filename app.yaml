@@ -1,4 +1,3 @@
 runtime: nodejs18
-env: flex
 manual_scaling:
   instances: 1
