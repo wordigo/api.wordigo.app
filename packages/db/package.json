@@ -9,7 +9,7 @@
     "dev": "tsup index.ts --format esm,cjs --watch --dts",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "prisma:studio": "prisma studio",
-    "prisma:generate": "prisma generate --schema",
+    "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push --skip-generate"
   },
   "dependencies": {
