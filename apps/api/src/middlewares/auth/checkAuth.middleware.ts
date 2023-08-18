@@ -2,13 +2,14 @@ import messages from '@/utils/constants/messages'
 import { errorResult } from '@/utils/constants/results'
 import { Users } from '@wordigo/db'
 import fastify, { DoneFuncWithErrOrRes, FastifyReply, FastifyRequest } from 'fastify'
+import i18next from 'i18next'
 import { JwtPayload, verify } from 'jsonwebtoken'
 
 const checkAuthMiddleware = async (request: FastifyRequest, reply: FastifyReply, done: DoneFuncWithErrOrRes) => {
   const { authorization } = request.headers
 
   if (!authorization) {
-    reply.send(errorResult(null, messages.no_authorization, messages.no_authorization_code))
+    reply.send(errorResult(null, i18next.t(messages.no_authorization)))
     return
   }
 
@@ -18,7 +19,7 @@ const checkAuthMiddleware = async (request: FastifyRequest, reply: FastifyReply,
   const verifyToken = (await verify(token, process.env['JWT_SECRET'] as string)) as JwtPayload
 
   if (!verifyToken) {
-    reply.send(errorResult(null, messages.wrong_authorization, messages.wrong_authorization_code))
+    reply.send(errorResult(null, i18next.t(messages.wrong_authorization)))
     return
   }
 
