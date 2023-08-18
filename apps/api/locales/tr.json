@@ -1,0 +1,23 @@
+{
+    "success": "İşlem Başarıyla Tamamlandı!",
+    "error": "İşlem Başarısız Oldu!",
+    "no_authorization": "No Authorization.",
+    "wrong_authorization": "Yanlış Doğrulama Yöntemi!",
+    "user_already_exists": "Kullanıcı Zaten Mevcut!",
+    "user_already_subscribed": "Kullanıcı Zaten Abone Oldu!",
+    "user_not_found": "Kullanıcı Bulunamadı!",
+    "user_wrong_password": "Şifre Yanlış!",
+    "user_signed_dif_provider": "Kayıt Olurken Kullandığınız Yöntem Bu Değil!",
+    "dictionary_not_found": "Sözlük Bulunamadı!",
+    "dictionary_already_exists": "Sözlük Zaten Mevcut!",
+    "word_not_found": "Kelime Bulunamadı",
+    "userWord_not_found": "Kullanıcı Kelimesi Bulunamadı!",
+    "language_not_found": "Dil bulunamadı!",
+    "languages_cant_same": "Kaynak ve Hedef Dil Aynı Olamaz!",
+    "subscription_own_dic": "Kendi Sözlüğünüze Abone Olamazsınız!",
+    "dictionary_invalid_type": "Geçersiz Public Tipi Girdiniz!",
+    "dictionary_already_subscribed": "Bu Sözlüğe Zaten Abone Oldunuz!",
+    "dictionary_initial_update": "Başlangıç Sözlüğü Güncellenmez!",
+    "only_subscribers": "Sadece Abonelere İzin Verilir!",
+    "uploading_file": "Dosya Yükleme Başarısız!"
+}

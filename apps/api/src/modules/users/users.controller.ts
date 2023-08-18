@@ -4,12 +4,13 @@ import { errorResult, successResult } from '@/utils/constants/results'
 import { GetByIdValidation, UpdateAvatarValidation } from './users.schema'
 import { FromSchema } from 'json-schema-to-ts'
 import { UploadingType, uploadImage } from '@/utils/helpers/fileUploading'
+import i18next from 'i18next'
 
 type GetByIdType = FromSchema<typeof GetByIdValidation>
 type UpdateAvatarType = FromSchema<typeof UpdateAvatarValidation>
 
 export const GetMe = async (req: FastifyRequest, reply: FastifyReply) => {
-  return reply.send(successResult(req.user, messages.success, messages.success_code))
+  return reply.send(successResult(req.user, i18next.t(messages.success)))
 }
 
 export const GetById = async (req: FastifyRequest<{ Querystring: GetByIdType }>, reply: FastifyReply) => {
@@ -18,9 +19,9 @@ export const GetById = async (req: FastifyRequest<{ Querystring: GetByIdType }>,
 
   const user = await prisma.users.findFirst({ where: { id } })
 
-  if (!user) return reply.send(errorResult(null, messages.user_not_found, messages.user_not_found_code))
+  if (!user) return reply.send(errorResult(null, i18next.t(messages.user_not_found)))
 
-  return reply.send(successResult(user, messages.success, messages.success_code))
+  return reply.send(successResult(user, i18next.t(messages.success)))
 }
 
 export const Delete = async (req: FastifyRequest<{ Querystring: GetByIdType }>, reply: FastifyReply) => {
@@ -29,7 +30,7 @@ export const Delete = async (req: FastifyRequest<{ Querystring: GetByIdType }>, 
 
   const user = await prisma.users.findFirst({ where: { id } })
 
-  if (!user) return reply.send(errorResult(null, messages.user_not_found, messages.user_not_found_code))
+  if (!user) return reply.send(errorResult(null, i18next.t(messages.user_not_found)))
 
   await prisma.users.delete({
     where: {
@@ -37,7 +38,7 @@ export const Delete = async (req: FastifyRequest<{ Querystring: GetByIdType }>, 
     },
   })
 
-  return reply.send(successResult(null, messages.success, messages.success_code))
+  return reply.send(successResult(null, i18next.t(messages.success)))
 }
 
 export const UpdateAvatar = async (req: FastifyRequest<{ Body: UpdateAvatarType }>, reply: FastifyReply) => {
@@ -47,7 +48,7 @@ export const UpdateAvatar = async (req: FastifyRequest<{ Body: UpdateAvatarType 
 
   const resultOfUploading: UploadingType = uploadImage('user', user.username as string, encodedAvatar as string)
   if (!resultOfUploading.success) {
-    return reply.send(errorResult(null, messages.uploading_file, messages.uploading_file_code))
+    return reply.send(errorResult(null, i18next.t(messages.uploading_file)))
   }
 
   const avatar_url = resultOfUploading.url
@@ -55,6 +56,6 @@ export const UpdateAvatar = async (req: FastifyRequest<{ Body: UpdateAvatarType 
   await prisma.users.update({ data: { avatar_url }, where: { id: user.id } })
 
   if (resultOfUploading) {
-    return reply.send(successResult({ avatar_url }, messages.success, messages.success_code))
+    return reply.send(successResult({ avatar_url }, i18next.t(messages.success)))
   }
 }

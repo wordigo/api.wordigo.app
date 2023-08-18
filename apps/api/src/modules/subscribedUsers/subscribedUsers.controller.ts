@@ -3,6 +3,7 @@ import { FromSchema } from 'json-schema-to-ts'
 import { SubscriptionValidation } from './subscribedUsers.schema'
 import messages from '@/utils/constants/messages'
 import { errorResult, successResult } from '@/utils/constants/results'
+import i18next from 'i18next'
 
 type SubscriptionValidationType = FromSchema<typeof SubscriptionValidation>
 
@@ -16,7 +17,7 @@ export async function Subscription(req: FastifyRequest<{ Querystring: Subscripti
     },
   })
 
-  if (subscribedUser) return reply.send(errorResult(null, messages.user_already_subscribed, messages.user_already_subscribed_code))
+  if (subscribedUser) return reply.send(errorResult(null, i18next.t(messages.user_already_subscribed)))
 
   await prisma.subscribedUsers.create({
     data: {
@@ -24,7 +25,7 @@ export async function Subscription(req: FastifyRequest<{ Querystring: Subscripti
     },
   })
 
-  return reply.send(successResult(null, messages.success, messages.success_code))
+  return reply.send(successResult(null, i18next.t(messages.success)))
 }
 
 export async function Subscribers(req: FastifyRequest, reply: FastifyReply) {
@@ -32,5 +33,5 @@ export async function Subscribers(req: FastifyRequest, reply: FastifyReply) {
 
   const subs = await prisma.subscribedUsers.findMany()
 
-  return reply.send(successResult(subs, messages.success, messages.success_code))
+  return reply.send(successResult(subs, i18next.t(messages.success)))
 }

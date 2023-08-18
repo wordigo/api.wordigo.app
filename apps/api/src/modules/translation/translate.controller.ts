@@ -3,6 +3,9 @@ import { TranslationValidationBody } from './translate.schema'
 import { FromSchema } from 'json-schema-to-ts'
 
 import { Translate } from '@google-cloud/translate/build/src/v2'
+import { successResult } from '@/utils/constants/results'
+import messages from '@/utils/constants/messages'
+import i18next from 'i18next'
 
 const translate = new Translate({
   projectId: process.env.CLOUD_TRANSLATE_PROJECT_ID,
@@ -29,10 +32,11 @@ export async function TextTranslate(
 
   const { translatedText, detectedSourceLanguage } = data.translations[0]
 
-  return reply.status(200).send({
-    success: true,
+
+  return reply.send(successResult({
     translatedText,
     sourceLanguage: sourceLanguage || detectedSourceLanguage,
     targetLanguage,
-  })
+  }, i18next.t(messages.success)))
+
 }
