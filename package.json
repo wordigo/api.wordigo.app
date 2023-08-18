@@ -8,7 +8,8 @@
     "lint": "turbo run lint",
     "clean": "git clean -xdf node_modules",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "prisma:generate": "cd ./packages/db && npx prisma generate"
+    "db:generate": "cd ./packages/db && npx prisma generate",
+    "db:push": "cd ./packages/db && prisma db push --skip-generate"
   },
   "dependencies": {
     "turbo": "latest",
