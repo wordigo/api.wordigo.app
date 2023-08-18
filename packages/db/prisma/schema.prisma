@@ -31,7 +31,6 @@ model Dictionaries {
   description String             @default("")
   rate        Int                @default(0)
   level       Int                @default(0)
-  subscribers Int                @default(0)
   published   Boolean            @default(false)
   authorId    String
   author      Users?             @relation(fields: [authorId], references: [id], onDelete: Cascade)

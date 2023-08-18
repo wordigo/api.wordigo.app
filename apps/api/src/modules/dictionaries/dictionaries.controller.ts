@@ -15,10 +15,11 @@ import {
   UpdateImageValidation,
 } from './dictionaries.schema'
 import { TypesOfPublics } from './dictionaries.types'
-import { Words } from '@wordigo/db'
+import { Words } from '@prisma/client'
 import { DictionaryInitialTitle } from './dictionaries.types'
 import { UploadingType, uploadImage } from '../../utils/helpers/fileUploading'
 import { randomUUID } from 'crypto'
+import i18next from 'i18next'
 
 type GetDictionaryBySlugType = FromSchema<typeof GetDictionaryBySlugValidation>
 type GetDictionaryType = FromSchema<typeof GetDictionaryValidation>
@@ -33,6 +34,11 @@ export const Create = async (req: FastifyRequest<{ Body: CreateDictionaryType }>
   const userId = req.user?.id
   const { title, targetLang, sourceLang } = req.body
   const prisma = req.server.prisma
+
+  console.log(title.trim().toLowerCase())
+  console.log(DictionaryInitialTitle)
+  if (title && title.trim().toLowerCase() === DictionaryInitialTitle)
+    return reply.send(errorResult(null, messages.dictionary_already_exists, messages.dictionary_already_exists_code))
 
   let slug
   while (true) {
@@ -66,6 +72,9 @@ export const Update = async (req: FastifyRequest<{ Body: UpdateDictionaryType }>
   const userId = req.user?.id
   let { slug, title, published, description, rate, level, targetLang, sourceLang } = req.body
   const prisma = req.server.prisma
+
+  if (title && title.trim().toLowerCase() === DictionaryInitialTitle)
+    return reply.send(errorResult(null, messages.dictionary_already_exists, messages.dictionary_already_exists_code))
 
   const dictionary = await prisma.dictionaries.findFirst({
     where: { authorId: userId, slug },
@@ -113,8 +122,9 @@ export const GetList = async (req: FastifyRequest, reply: FastifyReply) => {
 
 export const GetUserDictionaries = async (request: FastifyRequest, reply: FastifyReply) => {
   const userId = request.user?.id
+  const prisma = request.server.prisma
 
-  const userDictionaries = await request.server.prisma.dictionaries.findMany({
+  const userDictionaries = await prisma.dictionaries.findMany({
     where: {
       authorId: userId,
     },
@@ -305,15 +315,6 @@ export const Subscribe = async (req: FastifyRequest<{ Querystring: GetDictionary
 
   if (subscribedDics) return errorResult(null, messages.dictionary_already_subscribed, messages.dictionary_already_subscribed_code)
 
-  await prisma.dictionaries.update({
-    where: {
-      id: dictionary.id,
-    },
-    data: {
-      subscribers: dictionary.subscribers + 1,
-    },
-  })
-
   await prisma.subscribedDics.create({
     data: {
       dictionaryId: dictionary.id,
@@ -402,8 +403,8 @@ export const GetPublicDictionaries = async (req: FastifyRequest, reply: FastifyR
       published: true,
     },
   })
-
-  return reply.send(successResult(publicDics, messages.success, messages.success_code))
+  console.log(req.headers['accept-language'])
+  return reply.send(successResult(publicDics, i18next.t(messages.success_code, { lng: req.headers['accept-language'] }), messages.success_code))
 }
 
 export const UpdateImage = async (req: FastifyRequest<{ Body: UpdateImageValidationType }>, reply: FastifyReply) => {

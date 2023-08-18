@@ -24,11 +24,14 @@ import subscribedUserRoute from '@/modules/subscribedUsers/subscribedUsers.route
 import wordRoute from '@/modules/words/words.routes'
 import userWordRoute from '@/modules/userWords/userWords.routes'
 import CheckAuthMiddleware from '@/middlewares/auth/checkAuth.middleware'
+import { i18next, register } from './utils/helpers/i18n'
 
 import path from 'path'
 
 const main = async () => {
   const app = fastify({ logger: loggerConfig })
+
+  await app.register(register, { i18next })
 
   await app.register(import('@fastify/rate-limit'), {
     max: 100,

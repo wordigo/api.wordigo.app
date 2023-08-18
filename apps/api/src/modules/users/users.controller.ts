@@ -13,9 +13,10 @@ export const GetMe = async (req: FastifyRequest, reply: FastifyReply) => {
 }
 
 export const GetById = async (req: FastifyRequest<{ Querystring: GetByIdType }>, reply: FastifyReply) => {
+  const prisma = req.server.prisma
   const { id } = req.query
 
-  const user = await req.server.prisma.users.findFirst({ where: { id } })
+  const user = await prisma.users.findFirst({ where: { id } })
 
   if (!user) return reply.send(errorResult(null, messages.user_not_found, messages.user_not_found_code))
 
@@ -23,13 +24,14 @@ export const GetById = async (req: FastifyRequest<{ Querystring: GetByIdType }>,
 }
 
 export const Delete = async (req: FastifyRequest<{ Querystring: GetByIdType }>, reply: FastifyReply) => {
+  const prisma = req.server.prisma
   const { id } = req.query
 
-  const user = await req.server.prisma.users.findFirst({ where: { id } })
+  const user = await prisma.users.findFirst({ where: { id } })
 
   if (!user) return reply.send(errorResult(null, messages.user_not_found, messages.user_not_found_code))
 
-  await req.server.prisma.users.delete({
+  await prisma.users.delete({
     where: {
       id,
     },
@@ -41,6 +43,7 @@ export const Delete = async (req: FastifyRequest<{ Querystring: GetByIdType }>, 
 export const UpdateAvatar = async (req: FastifyRequest<{ Body: UpdateAvatarType }>, reply: FastifyReply) => {
   const user = req.user
   const { encodedAvatar } = req.body
+  const prisma = req.server.prisma
 
   const resultOfUploading: UploadingType = uploadImage('user', user.username as string, encodedAvatar as string)
   if (!resultOfUploading.success) {
@@ -49,7 +52,7 @@ export const UpdateAvatar = async (req: FastifyRequest<{ Body: UpdateAvatarType 
 
   const avatar_url = resultOfUploading.url
 
-  await req.server.prisma.users.update({ data: { avatar_url }, where: { id: user.id } })
+  await prisma.users.update({ data: { avatar_url }, where: { id: user.id } })
 
   if (resultOfUploading) {
     return reply.send(successResult({ avatar_url }, messages.success, messages.success_code))
