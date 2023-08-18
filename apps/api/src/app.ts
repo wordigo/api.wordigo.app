@@ -2,7 +2,7 @@ import fastifyCompress from '@fastify/compress'
 import fastifyCors from '@fastify/cors'
 import fastifyEnv from '@fastify/env'
 import fastifyHelmet from '@fastify/helmet'
-import fastify from 'fastify'
+import fastify, { FastifyReply, FastifyRequest } from 'fastify'
 
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUi from '@fastify/swagger-ui'
@@ -39,10 +39,15 @@ const main = async () => {
   })
 
   app.decorate('authVerify', CheckAuthMiddleware)
-  // app.addHook('onRequest', (req: FastifyRequest, reply: FastifyReply, done) => {
-  //   req.headers['authorization'] = `Bearer ${req.headers.authorization}`
-  //   done()
-  // })
+
+  app.addHook('onRequest', (req: FastifyRequest, reply: FastifyReply, done) => {
+    const language = req.headers['accept-language']
+
+    if (language === 'tr' || 'tr-TR') {
+      i18next.init({ lng: language })
+    }
+    done()
+  })
 
   app.register(require('@fastify/static'), {
     root: path.join(__dirname, '..', 'public'),

@@ -10,6 +10,7 @@ import { Providers } from '@/utils/constants/enums'
 import { IGoogleUser } from './auth.types'
 import { randomUUID } from 'crypto'
 import slugify from 'slugify'
+import i18next from 'i18next'
 
 type SignInValidationType = FromSchema<typeof SignInValidation>
 type GoogleAuthValidationType = FromSchema<typeof GoogleAuthValidation>
@@ -23,7 +24,7 @@ export const SignUp = async (request: FastifyRequest<{ Body: SignUpValidationTyp
       email,
     },
   })
-  if (isEmailExists) return reply.send(errorResult(null, messages.user_already_exists, messages.user_already_exists_code))
+  if (isEmailExists) return reply.send(errorResult(null, i18next.t(messages.user_already_exists)))
 
   const passwordHashAndSalt = await createPasswordHash(password)
 
@@ -48,7 +49,7 @@ export const SignUp = async (request: FastifyRequest<{ Body: SignUpValidationTyp
     },
   })
 
-  return reply.send(successResult(null, messages.success, messages.success_code))
+  return reply.send(successResult(null, i18next.t(messages.success)))
 }
 
 export const SignIn = async (req: FastifyRequest<{ Body: SignInValidationType }>, reply: FastifyReply) => {
@@ -56,22 +57,22 @@ export const SignIn = async (req: FastifyRequest<{ Body: SignInValidationType }>
 
   const user = await req.server.prisma.users.findFirst({ where: { OR: [{ email, username }] } })
 
-  if (!user) return reply.send(errorResult(null, messages.user_not_found, messages.user_not_found_code))
+  if (!user) return reply.send(errorResult(null, i18next.t(messages.user_not_found)))
   else if (user?.provider === Providers.Google)
     return reply
       .status(HttpStatusCode.Unauthorized)
-      .send(errorResult(null, messages.user_signed_dif_provider, messages.user_signed_dif_provider_code))
+      .send(errorResult(null, i18next.t(messages.user_signed_dif_provider)))
 
   const passwordVerification = await verifyPasswordHash(password, user?.passwordHash as string, user?.passwordSalt as string)
 
   if (!passwordVerification)
-    return reply.status(HttpStatusCode.Unauthorized).send(errorResult(null, messages.user_wrong_password, messages.user_wrong_password_code))
+    return reply.status(HttpStatusCode.Unauthorized).send(errorResult(null, i18next.t(messages.user_wrong_password)))
 
   const token = sign({ email: user.email, id: user.id }, process.env['JWT_SECRET'] as string, {
-    expiresIn: '3d',
+    expiresIn: '1d',
   })
 
-  return reply.send(successResult({ user, accessToken: token }, messages.success, messages.success_code))
+  return reply.send(successResult({ user, accessToken: token }, i18next.t(messages.success)))
 }
 
 export const GoogleOAuth = async (request: FastifyRequest<{ Querystring: GoogleAuthValidationType }>, reply: FastifyReply) => {
@@ -112,11 +113,11 @@ export const GoogleOAuth = async (request: FastifyRequest<{ Querystring: GoogleA
       },
     })
   else if (user.provider === Providers.Local)
-    return reply.send(errorResult(null, messages.user_signed_dif_provider, messages.user_signed_dif_provider_code))
+    return reply.send(errorResult(null, i18next.t(messages.user_signed_dif_provider)))
 
   const token = sign({ email: user.email, id: user.id }, process.env['JWT_SECRET'] as string, {
     expiresIn: '1h',
   })
 
-  return reply.send(successResult(token, messages.success, messages.success_code))
+  return reply.send(successResult(token, i18next.t(messages.success)))
 }
