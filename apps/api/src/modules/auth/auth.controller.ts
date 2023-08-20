@@ -119,5 +119,5 @@ export const GoogleOAuth = async (request: FastifyRequest<{ Querystring: GoogleA
     expiresIn: '1h',
   })
 
-  return reply.send(successResult(token, i18next.t(messages.success)))
+  return reply.send(successResult({token, user}, i18next.t(messages.success)))
 }
