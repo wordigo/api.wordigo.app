@@ -9,7 +9,7 @@ const checkAuthMiddleware = async (request: FastifyRequest, reply: FastifyReply,
   const { authorization } = request.headers
 
   if (!authorization) {
-    reply.send(errorResult(null, i18next.t(messages.unauthorized)))
+    reply.status(401).send(errorResult(null, i18next.t(messages.unauthorized), messages.unauthorized))
     return
   }
 
@@ -19,7 +19,7 @@ const checkAuthMiddleware = async (request: FastifyRequest, reply: FastifyReply,
   const verifiedToken = verifyToken(token)
 
   if (!verifiedToken) {
-    reply.send(errorResult(null, i18next.t(messages.unauthorized)))
+    reply.status(401).send(errorResult(null, i18next.t(messages.unauthorized), messages.unauthorized))
     return
   }
 
