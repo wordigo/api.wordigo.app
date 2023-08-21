@@ -18,8 +18,10 @@ export const Create = async (req: FastifyRequest<{ Body: CreateType }>, reply: F
   if (nativeLanguage?.trim().toLowerCase() === targetLanguage?.trim().toLowerCase())
     return reply.send(errorResult(null, i18next.t(messages.languages_cant_same)))
 
+  let dicFromDb
+
   if ((dictionaryId as number) > 0) {
-    const dicFromDb = await prisma.dictionaries.findFirst({
+    dicFromDb = await prisma.dictionaries.findFirst({
       where: {
         id: dictionaryId,
         authorId: userId,
@@ -82,26 +84,18 @@ export const Create = async (req: FastifyRequest<{ Body: CreateType }>, reply: F
   let initialDictionary = await prisma.dictionaries.findFirst({
     where: {
       title: DictionaryInitialTitle,
+      authorId: userId,
     },
   })
 
-  // if (!initialDictionary) {
-  //   initialDictionary = await prisma.dictionaries.create({
-  //     data: {
-  //       title: DictionaryInitialTitle,
-  //       authorId: userId,
-  //     },
-  //   })
-  // }
-
-  const initialDicExisting = await prisma.dictAndUserWords.findFirst({
+  const dictAndUserWordsExists = await prisma.dictAndUserWords.findFirst({
     where: {
       userWordId: userWord.id,
       dictionaryId: initialDictionary?.id,
     },
   })
 
-  if (!initialDicExisting)
+  if (!dictAndUserWordsExists)
     await prisma.dictAndUserWords.create({
       data: {
         userWordId: userWord.id,
@@ -126,7 +120,7 @@ export const Create = async (req: FastifyRequest<{ Body: CreateType }>, reply: F
       })
   }
 
-  return reply.send(successResult(word, i18next.t(messages.success)))
+  return reply.send(successResult(!dicFromDb ? initialDictionary : dicFromDb, i18next.t(messages.success)))
 }
 
 export const GetList = async (req: FastifyRequest, reply: FastifyReply) => {
