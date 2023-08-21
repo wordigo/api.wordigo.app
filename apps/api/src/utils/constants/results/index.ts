@@ -16,18 +16,23 @@ export const errorResult = (data: object | string | number | boolean | null, mes
   }
 }
 
+export interface PaginationType {
+  page: number
+  size: number
+  totalPage: number
+  totalCount: number
+}
+
 export const successPaginationResult = (
   data: object | string | number | boolean | null,
-  page: number,
-  pageSize: number,
+  pagination: PaginationType,
   message: string,
-  messageCode: string
+  messageCode?: string
 ) => {
   return {
     success: true,
-    page,
-    pageSize,
     data,
+    pagination,
     message,
     messageCode,
   }

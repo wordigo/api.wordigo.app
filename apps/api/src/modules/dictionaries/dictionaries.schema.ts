@@ -177,7 +177,23 @@ export const GetUserPublicDictionariesSchema = {
   security: [{ JWT: [] }],
 } as FastifySchema
 
+export const GetPublicDictionariesValidation = {
+  type: 'object',
+  properties: {
+    page: {
+      type: 'number',
+      default: 1,
+    },
+    size: {
+      type: 'number',
+      default: 10,
+    },
+  },
+  required: ['page', 'size'],
+} as const satisfies JSONSchema
+
 export const GetPublicDictionariesSchema = {
+  querystring: GetPublicDictionariesValidation,
   tags: [tags.Dictionaries],
   summary: 'Getting Public Dictionaries',
 } as FastifySchema

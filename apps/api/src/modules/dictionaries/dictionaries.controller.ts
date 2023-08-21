@@ -3,7 +3,7 @@ import { FromSchema } from 'json-schema-to-ts'
 import slugify from 'slugify'
 
 import messages from '@/utils/constants/messages'
-import { errorResult, successResult } from '@/utils/constants/results'
+import { PaginationType, errorResult, successPaginationResult, successResult } from '@/utils/constants/results'
 import {
   AddWordValidation,
   CreateDictionaryValidation,
@@ -13,6 +13,7 @@ import {
   RemoveWordValidation,
   UpdateDictionaryValidation,
   UpdateImageValidation,
+  GetPublicDictionariesValidation,
 } from './dictionaries.schema'
 import { TypesOfPublics } from './dictionaries.types'
 import { Words } from '@prisma/client'
@@ -29,6 +30,7 @@ type RemoveWordType = FromSchema<typeof RemoveWordValidation>
 type AddWordType = FromSchema<typeof AddWordValidation>
 type GetUserPublicDictionariesType = FromSchema<typeof GetUserPublicDictionariesValidation>
 type UpdateImageValidationType = FromSchema<typeof UpdateImageValidation>
+type GetPublicDictionariesValidationType = FromSchema<typeof GetPublicDictionariesValidation>
 
 export const Create = async (req: FastifyRequest<{ Body: CreateDictionaryType }>, reply: FastifyReply) => {
   const userId = req.user?.id
@@ -37,8 +39,7 @@ export const Create = async (req: FastifyRequest<{ Body: CreateDictionaryType }>
 
   console.log(title.trim().toLowerCase())
   console.log(DictionaryInitialTitle)
-  if (title && title.trim().toLowerCase() === DictionaryInitialTitle)
-    return reply.send(errorResult(null, messages.dictionary_already_exists))
+  if (title && title.trim().toLowerCase() === DictionaryInitialTitle) return reply.send(errorResult(null, messages.dictionary_already_exists))
 
   let slug
   while (true) {
@@ -73,8 +74,7 @@ export const Update = async (req: FastifyRequest<{ Body: UpdateDictionaryType }>
   let { slug, title, published, description, rate, level, targetLang, sourceLang } = req.body
   const prisma = req.server.prisma
 
-  if (title && title.trim().toLowerCase() === DictionaryInitialTitle)
-    return reply.send(errorResult(null, messages.dictionary_already_exists))
+  if (title && title.trim().toLowerCase() === DictionaryInitialTitle) return reply.send(errorResult(null, messages.dictionary_already_exists))
 
   const dictionary = await prisma.dictionaries.findFirst({
     where: { authorId: userId, slug },
@@ -82,8 +82,7 @@ export const Update = async (req: FastifyRequest<{ Body: UpdateDictionaryType }>
 
   if (!dictionary) return errorResult(null, messages.dictionary_not_found)
 
-  if (dictionary.title === DictionaryInitialTitle)
-    return reply.send(errorResult(null, messages.dictionary_initial_update))
+  if (dictionary.title === DictionaryInitialTitle) return reply.send(errorResult(null, messages.dictionary_initial_update))
 
   const updatedDictionary = await prisma.dictionaries.update({
     where: { id: dictionary.id },
@@ -395,15 +394,33 @@ export const GetUserPublicDictionaries = async (req: FastifyRequest<{ Querystrin
   return reply.send(successResult(publicDics, messages.success))
 }
 
-export const GetPublicDictionaries = async (req: FastifyRequest, reply: FastifyReply) => {
+export const GetPublicDictionaries = async (req: FastifyRequest<{ Querystring: GetPublicDictionariesValidationType }>, reply: FastifyReply) => {
   const prisma = req.server.prisma
+
+  const { page = 1, size = 10 } = req.query
 
   const publicDics = await prisma.dictionaries.findMany({
     where: {
       published: true,
     },
+    skip: (page - 1) * size,
+    take: size,
   })
-  return reply.send(successResult(publicDics, i18next.t(messages.success)))
+
+  const numberOfPublicDics = await prisma.dictionaries.count({
+    where: {
+      published: true,
+    },
+  })
+
+  const pagination: PaginationType = {
+    page,
+    size,
+    totalPage: Math.ceil(numberOfPublicDics / size),
+    totalCount: numberOfPublicDics,
+  }
+
+  return reply.send(successPaginationResult(publicDics, pagination, i18next.t(messages.success)))
 }
 
 export const UpdateImage = async (req: FastifyRequest<{ Body: UpdateImageValidationType }>, reply: FastifyReply) => {
