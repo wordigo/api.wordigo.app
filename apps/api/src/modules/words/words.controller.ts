@@ -126,7 +126,7 @@ export const Create = async (req: FastifyRequest<{ Body: CreateType }>, reply: F
       })
   }
 
-  return reply.send(successResult(null, i18next.t(messages.success)))
+  return reply.send(successResult(word, i18next.t(messages.success)))
 }
 
 export const GetList = async (req: FastifyRequest, reply: FastifyReply) => {
