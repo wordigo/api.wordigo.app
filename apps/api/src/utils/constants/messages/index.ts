@@ -1,8 +1,7 @@
 export default {
   success: 'success',
   error: 'error',
-  no_authorization: 'no_authorization',
-  wrong_authorization: 'wrong_authorization',
+  unauthorized: 'unauthorized',
   user_already_exists: 'user_already_exists',
   user_already_subscribed: 'user_already_subscribed',
   user_not_found: 'user_not_found',
