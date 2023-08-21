@@ -12,7 +12,7 @@
     "db:push": "cd ./packages/db && prisma db push --skip-generate"
   },
   "dependencies": {
-    "turbo": "latest",
+    "turbo": "^1.10.10",
     "dotenv": "^16.3.1",
     "dotenv-cli": "^7.3.0"
   },
