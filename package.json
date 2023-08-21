@@ -9,8 +9,7 @@
     "clean": "git clean -xdf node_modules",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "db:generate": "cd ./packages/db && npx prisma generate",
-    "db:push": "dotenv cd ./packages/db && prisma db push --skip-generate",
-    "db:dashboard": "dotenv cd ./packages/db && prisma studio --port 1708"
+    "db:push": "cd ./packages/db && prisma db push --skip-generate"
   },
   "dependencies": {
     "turbo": "latest",
