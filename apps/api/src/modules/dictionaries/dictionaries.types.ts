@@ -4,4 +4,4 @@ export enum TypesOfPublics {
   NotSubscribed = 'notSubscribed',
 }
 
-export const DictionaryInitialTitle = 'Initial'
+export const DictionaryInitialTitle = 'initial'
