@@ -3,7 +3,7 @@ import messages from '@/utils/constants/messages'
 import { errorResult, successResult } from '@/utils/constants/results'
 import { GetByIdValidation, UpdateAvatarValidation } from './users.schema'
 import { FromSchema } from 'json-schema-to-ts'
-import { UploadingType, uploadImage } from '@/utils/helpers/fileUploading'
+import { UploadingType, uploadImage } from '@/utils/helpers/fileUploading.helper'
 import i18next from 'i18next'
 
 type GetByIdType = FromSchema<typeof GetByIdValidation>

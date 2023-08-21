@@ -5,7 +5,8 @@ import axios, { HttpStatusCode } from 'axios'
 import { sign } from 'jsonwebtoken'
 import { errorResult, successResult } from '@/utils/constants/results'
 import messages from '@/utils/constants/messages'
-import { createPasswordHash, verifyPasswordHash } from '@/utils/helpers/password'
+import { createPasswordHash, verifyPasswordHash } from '@/utils/helpers/password.helper'
+import { createToken } from '@/utils/helpers/token.helper'
 import { Providers } from '@/utils/constants/enums'
 import { IGoogleUser } from './auth.types'
 import { randomUUID } from 'crypto'
@@ -57,20 +58,17 @@ export const SignIn = async (req: FastifyRequest<{ Body: SignInValidationType }>
 
   const user = await req.server.prisma.users.findFirst({ where: { OR: [{ email, username }] } })
 
-  if (!user) return reply.send(errorResult(null, i18next.t(messages.user_not_found)))
-  else if (user?.provider === Providers.Google)
-    return reply
-      .status(HttpStatusCode.Unauthorized)
-      .send(errorResult(null, i18next.t(messages.user_signed_dif_provider)))
+  if (!user) {
+    return reply.send(errorResult(null, i18next.t(messages.user_not_found)))
+  } else if (user?.provider === Providers.Google) {
+    return reply.status(HttpStatusCode.Unauthorized).send(errorResult(null, i18next.t(messages.user_signed_dif_provider)))
+  }
 
   const passwordVerification = await verifyPasswordHash(password, user?.passwordHash as string, user?.passwordSalt as string)
 
-  if (!passwordVerification)
-    return reply.status(HttpStatusCode.Unauthorized).send(errorResult(null, i18next.t(messages.user_wrong_password)))
+  if (!passwordVerification) return reply.status(HttpStatusCode.Unauthorized).send(errorResult(null, i18next.t(messages.user_wrong_password)))
 
-  const token = sign({ email: user.email, id: user.id }, process.env['JWT_SECRET'] as string, {
-    expiresIn: '1d',
-  })
+  const token = createToken(user.id)
 
   return reply.send(successResult({ user, accessToken: token }, i18next.t(messages.success)))
 }
@@ -112,12 +110,11 @@ export const GoogleOAuth = async (request: FastifyRequest<{ Querystring: GoogleA
         provider: Providers.Google,
       },
     })
-  else if (user.provider === Providers.Local)
-    return reply.send(errorResult(null, i18next.t(messages.user_signed_dif_provider)))
+  else if (user.provider === Providers.Local) return reply.send(errorResult(null, i18next.t(messages.user_signed_dif_provider)))
 
   const token = sign({ email: user.email, id: user.id }, process.env['JWT_SECRET'] as string, {
     expiresIn: '1h',
   })
 
-  return reply.send(successResult({token, user}, i18next.t(messages.success)))
+  return reply.send(successResult({ token, user }, i18next.t(messages.success)))
 }

@@ -1,8 +1,7 @@
 {
     "success": "İşlem Başarıyla Tamamlandı!",
     "error": "İşlem Başarısız Oldu!",
-    "no_authorization": "No Authorization.",
-    "wrong_authorization": "Yanlış Doğrulama Yöntemi!",
+    "unauthorized": "Kimlik Doğrulanamadı!",
     "user_already_exists": "Kullanıcı Zaten Mevcut!",
     "user_already_subscribed": "Kullanıcı Zaten Abone Oldu!",
     "user_not_found": "Kullanıcı Bulunamadı!",

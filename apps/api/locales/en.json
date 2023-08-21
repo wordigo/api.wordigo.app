@@ -1,8 +1,7 @@
 {
     "success": "Operation Completed Successfully!",
     "error": "Operation Has Failed!",
-    "no_authorization": "No Authorization.",
-    "wrong_authorization": "Wrong authorization.",
+    "unauthorized": "Unauthorized!",
     "user_already_exists": "User already exists!",
     "user_already_subscribed": "User already subscribed!",
     "user_not_found": "User Couldn't Found!",

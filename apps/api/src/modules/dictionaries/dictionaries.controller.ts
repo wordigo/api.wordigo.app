@@ -18,7 +18,7 @@ import {
 import { TypesOfPublics } from './dictionaries.types'
 import { Words } from '@prisma/client'
 import { DictionaryInitialTitle } from './dictionaries.types'
-import { UploadingType, uploadImage } from '../../utils/helpers/fileUploading'
+import { UploadingType, uploadImage } from '../../utils/helpers/fileUploading.helper'
 import { randomUUID } from 'crypto'
 import i18next from 'i18next'
 
