@@ -14,6 +14,7 @@ import helmetConfig from '@/config/helmet.config'
 import loggerConfig from '@/config/logger.config'
 import { swaggerConfig } from '@/config/swagger.config'
 import envConfig from '@/lib/env.config'
+import corsConfig from '@/config/cors.config'
 import prismaPlugin from '@/plugins/prisma.plugin'
 
 import authRoute from '@/modules/auth/auth.routes'
@@ -56,11 +57,7 @@ const main = async () => {
 
   // Now we setup our app, plugins and such
   await app.register(fastifyEnv, envConfig)
-  await app.register(fastifyCors, {
-    origin: '*',
-    methods: ['GET', 'POST'],
-    credentials: true,
-  })
+  await app.register(fastifyCors, corsConfig)
   await app.register(fastifyCompress, compressConfig)
   await app.register(fastifyHelmet, helmetConfig)
   await app.register(prismaPlugin)
