@@ -37,8 +37,6 @@ export const Create = async (req: FastifyRequest<{ Body: CreateDictionaryType }>
   const { title, targetLang, sourceLang } = req.body
   const prisma = req.server.prisma
 
-  console.log(title.trim().toLowerCase())
-  console.log(DictionaryInitialTitle)
   if (title && title.trim().toLowerCase() === DictionaryInitialTitle) return reply.send(errorResult(null, messages.dictionary_already_exists))
 
   let slug
