@@ -2220,23 +2220,22 @@ __export(email_exports, {
 module.exports = __toCommonJS(email_exports);
 var import_resend = require("resend");
 
-// emails/welcome.tsx
+// emails/welcome-en.tsx
 var import_components = require("@react-email/components");
 var React = __toESM(require_react());
-var WelcomeEmail = ({ username = "Ali Osman", company = "Wordigo" }) => {
-  const previewText = `Welcome to ${company}, ${username}!`;
-  return /* @__PURE__ */ React.createElement(import_components.Html, null, /* @__PURE__ */ React.createElement(import_components.Head, null), /* @__PURE__ */ React.createElement(import_components.Preview, null, previewText), /* @__PURE__ */ React.createElement(import_components.Tailwind, null, /* @__PURE__ */ React.createElement(import_components.Body, { className: "bg-white my-auto mx-auto font-sans" }, /* @__PURE__ */ React.createElement(import_components.Container, { className: "my-10 mx-auto p-5 w-[465px]" }, /* @__PURE__ */ React.createElement(import_components.Section, { className: "mt-8" }, /* @__PURE__ */ React.createElement(import_components.Img, { src: `${baseUrl}/images/logo.png`, alt: "Logo Example", className: "w-60 h-24 my-0 mx-auto" })), /* @__PURE__ */ React.createElement(import_components.Heading, { className: "text-2xl font-normal text-center p-0 my-8 mx-0" }, "Welcome to ", /* @__PURE__ */ React.createElement("strong", null, company), ", ", username, "!"), /* @__PURE__ */ React.createElement(import_components.Text, { className: "text-sm" }, "Hello ", username, ","), /* @__PURE__ */ React.createElement(import_components.Text, { className: "text-sm" }, "We're excited to have you onboard at ", /* @__PURE__ */ React.createElement("strong", null, company), ". We hope you enjoy your journey with us. If you have any questions or need assistance, feel free to reach out."), /* @__PURE__ */ React.createElement(import_components.Section, { className: "text-center mt-[32px] mb-[32px]" }, /* @__PURE__ */ React.createElement(import_components.Button, { pX: 20, pY: 12, className: "bg-[#00A3FF] rounded text-white text-xs font-semibold no-underline text-center", href: `${baseUrl}/get-started` }, "Get Started")), /* @__PURE__ */ React.createElement(import_components.Text, { className: "text-sm" }, "Cheers,", /* @__PURE__ */ React.createElement("br", null), "The ", company, " Team")))));
+var WelcomeEmail = ({ name = "Unknown" }) => {
+  return /* @__PURE__ */ React.createElement(import_components.Html, null, /* @__PURE__ */ React.createElement(import_components.Head, null), /* @__PURE__ */ React.createElement(import_components.Preview, null, "Welcome to Wordigo"), /* @__PURE__ */ React.createElement(import_components.Tailwind, null, /* @__PURE__ */ React.createElement(import_components.Body, { className: "bg-white my-auto mx-auto font-sans" }, /* @__PURE__ */ React.createElement(import_components.Container, { className: "border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px] w-[465px]" }, /* @__PURE__ */ React.createElement(import_components.Section, { className: "mt-[32px]" }, /* @__PURE__ */ React.createElement(import_components.Img, { src: `${baseUrl}/images/logo-icon.png`, width: "50", height: "50", alt: "Wordigo", className: "my-0 mx-auto" })), /* @__PURE__ */ React.createElement(import_components.Heading, { className: "text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0" }, "Welcome to ", /* @__PURE__ */ React.createElement("strong", null, "Wordigo")), /* @__PURE__ */ React.createElement(import_components.Text, { className: "text-black text-[14px] leading-[24px]" }, "Hello ", /* @__PURE__ */ React.createElement("strong", null, name), ","), /* @__PURE__ */ React.createElement(import_components.Text, { className: "text-black text-[14px] leading-[24px]" }, "We are excited to have you among us at ", /* @__PURE__ */ React.createElement("strong", null, "Wordigo"), ". We hope you will enjoy your journey with us. If you have any questions or need help do not hesitate to contact us."), /* @__PURE__ */ React.createElement(import_components.Section, { className: "text-center mt-[32px] mb-[32px]" }, /* @__PURE__ */ React.createElement(import_components.Button, { pX: 20, pY: 12, className: "bg-[#000000] rounded text-white text-[12px] font-semibold no-underline text-center", href: "https://wordigo.app/dashboard" }, "Get Started")), /* @__PURE__ */ React.createElement(import_components.Text, { className: "text-black text-[14px] leading-[24px]" }, "or copy and paste this URL into your browser:", /* @__PURE__ */ React.createElement(import_components.Link, { href: "https://wordigo.app/dashboard", className: "text-blue-600 no-underline block" }, "https://wordigo.app/dashboard")), /* @__PURE__ */ React.createElement(import_components.Hr, { className: "border border-solid border-[#eaeaea] my-[26px] mx-0 !w-full" }), /* @__PURE__ */ React.createElement(import_components.Text, { className: "w-full text-center" }, /* @__PURE__ */ React.createElement(import_components.Button, null, /* @__PURE__ */ React.createElement(import_components.Img, { width: 24, height: 24, src: `${baseUrl}/images/socials/twitter-blue.png` })), /* @__PURE__ */ React.createElement(import_components.Button, { className: "ml-3" }, /* @__PURE__ */ React.createElement(import_components.Img, { width: 24, height: 24, src: `${baseUrl}/images/socials/linkedin-color.png` })), /* @__PURE__ */ React.createElement(import_components.Button, { className: "ml-3" }, /* @__PURE__ */ React.createElement(import_components.Img, { width: 24, height: 24, src: `${baseUrl}/images/socials/instagram-color.png` }))), /* @__PURE__ */ React.createElement(import_components.Text, { className: "text-[#666666] text-[12px] leading-[24px] !p-0 text-center" }, "\xA9 2023 Wordigo, All rights reserved.")))));
 };
 var baseUrl = "https://wordigo.app";
-var welcome_default = WelcomeEmail;
+var welcome_en_default = WelcomeEmail;
 
 // index.ts
 var email_default = new import_resend.Resend("re_Sw6rdktq_5bD7wzeJFVobQM5n2tfeL5SZ");
-var renderEmail = ({ type, props }) => {
-  switch (type) {
-    case "welcome":
-      return welcome_default(props);
-  }
+var renderEmail = ({ type, language = "en", props }) => {
+  if (type === "welcome" && language === "en")
+    return welcome_en_default(props);
+  if (type === "welcome" && language === "tr")
+    return welcome_en_default(props);
 };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
