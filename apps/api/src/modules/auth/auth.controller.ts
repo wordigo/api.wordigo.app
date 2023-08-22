@@ -1,26 +1,30 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { SignUpValidation, GoogleAuthValidation, SignInValidation } from './auth.schema'
 import { FromSchema } from 'json-schema-to-ts'
 import axios, { HttpStatusCode } from 'axios'
 import { sign } from 'jsonwebtoken'
-import { errorResult, successResult } from '@/utils/constants/results'
-import messages from '@/utils/constants/messages'
-import { createPasswordHash, verifyPasswordHash } from '@/utils/helpers/password.helper'
-import { createToken } from '@/utils/helpers/token.helper'
-import { Providers } from '@/utils/constants/enums'
-import { IGoogleUser } from './auth.types'
 import { randomUUID } from 'crypto'
 import slugify from 'slugify'
 import i18next from 'i18next'
+import { join, parse } from 'path'
+import { readdir } from 'fs'
+
+import { SignUpValidation, GoogleAuthValidation, SignInValidation } from './auth.schema'
+import { IGoogleUser } from './auth.types'
+import { createPasswordHash, verifyPasswordHash } from '@/utils/helpers/password.helper'
+import { createToken } from '@/utils/helpers/token.helper'
+import { errorResult, successResult } from '@/utils/constants/results'
+import messages from '@/utils/constants/messages'
+import { Providers } from '@/utils/constants/enums'
 
 type SignInValidationType = FromSchema<typeof SignInValidation>
 type GoogleAuthValidationType = FromSchema<typeof GoogleAuthValidation>
 type SignUpValidationType = FromSchema<typeof SignUpValidation>
 
-export const SignUp = async (request: FastifyRequest<{ Body: SignUpValidationType }>, reply: FastifyReply) => {
-  const { email, password, name } = request.body
+export const SignUp = async (req: FastifyRequest<{ Body: SignUpValidationType }>, reply: FastifyReply) => {
+  const { email, password, name } = req.body
+  const prisma = req.server.prisma
 
-  const isEmailExists = await request.server.prisma.users.findFirst({
+  const isEmailExists = await req.server.prisma.users.findFirst({
     where: {
       email,
     },
@@ -29,16 +33,41 @@ export const SignUp = async (request: FastifyRequest<{ Body: SignUpValidationTyp
 
   const passwordHashAndSalt = await createPasswordHash(password)
 
-  const username = slugify(`${name}-${randomUUID()}`, {
-    replacement: '-', // replace spaces with replacement character, defaults to `-`
-    remove: undefined, // remove characters that match regex, defaults to `undefined`
-    lower: true, // convert to lower case, defaults to `false`
-    strict: false, // strip special characters except replacement, defaults to `false`
-    locale: 'vi', // language code of the locale to use
-    trim: true, // trim leading and trailing replacement chars, defaults to `true`
+  let username
+
+  while (true) {
+    const randomUID = randomUUID().split('-')
+    username = slugify(`${name}-${randomUID[0]}${randomUID[1]}${randomUID[2]}`, {
+      replacement: '-',
+      remove: undefined, // remove characters that match regex, defaults to `undefined`
+      lower: true,
+      strict: false, // strip special characters except replacement, defaults to `false`
+      locale: 'vi', // language code of the locale to use
+      trim: true,
+    })
+
+    const doesUserNameExist = await prisma.users.findFirst({ where: { username } })
+    if (!doesUserNameExist) {
+      break
+    }
+  }
+
+  let nativeLanguage = req.headers['accept-language']
+
+  let isNativeLanguageValid = false
+  readdir(join(__dirname, '../../../locales/'), (err, files) => {
+    for (const file of files) {
+      if (file.split('.')[0].toString() === nativeLanguage) {
+        isNativeLanguageValid = true
+      }
+    }
   })
 
-  await request.server.prisma.users.create({
+  if (!isNativeLanguageValid) {
+    nativeLanguage = 'en'
+  }
+
+  await prisma.users.create({
     data: {
       avatar_url: `https://wordigo.app/api/dynamic-avatar?username=${username}?size=256`,
       email,
@@ -46,6 +75,7 @@ export const SignUp = async (request: FastifyRequest<{ Body: SignUpValidationTyp
       username,
       passwordHash: passwordHashAndSalt.hash,
       passwordSalt: passwordHashAndSalt.salt,
+      nativeLanguage,
       provider: Providers.Local,
     },
   })

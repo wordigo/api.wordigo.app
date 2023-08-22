@@ -43,13 +43,14 @@ export const Create = async (req: FastifyRequest<{ Body: CreateDictionaryType }>
 
   let slug
   while (true) {
-    slug = slugify(`${title}-${randomUUID()}`, {
-      replacement: '-', // replace spaces with replacement character, defaults to `-`
+    const randomUID = randomUUID().split('-')
+    slug = slugify(`${title}-${randomUID[0]}${randomUID[1]}${randomUID[2]}`, {
+      replacement: '-',
       remove: undefined, // remove characters that match regex, defaults to `undefined`
-      lower: true, // convert to lower case, defaults to `false`
+      lower: true,
       strict: false, // strip special characters except replacement, defaults to `false`
       locale: 'vi', // language code of the locale to use
-      trim: true, // trim leading and trailing replacement chars, defaults to `true`
+      trim: true,
     })
 
     const doesSlugExist = await prisma.dictionaries.findFirst({ where: { slug } })
