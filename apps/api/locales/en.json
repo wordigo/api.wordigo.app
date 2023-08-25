@@ -3,6 +3,7 @@
     "error": "Operation Has Failed!",
     "unauthorized": "Unauthorized!",
     "user_already_exists": "User already exists!",
+    "username_exists": "Username Was Taken Before!",
     "user_already_subscribed": "User already subscribed!",
     "user_not_found": "User Couldn't Found!",
     "user_wrong_password": "Password is Wrong!",

@@ -12,6 +12,23 @@ export const GetByIdValidation = {
   required: ['id'],
 } as const satisfies JSONSchema
 
+export const UpdateUsernameValidation = {
+  type: 'object',
+  properties: {
+    username: {
+      type: 'string',
+    },
+  },
+  required: ['username'],
+} as const satisfies JSONSchema
+
+export const UpdateUsernameSchema: FastifySchema = {
+  querystring: UpdateUsernameValidation,
+  tags: [tags.Users],
+  summary: 'Updating Username of User',
+  security: [{ JWT: [] }],
+}
+
 export const GetMeSchema: FastifySchema = {
   // headers: GetUserMeValidation,
   tags: [tags.Users],

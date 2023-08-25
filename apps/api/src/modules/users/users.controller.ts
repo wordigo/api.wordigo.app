@@ -1,13 +1,14 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import messages from '@/utils/constants/messages'
 import { errorResult, successResult } from '@/utils/constants/results'
-import { GetByIdValidation, UpdateAvatarValidation } from './users.schema'
+import { GetByIdValidation, UpdateAvatarValidation, UpdateUsernameValidation } from './users.schema'
 import { FromSchema } from 'json-schema-to-ts'
-import { UploadingType, uploadImage } from '@/utils/helpers/fileUploading.helper'
 import i18next from 'i18next'
+import { Update } from './users.service'
 
 type GetByIdType = FromSchema<typeof GetByIdValidation>
 type UpdateAvatarType = FromSchema<typeof UpdateAvatarValidation>
+type UpdateUsernameType = FromSchema<typeof UpdateUsernameValidation>
 
 export const GetMe = async (req: FastifyRequest, reply: FastifyReply) => {
   return reply.send(successResult(req.user, i18next.t(messages.success)))
@@ -44,18 +45,25 @@ export const Delete = async (req: FastifyRequest<{ Querystring: GetByIdType }>, 
 export const UpdateAvatar = async (req: FastifyRequest<{ Body: UpdateAvatarType }>, reply: FastifyReply) => {
   const user = req.user
   const { encodedAvatar } = req.body
-  const prisma = req.server.prisma
 
-  const resultOfUploading: UploadingType = uploadImage('user', user.username as string, encodedAvatar as string)
-  if (!resultOfUploading.success) {
-    return reply.send(errorResult(null, i18next.t(messages.uploading_file)))
+  const result = await Update({ user, base64Avatar: encodedAvatar })
+
+  if (!result.success) {
+    return errorResult(null, i18next.t(result.message))
   }
 
-  const avatar_url = resultOfUploading.url
+  return successResult(result.data, i18next.t(result.message))
+}
 
-  await prisma.users.update({ data: { avatar_url }, where: { id: user.id } })
+export const UpdateUsername = async (req: FastifyRequest<{ Querystring: UpdateUsernameType }>, reply: FastifyReply) => {
+  const user = req.user
+  const { username } = req.query
 
-  if (resultOfUploading) {
-    return reply.send(successResult({ avatar_url }, i18next.t(messages.success)))
+  const result = await Update({ user, username })
+
+  if (!result.success) {
+    return errorResult(null, i18next.t(result.message))
   }
+
+  return successResult(result.data, i18next.t(result.message))
 }
