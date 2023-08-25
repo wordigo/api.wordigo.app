@@ -1,3 +1,5 @@
+import { Users } from '@wordigo/db'
+
 export interface IGoogleUser {
   email?: string | null
   family_name?: string | null
@@ -10,4 +12,15 @@ export interface IGoogleUser {
   name?: string | null
   picture?: string | null
   verified_email?: boolean | null
+}
+
+export interface UpdateUserType {
+  user: Users
+  username?: string
+  name?: string
+  password?: string
+  provider?: string
+  base64Avatar?: string
+  nativeLanguage?: string
+  targetLanguage?: string
 }

@@ -3,6 +3,7 @@ export default {
   error: 'error',
   unauthorized: 'unauthorized',
   user_already_exists: 'user_already_exists',
+  username_exists: 'username_exists',
   user_already_subscribed: 'user_already_subscribed',
   user_not_found: 'user_not_found',
   user_wrong_password: 'user_wrong_password',

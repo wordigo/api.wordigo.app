@@ -3,6 +3,7 @@
     "error": "İşlem Başarısız Oldu!",
     "unauthorized": "Kimlik Doğrulanamadı!",
     "user_already_exists": "Kullanıcı Zaten Mevcut!",
+    "username_exists": "Kullanıcı Adı Alındı!",
     "user_already_subscribed": "Kullanıcı Zaten Abone Oldu!",
     "user_not_found": "Kullanıcı Bulunamadı!",
     "user_wrong_password": "Şifre Yanlış!",
