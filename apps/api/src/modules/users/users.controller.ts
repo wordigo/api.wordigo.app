@@ -1,14 +1,14 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import messages from '@/utils/constants/messages'
 import { errorResult, successResult } from '@/utils/constants/results'
-import { GetByIdValidation, UpdateAvatarValidation, UpdateUsernameValidation } from './users.schema'
+import { GetByIdValidation, UpdateAvatarValidation, UpdateProfileValidation } from './users.schema'
 import { FromSchema } from 'json-schema-to-ts'
 import i18next from 'i18next'
 import { Update } from './users.service'
 
 type GetByIdType = FromSchema<typeof GetByIdValidation>
 type UpdateAvatarType = FromSchema<typeof UpdateAvatarValidation>
-type UpdateUsernameType = FromSchema<typeof UpdateUsernameValidation>
+type UpdateProfileType = FromSchema<typeof UpdateProfileValidation>
 
 export const GetMe = async (req: FastifyRequest, reply: FastifyReply) => {
   return reply.send(successResult(req.user, i18next.t(messages.success)))
@@ -55,11 +55,11 @@ export const UpdateAvatar = async (req: FastifyRequest<{ Body: UpdateAvatarType 
   return successResult(result.data, i18next.t(result.message))
 }
 
-export const UpdateUsername = async (req: FastifyRequest<{ Querystring: UpdateUsernameType }>, reply: FastifyReply) => {
+export const UpdateProfile = async (req: FastifyRequest<{ Body: UpdateProfileType }>, reply: FastifyReply) => {
   const user = req.user
-  const { username } = req.query
+  const { username, name } = req.body
 
-  const result = await Update({ user, username })
+  const result = await Update({ user, username, name })
 
   if (!result.success) {
     return errorResult(null, i18next.t(result.message))

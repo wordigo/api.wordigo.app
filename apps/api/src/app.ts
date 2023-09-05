@@ -21,6 +21,7 @@ import authRoute from '@/modules/auth/auth.routes'
 import translateRoute from '@/modules/translation/translate.routes'
 import usersRoute from '@/modules/users/users.routes'
 import dictionaryRoute from '@/modules/dictionaries/dictionaries.routes'
+import publicDictionaryRoute from '@/modules/publicDictionaries/publicDictionaries.routes'
 import subscribedUserRoute from '@/modules/subscribedUsers/subscribedUsers.routes'
 import wordRoute from '@/modules/words/words.routes'
 import userWordRoute from '@/modules/userWords/userWords.routes'
@@ -89,6 +90,7 @@ const main = async () => {
       api.register(authRoute, { prefix: '/auth' })
       api.register(usersRoute, { prefix: '/users' })
       api.register(dictionaryRoute, { prefix: '/dictionaries' })
+      api.register(publicDictionaryRoute, { prefix: '/publicDictionary' })
       api.register(userWordRoute, { prefix: '/userWords' })
       api.register(wordRoute, { prefix: '/words' })
       api.register(subscribedUserRoute, { prefix: '/subscribedUsers' })

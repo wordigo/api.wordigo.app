@@ -5,6 +5,7 @@ import {
   Delete,
   GetList,
   GetPublicDictionaries,
+  GetPublicDictionaryById,
   GetUserDictionaries,
   GetUserDictionaryBySlug,
   GetUserPublicDictionaries,
@@ -22,6 +23,7 @@ import {
   GetListSchema,
   GetPublicDictionariesSchema,
   GetUserDictionariesSchema,
+  GetUserDictionaryByIdSchema,
   GetUserDictionaryBySlugSchema,
   GetUserPublicDictionariesSchema,
   GetWordsSchema,
@@ -58,6 +60,4 @@ export default async (fastify: FastifyInstance) => {
   fastify.get('/getWords', { schema: GetWordsSchema, preValidation: fastify.authVerify }, GetWords)
 
   fastify.get('/getUserPublicDictionaries', { schema: GetUserPublicDictionariesSchema, preValidation: fastify.authVerify }, GetUserPublicDictionaries)
-
-  fastify.get('/getPublicDictionaries', { schema: GetPublicDictionariesSchema }, GetPublicDictionaries)
 }

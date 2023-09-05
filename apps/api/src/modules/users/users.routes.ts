@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify'
-import { GetByIdSchema, GetMeSchema, DeleteSchema, UpdateAvatarSchema, UpdateUsernameSchema } from './users.schema'
-import { GetById, GetMe, Delete, UpdateAvatar, UpdateUsername } from './users.controller'
+import { GetByIdSchema, GetMeSchema, DeleteSchema, UpdateAvatarSchema, UpdateProfileSchema } from './users.schema'
+import { GetById, GetMe, Delete, UpdateAvatar, UpdateProfile } from './users.controller'
 
 export default async (fastify: FastifyInstance) => {
   fastify.get('/getMe', { schema: GetMeSchema, preValidation: fastify.authVerify }, GetMe)
@@ -11,5 +11,5 @@ export default async (fastify: FastifyInstance) => {
 
   fastify.put('/updateAvatar', { schema: UpdateAvatarSchema, preValidation: fastify.authVerify }, UpdateAvatar)
 
-  fastify.put('/updateUsername', { schema: UpdateUsernameSchema, preValidation: fastify.authVerify }, UpdateUsername)
+  fastify.put('/updateProfile', { schema: UpdateProfileSchema, preValidation: fastify.authVerify }, UpdateProfile)
 }
