@@ -6,6 +6,7 @@ export const SubscriptionValidation = {
   properties: {
     email: {
       type: 'string',
+      format: 'email',
     },
   },
   required: ['email'],

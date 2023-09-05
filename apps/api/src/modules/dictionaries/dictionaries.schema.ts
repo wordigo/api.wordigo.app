@@ -19,16 +19,6 @@ export const GetDictionaryBySlugValidation = {
   required: ['slug'],
 } as const satisfies JSONSchema
 
-export const GetDictionaryValidation = {
-  type: 'object',
-  properties: {
-    slug: {
-      type: 'string',
-    },
-  },
-  required: ['slug'],
-} as const satisfies JSONSchema
-
 export const GetUserDictionaryBySlugSchema = {
   querystring: GetDictionaryBySlugValidation,
   tags: [tags.Dictionaries],
@@ -145,7 +135,7 @@ export const RemoveWordSchema = {
 }
 
 export const GetWordsSchema = {
-  querystring: GetDictionaryValidation,
+  querystring: GetDictionaryBySlugValidation,
   tags: [tags.Dictionaries],
   summary: 'Get Words of Dictionary',
   security: [{ JWT: [] }],
@@ -175,27 +165,6 @@ export const GetUserPublicDictionariesSchema = {
   tags: [tags.Dictionaries],
   summary: 'Getting Public Dictionaries According to User',
   security: [{ JWT: [] }],
-} as FastifySchema
-
-export const GetPublicDictionariesValidation = {
-  type: 'object',
-  properties: {
-    page: {
-      type: 'number',
-      default: 1,
-    },
-    size: {
-      type: 'number',
-      default: 10,
-    },
-  },
-  required: ['page', 'size'],
-} as const satisfies JSONSchema
-
-export const GetPublicDictionariesSchema = {
-  querystring: GetPublicDictionariesValidation,
-  tags: [tags.Dictionaries],
-  summary: 'Getting Public Dictionaries',
 } as FastifySchema
 
 export const GetListSchema = {
