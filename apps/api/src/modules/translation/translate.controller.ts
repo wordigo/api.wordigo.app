@@ -1,10 +1,10 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { TranslationValidationBody } from './translate.schema'
 import { FromSchema } from 'json-schema-to-ts'
+import { TranslationValidationBody } from './translate.schema'
 
-import { Translate } from '@google-cloud/translate/build/src/v2'
-import { successResult } from '@/utils/constants/results'
 import messages from '@/utils/constants/messages'
+import { successResult } from '@/utils/constants/results'
+import { Translate } from '@google-cloud/translate/build/src/v2'
 import i18next from 'i18next'
 
 const translate = new Translate({
@@ -31,7 +31,6 @@ export async function TextTranslate(
   const [, { data }] = await translate.translate(query, translateOptions)
 
   const { translatedText, detectedSourceLanguage } = data.translations[0]
-
 
   return reply.send(successResult({
     translatedText,

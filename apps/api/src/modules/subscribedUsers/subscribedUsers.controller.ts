@@ -1,9 +1,9 @@
-import { FastifyReply, FastifyRequest } from 'fastify'
-import { FromSchema } from 'json-schema-to-ts'
-import { SubscriptionValidation } from './subscribedUsers.schema'
 import messages from '@/utils/constants/messages'
 import { errorResult, successResult } from '@/utils/constants/results'
+import { FastifyReply, FastifyRequest } from 'fastify'
 import i18next from 'i18next'
+import { FromSchema } from 'json-schema-to-ts'
+import { SubscriptionValidation } from './subscribedUsers.schema'
 
 type SubscriptionValidationType = FromSchema<typeof SubscriptionValidation>
 

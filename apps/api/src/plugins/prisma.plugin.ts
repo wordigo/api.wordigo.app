@@ -1,6 +1,6 @@
-import fp from 'fastify-plugin'
+import { prisma } from '@/lib/prisma'
 import { FastifyInstance, FastifyPluginAsync } from 'fastify'
-import { prisma } from '@wordigo/db'
+import fp from 'fastify-plugin'
 
 const prismaPlugin: FastifyPluginAsync = fp(async function prismaPlugin(fastify: FastifyInstance) {
   fastify.decorate('prisma', prisma)
