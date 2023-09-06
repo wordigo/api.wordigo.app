@@ -47,6 +47,7 @@
     "@fastify/type-provider-json-schema-to-ts": "^2.2.2",
     "@google-cloud/storage": "^7.0.1",
     "@google-cloud/translate": "^7.2.2",
+    "@prisma/client": "^5.2.0",
     "@react-email/components": "0.0.6",
     "@sinclair/typebox": "^0.29.6",
     "@types/axios": "^0.14.0",
