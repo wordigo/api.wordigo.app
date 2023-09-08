@@ -1,6 +1,6 @@
 import { SwaggerOptions } from '@fastify/swagger'
 
-const httpOption = process.env.TS_NODE_DEV ? 'http' : 'https'
+const httpOption = process.env.TS_NODE_DEV ? 'https' : 'http'
 
 export const swaggerConfig: SwaggerOptions = {
   swagger: {
