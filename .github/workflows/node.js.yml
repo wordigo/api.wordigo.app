@@ -22,4 +22,4 @@ jobs:
         cache: 'yarn'
     - run: yarn    
     - run: yarn build
-    
+    - run: pm2 restart api
