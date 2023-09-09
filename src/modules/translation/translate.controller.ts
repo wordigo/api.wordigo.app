@@ -27,7 +27,7 @@ export async function TextTranslate(
     to: targetLanguage,
     platform: "api"
   }
-  if (sourceLanguage) translateOptions.from = sourceLanguage
+  if (sourceLanguage !== "detech") translateOptions.from = sourceLanguage
 
   const {data} = await translateService.post("https://lingvanex-translate.p.rapidapi.com/translate", translateOptions)
 

@@ -1,12 +1,12 @@
-import { JSONSchema } from 'json-schema-to-ts'
 import { tags } from '@/utils/constants/Tags'
+import { JSONSchema } from 'json-schema-to-ts'
 
 export const TranslationValidationBody = {
   type: 'object',
   properties: {
     sourceLanguage: {
       type: 'string',
-      default: 'en',
+      default:"detech"
     },
     targetLanguage: {
       type: 'string',
