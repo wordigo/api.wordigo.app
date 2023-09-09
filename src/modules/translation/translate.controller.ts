@@ -4,19 +4,17 @@ import { TranslationValidationBody } from './translate.schema'
 
 import messages from '@/utils/constants/messages'
 import { successResult } from '@/utils/constants/results'
-import { Translate } from '@google-cloud/translate/build/src/v2'
 import i18next from 'i18next'
 
-const translate = new Translate({
-  projectId: process.env.CLOUD_TRANSLATE_PROJECT_ID,
-  key: process.env.CLOUD_TRANSLATE_API_KEY,
-})
+import translateService from "./translate.service"
 
 type TranslationValidationTye = FromSchema<typeof TranslationValidationBody>
 
 export interface ITranslateOptions {
   to?: string
   from?: string
+  data?:string
+  platform: "api"
 }
 
 export async function TextTranslate(
@@ -25,16 +23,19 @@ export async function TextTranslate(
 ) {
   const { query, targetLanguage, sourceLanguage } = request.body
   const translateOptions: ITranslateOptions = {
+    data: query,
     to: targetLanguage,
+    platform: "api"
   }
   if (sourceLanguage) translateOptions.from = sourceLanguage
-  const [, { data }] = await translate.translate(query, translateOptions)
 
-  const { translatedText, detectedSourceLanguage } = data.translations[0]
+  const {data} = await translateService.post("https://lingvanex-translate.p.rapidapi.com/translate", translateOptions)
+
+  const { translatedText, detectedSourceLanguage } = {translatedText:data.result, detectedSourceLanguage:data?.from}
 
   return reply.send(successResult({
     translatedText,
-    sourceLanguage: sourceLanguage || detectedSourceLanguage,
+    sourceLanguage: detectedSourceLanguage || sourceLanguage,
     targetLanguage,
   }, i18next.t(messages.success)))
 
