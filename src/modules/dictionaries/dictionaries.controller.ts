@@ -16,7 +16,7 @@ import {
 import { TypesOfPublics } from './dictionaries.types'
 import { Words } from '@prisma/client'
 import { DictionaryInitialTitle } from './dictionaries.types'
-//import { UploadingType, uploadImage } from '../../utils/helpers/fileUploading.helper'
+import { UploadingType, uploadImage } from '../../utils/helpers/fileUploading.helper'
 import { randomUUID } from 'crypto'
 import i18next from 'i18next'
 
@@ -398,12 +398,10 @@ export const UpdateImage = async (req: FastifyRequest<{ Body: UpdateImageType }>
     return reply.send(errorResult(null, i18next.t(messages.dictionary_not_found)))
   }
 
-  const resultOfUploading = null as any
-
-  // : UploadingType = await uploadImage('dictionary', dictionary.slug, encodedImage as string)
-  // if (!resultOfUploading.success) {
-  //   return reply.send(errorResult(null, i18next.t(messages.uploading_file)))
-  // }
+  const resultOfUploading: UploadingType = await uploadImage('dictionary', dictionary.slug, encodedImage as string)
+  if (!resultOfUploading.success) {
+    return reply.send(errorResult(null, i18next.t(messages.uploading_file)))
+  }
 
   const image = resultOfUploading.url as string
 

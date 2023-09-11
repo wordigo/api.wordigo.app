@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import messages from '../../utils/constants/messages'
 import { errorResult, successResult } from '../../utils/constants/results'
-//import { UploadingType, uploadImage } from '../../utils/helpers/fileUploading.helper'
+import { UploadingType, uploadImage } from '../../utils/helpers/fileUploading.helper'
 import { UpdateUserType } from './users.types'
 
 const prisma = new PrismaClient()
@@ -14,12 +14,10 @@ export const Update = async (updatingProps: UpdateUserType) => {
   //update methodlogy needs to be updated, current version of update is not powerful in the way of performance
 
   if (base64Avatar && base64Avatar.length > 0) {
-    const resultOfUploading = null as any
-
-    // : UploadingType = await uploadImage('user', user.username as string, base64Avatar as string)
-    // if (!resultOfUploading.success) {
-    //   return errorResult(null, messages.uploading_file)
-    // }
+    const resultOfUploading: UploadingType = await uploadImage('user', user.username as string, base64Avatar as string)
+    if (!resultOfUploading.success) {
+      return errorResult(null, messages.uploading_file)
+    }
 
     const avatar_url = resultOfUploading.url as string
 
