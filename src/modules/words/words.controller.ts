@@ -7,6 +7,8 @@ import { AllCountryLanguages } from './words.types'
 import { DictionaryInitialTitle } from '../dictionaries/dictionaries.types'
 import { LearningStatuses } from '@/utils/constants/enums'
 import i18next from 'i18next'
+import { randomUUID } from 'crypto'
+import slugify from 'slugify'
 
 type CreateType = FromSchema<typeof CreateValidation>
 
@@ -15,8 +17,7 @@ export const Create = async (req: FastifyRequest<{ Body: CreateType }>, reply: F
   const userId = req.user?.id
   const prisma = req.server.prisma
 
-  if (nativeLanguage?.trim().toLowerCase() === targetLanguage?.trim().toLowerCase())
-    return reply.send(errorResult(null, i18next.t(messages.languages_cant_same)))
+  if (nativeLanguage?.trim().toLowerCase() === targetLanguage?.trim().toLowerCase()) return reply.send(errorResult(null, i18next.t(messages.languages_cant_same)))
 
   let dicFromDb
 
@@ -88,6 +89,32 @@ export const Create = async (req: FastifyRequest<{ Body: CreateType }>, reply: F
     },
   })
 
+  if (!initialDictionary) {
+    let slug
+    while (true) {
+      const randomUID = randomUUID().split('-')
+      slug = slugify(`${DictionaryInitialTitle}-${randomUID[0]}${randomUID[1]}${randomUID[2]}`, {
+        replacement: '-',
+        remove: undefined, // remove characters that match regex, defaults to `undefined`
+        lower: true,
+        strict: false, // strip special characters except replacement, defaults to `false`
+        locale: 'vi', // language code of the locale to use
+        trim: true,
+      })
+
+      const doesSlugExist = await prisma.dictionaries.findFirst({ where: { slug } })
+      if (!doesSlugExist) break
+    }
+
+    initialDictionary = await prisma.dictionaries.create({
+      data: {
+        title: DictionaryInitialTitle,
+        authorId: userId,
+        slug,
+      },
+    })
+  }
+  // CHECK IT WORKS OR NOT AND THEN PUBLISH IT
   const dictAndUserWordsExists = await prisma.dictAndUserWords.findFirst({
     where: {
       userWordId: userWord.id,
