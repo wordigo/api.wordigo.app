@@ -1,3 +1,47 @@
+import AWS from 'aws-sdk'
+
+export interface UploadingType {
+  url?: string | null
+  success: boolean | null
+}
+
+AWS.config.update({
+  accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID as string,
+  secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY as string,
+  region: process.env.AWS_S3_REGION as string,
+})
+
+const s3 = new AWS.S3()
+
+export const uploadImage = (tableName: string, name: string, encodedImage: string): Promise<UploadingType> => {
+  const bucketName = process.env.AWS_S3_BUCKET_NAME as string
+  const fileName = `${tableName}/${name}`
+
+  const splittedEncodedImage = encodedImage?.split('base64,')
+
+  const extension = splittedEncodedImage?.[0].split('/')[1].split(';')[0]
+  const base64 = splittedEncodedImage?.[1]
+
+  const paramsForUpload = {
+    Bucket: bucketName,
+    Key: `${fileName}.${extension}`,
+    Body: Buffer.from(base64 as string, 'base64'),
+    ContentType: `image/${extension}`,
+  }
+
+  return new Promise<UploadingType>((resolve, reject) => {
+    s3.upload(paramsForUpload, (err: any, data: any) => {
+      if (err) {
+        //reject({ url: '', success: false } as UploadingType)
+        resolve({ url: null, success: false } as UploadingType)
+      } else {
+        resolve({ url: `https://wordigo.s3.eu-west-2.amazonaws.com/${tableName}/${name}.${extension}`, success: true } as UploadingType)
+      }
+    })
+  })
+}
+
+/*
 import { Storage } from '@google-cloud/storage'
 
 export interface UploadingType {
@@ -45,3 +89,4 @@ export const uploadImage = (tableName: string, name: string, encodedImage: strin
 
   return { url: `https://storage.googleapis.com/${process.env.CLOUD_STORAGE_BUCKET as string}/${fileName}`, success: true }
 }
+*/

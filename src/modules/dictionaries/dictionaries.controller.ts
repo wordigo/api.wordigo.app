@@ -33,8 +33,7 @@ export const Create = async (req: FastifyRequest<{ Body: CreateDictionaryType }>
   const { title, targetLang, sourceLang } = req.body
   const prisma = req.server.prisma
 
-  if (title && title.trim().toLowerCase() === DictionaryInitialTitle)
-    return reply.send(errorResult(null, i18next.t(messages.dictionary_already_exists)))
+  if (title && title.trim().toLowerCase() === DictionaryInitialTitle) return reply.send(errorResult(null, i18next.t(messages.dictionary_already_exists)))
 
   let slug
   while (true) {
@@ -70,8 +69,7 @@ export const Update = async (req: FastifyRequest<{ Body: UpdateDictionaryType }>
   let { slug, title, published, description, rate, level, targetLang, sourceLang } = req.body
   const prisma = req.server.prisma
 
-  if (title && title.trim().toLowerCase() === DictionaryInitialTitle)
-    return reply.send(errorResult(null, i18next.t(messages.dictionary_already_exists)))
+  if (title && title.trim().toLowerCase() === DictionaryInitialTitle) return reply.send(errorResult(null, i18next.t(messages.dictionary_already_exists)))
 
   const dictionary = await prisma.dictionaries.findFirst({
     where: { authorId: userId, slug },
@@ -400,12 +398,12 @@ export const UpdateImage = async (req: FastifyRequest<{ Body: UpdateImageType }>
     return reply.send(errorResult(null, i18next.t(messages.dictionary_not_found)))
   }
 
-  const resultOfUploading: UploadingType = uploadImage('dictionary', dictionary.slug, encodedImage as string)
+  const resultOfUploading: UploadingType = await uploadImage('dictionary', dictionary.slug, encodedImage as string)
   if (!resultOfUploading.success) {
     return reply.send(errorResult(null, i18next.t(messages.uploading_file)))
   }
 
-  const image = resultOfUploading.url
+  const image = resultOfUploading.url as string
 
   await prisma.dictionaries.update({ data: { image }, where: { id: dictionaryId } })
 

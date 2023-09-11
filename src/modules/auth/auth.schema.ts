@@ -35,7 +35,6 @@ export const SignInValidation = {
     },
     password: {
       type: 'string',
-      default: 'deneme',
     },
   },
   required: ['password'],
