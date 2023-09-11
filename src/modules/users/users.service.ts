@@ -14,7 +14,7 @@ export const Update = async (updatingProps: UpdateUserType) => {
   //update methodlogy needs to be updated, current version of update is not powerful in the way of performance
 
   if (base64Avatar && base64Avatar.length > 0) {
-    const resultOfUploading: UploadingType = uploadImage('user', user.username as string, base64Avatar as string)
+    const resultOfUploading: UploadingType = await uploadImage('user', user.username as string, base64Avatar as string)
     if (!resultOfUploading.success) {
       return errorResult(null, messages.uploading_file)
     }
