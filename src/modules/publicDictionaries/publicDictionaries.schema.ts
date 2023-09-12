@@ -1,6 +1,7 @@
 import { JSONSchema } from 'json-schema-to-ts'
 import { tags } from '../../utils/constants/Tags'
 import { FastifySchema } from 'fastify'
+import { GetDictionaryBySlugValidation } from '../dictionaries/dictionaries.schema'
 
 export const GetDictionaryByIdValidation = {
   type: 'object',
@@ -37,4 +38,17 @@ export const GetPublicDictionariesSchema = {
   querystring: GetPublicDictionariesValidation,
   tags: [tags.PublicDictionaries],
   summary: 'Getting Public Dictionaries',
+} as FastifySchema
+
+export const SubscribeSchema = {
+  querystring: GetDictionaryBySlugValidation,
+  tags: [tags.PublicDictionaries],
+  summary: 'Subscription',
+  security: [{ JWT: [] }],
+}
+export const UnsubscribeSchema = {
+  querystring: GetDictionaryBySlugValidation,
+  tags: [tags.PublicDictionaries],
+  summary: 'Unsubscribe from Dictionary',
+  security: [{ JWT: [] }],
 } as FastifySchema

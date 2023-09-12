@@ -141,13 +141,6 @@ export const GetWordsSchema = {
   security: [{ JWT: [] }],
 }
 
-export const SubscribeSchema = {
-  querystring: GetDictionaryBySlugValidation,
-  tags: [tags.Dictionaries],
-  summary: 'Subscription',
-  security: [{ JWT: [] }],
-}
-
 export const GetUserPublicDictionariesValidation = {
   type: 'object',
   properties: {
@@ -170,13 +163,6 @@ export const GetUserPublicDictionariesSchema = {
 export const GetListSchema = {
   tags: [tags.Dictionaries],
   summary: 'Getting List of Dictionary',
-  security: [{ JWT: [] }],
-} as FastifySchema
-
-export const UnsubscribeSchema = {
-  querystring: GetDictionaryBySlugValidation,
-  tags: [tags.Dictionaries],
-  summary: 'Unsubscribe from Dictionary',
   security: [{ JWT: [] }],
 } as FastifySchema
 
