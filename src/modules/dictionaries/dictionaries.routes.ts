@@ -24,20 +24,14 @@ import {
   GetUserPublicDictionariesSchema,
   GetWordsSchema,
   RemoveWordSchema,
-  SubscribeSchema,
-  UnsubscribeSchema,
   UpdateDictionarySchema,
-  UpdateImageSchema
+  UpdateImageSchema,
 } from './dictionaries.schema'
 
 export default async (fastify: FastifyInstance) => {
   fastify.post('/create', { schema: CreateDictionarySchema, preValidation: fastify.authVerify }, Create)
 
   fastify.post('/addWord', { schema: AddWordSchema, preValidation: fastify.authVerify }, AddWord)
-
-  fastify.post('/subscribe', { schema: SubscribeSchema, preValidation: fastify.authVerify }, Subscribe)
-
-  fastify.post('/unsubscribe', { schema: UnsubscribeSchema, preValidation: fastify.authVerify }, Unsubscribe)
 
   fastify.put('/update', { schema: UpdateDictionarySchema, preValidation: fastify.authVerify }, Update)
 

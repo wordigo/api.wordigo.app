@@ -7,4 +7,5 @@ export const tags = {
   UserSubscription: 'User Subscription',
   Words: 'Words',
   UserWords: 'UserWords',
+  Dashboard: 'Dashboard',
 }
