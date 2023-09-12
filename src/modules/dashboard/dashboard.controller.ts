@@ -26,11 +26,5 @@ export const Get = async (req: FastifyRequest, reply: FastifyReply) => {
 
   const result = { numberOfDictionaries, numberOfWords, numberOfSubbedDics, numberOfPublicDics }
 
-  /*
-user's number of dictionaries
-user's number of words
-user's number of public dictionaries
-user's number of subbed dictionaries
-*/
   return reply.send(successResult(result, i18next.t(messages.success)))
 }
