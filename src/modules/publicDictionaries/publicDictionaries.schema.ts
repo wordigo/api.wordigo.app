@@ -3,20 +3,11 @@ import { tags } from '../../utils/constants/Tags'
 import { FastifySchema } from 'fastify'
 import { GetDictionaryBySlugValidation } from '../dictionaries/dictionaries.schema'
 
-export const GetDictionaryByIdValidation = {
-  type: 'object',
-  properties: {
-    id: {
-      type: 'string',
-    },
-  },
-  required: ['id'],
-} as const satisfies JSONSchema
-
-export const GetUserDictionaryByIdSchema = {
-  querystring: GetDictionaryByIdValidation,
+export const GetUserDictionaryBySlugSchema = {
+  querystring: GetDictionaryBySlugValidation,
   tags: [tags.PublicDictionaries],
-  summary: 'Getting Public Dictionary By Id',
+  summary: 'Getting Public Dictionary By Slug',
+  security: [{ JWT: [] }],
 }
 
 export const GetPublicDictionariesValidation = {

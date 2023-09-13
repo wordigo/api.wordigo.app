@@ -3,6 +3,22 @@ import { JSONSchema } from 'json-schema-to-ts'
 import { tags } from '../../utils/constants/Tags'
 import { TypesOfPublics } from './dictionaries.types'
 
+export const GetDictionaryByIdValidation = {
+  type: 'object',
+  properties: {
+    id: {
+      type: 'string',
+    },
+  },
+  required: ['id'],
+} as const satisfies JSONSchema
+
+export const GetUserDictionaryByIdSchema = {
+  querystring: GetDictionaryByIdValidation,
+  tags: [tags.PublicDictionaries],
+  summary: 'Getting Public Dictionary By Id',
+}
+
 export const GetUserDictionariesSchema = {
   tags: [tags.Dictionaries],
   summary: 'Get User Dictionaries',

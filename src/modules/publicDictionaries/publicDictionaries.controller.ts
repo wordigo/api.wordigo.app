@@ -3,11 +3,12 @@ import { FromSchema } from 'json-schema-to-ts'
 
 import messages from '@/utils/constants/messages'
 import { PaginationType, errorResult, successPaginationResult, successResult } from '@/utils/constants/results'
-import { GetDictionaryByIdValidation, GetPublicDictionariesValidation } from './publicDictionaries.schema'
+import { GetPublicDictionariesValidation } from './publicDictionaries.schema'
 import i18next from 'i18next'
 import { GetDictionaryBySlugValidation } from '../dictionaries/dictionaries.schema'
+import { log } from 'console'
+import { Words } from '@prisma/client'
 
-type GetDictionaryByIdType = FromSchema<typeof GetDictionaryByIdValidation>
 type GetPublicDictionariesType = FromSchema<typeof GetPublicDictionariesValidation>
 type GetDictionaryBySlugType = FromSchema<typeof GetDictionaryBySlugValidation>
 
@@ -20,6 +21,7 @@ export const GetPublicDictionaries = async (req: FastifyRequest<{ Querystring: G
     where: {
       published: true,
     },
+    include: { author: { select: { name: true, avatar_url: true } } },
     skip: (page - 1) * size,
     take: size,
   })
@@ -40,17 +42,48 @@ export const GetPublicDictionaries = async (req: FastifyRequest<{ Querystring: G
   return reply.send(successPaginationResult(publicDics, pagination, i18next.t(messages.success)))
 }
 
-export const GetPublicDictionaryById = async (req: FastifyRequest<{ Querystring: GetDictionaryByIdType }>, reply: FastifyReply) => {
+export const GetPublicDictionaryBySlug = async (req: FastifyRequest<{ Querystring: GetDictionaryBySlugType }>, reply: FastifyReply) => {
   const prisma = req.server.prisma
 
-  const { id } = req.query
+  const { slug } = req.query
 
-  const dictionary = await prisma.dictionaries.findFirst({
+  let dictionary = await prisma.dictionaries.findFirst({
     where: {
-      id: parseInt(id as string),
+      slug,
       published: true,
     },
+    include: {
+      author: {
+        select: {
+          name: true,
+          avatar_url: true,
+        },
+      },
+      UserWords: {
+        include: {
+          userWord: {
+            include: {
+              word: true,
+            },
+          },
+        },
+      },
+    },
   })
+
+  if (dictionary) {
+    //@ts-ignore
+    delete dictionary?.authorId
+
+    let words = [] as Words[]
+    dictionary?.UserWords.map((w) => words.push(w.userWord.word))
+
+    //@ts-ignore
+    delete dictionary.UserWords
+
+    //@ts-ignore
+    dictionary = { ...dictionary, words }
+  }
 
   if (!dictionary) return reply.send(errorResult(dictionary, i18next.t(messages.dictionary_not_found)))
 
