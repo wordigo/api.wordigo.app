@@ -6,7 +6,7 @@ import { successResult } from '../../utils/constants/results'
 import { prisma } from '@/lib/prisma'
 import { DictionaryInitialTitle } from '../dictionaries/dictionaries.types'
 
-export const Get = async (req: FastifyRequest, reply: FastifyReply) => {
+export const GetStatistics = async (req: FastifyRequest, reply: FastifyReply) => {
   const user = req.user
 
   const dictionaries = await prisma.dictionaries.findMany({ where: { authorId: user.id }, include: { UserWords: true } })
