@@ -2,7 +2,7 @@ import messages from '@/utils/constants/messages'
 import { errorResult, successResult } from '@/utils/constants/results'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { FromSchema } from 'json-schema-to-ts'
-import { CreateValidation } from './words.schema'
+import { CreateValidation, DeleteValidation } from './words.schema'
 import { AllCountryLanguages } from './words.types'
 import { DictionaryInitialTitle } from '../dictionaries/dictionaries.types'
 import { LearningStatuses } from '@/utils/constants/enums'
@@ -12,6 +12,7 @@ import slugify from 'slugify'
 import { checkingOfLanguages } from '../translation/translate.service'
 
 type CreateType = FromSchema<typeof CreateValidation>
+type GetDictionaryByIdType = FromSchema<typeof DeleteValidation>
 
 export const Create = async (req: FastifyRequest<{ Body: CreateType }>, reply: FastifyReply) => {
   const { text, translatedText, nativeLanguage, targetLanguage, dictionaryId } = req.body
@@ -145,6 +146,31 @@ export const Create = async (req: FastifyRequest<{ Body: CreateType }>, reply: F
   }
 
   return reply.send(successResult(!dicFromDb ? initialDictionary : dicFromDb, i18next.t(messages.success)))
+}
+
+export const Delete = async (req: FastifyRequest<{ Querystring: GetDictionaryByIdType }>, reply: FastifyReply) => {
+  const userId = req.user?.id
+  const { wordId } = req.query
+  const prisma = req.server.prisma
+
+  const userWord = await prisma.userWords.findFirst({
+    where: {
+      wordId,
+      authorId: userId,
+    },
+  })
+
+  if (!userWord) {
+    return reply.send(errorResult(null, i18next.t(messages.userWord_not_found)))
+  }
+
+  await prisma.userWords.delete({
+    where: {
+      id: userWord.id,
+    },
+  })
+
+  return reply.send(successResult(null, i18next.t(messages.success)))
 }
 
 export const GetList = async (req: FastifyRequest, reply: FastifyReply) => {
