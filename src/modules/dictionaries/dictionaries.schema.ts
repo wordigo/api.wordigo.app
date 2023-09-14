@@ -157,25 +157,6 @@ export const GetWordsSchema = {
   security: [{ JWT: [] }],
 }
 
-export const GetUserPublicDictionariesValidation = {
-  type: 'object',
-  properties: {
-    type: {
-      type: 'string',
-      default: TypesOfPublics.All,
-      description: 'Valid Types \n all, subscribed, notSubscribed',
-    },
-  },
-  required: ['type'],
-} as const satisfies JSONSchema
-
-export const GetUserPublicDictionariesSchema = {
-  querystring: GetUserPublicDictionariesValidation,
-  tags: [tags.Dictionaries],
-  summary: 'Getting Public Dictionaries According to User',
-  security: [{ JWT: [] }],
-} as FastifySchema
-
 export const GetListSchema = {
   tags: [tags.Dictionaries],
   summary: 'Getting List of Dictionary',
