@@ -34,3 +34,20 @@ export const GetListSchema = {
   tags: [tags.Words],
   summary: 'Creation Operation of Word',
 }
+
+export const DeleteValidation = {
+  type: 'object',
+  properties: {
+    wordId: {
+      type: 'number',
+    },
+  },
+  required: ['wordId'],
+} as const satisfies JSONSchema
+
+export const DeleteSchema = {
+  querystring: DeleteValidation,
+  tags: [tags.Words],
+  description: 'Deleting Word From Her/His Dictionary',
+  security: [{ JWT: [] }],
+}
