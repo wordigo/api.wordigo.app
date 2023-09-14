@@ -9,6 +9,7 @@ import { LearningStatuses } from '@/utils/constants/enums'
 import i18next from 'i18next'
 import { randomUUID } from 'crypto'
 import slugify from 'slugify'
+import { checkingOfLanguages } from '../translation/translate.service'
 
 type CreateType = FromSchema<typeof CreateValidation>
 
@@ -34,13 +35,9 @@ export const Create = async (req: FastifyRequest<{ Body: CreateType }>, reply: F
     }
   }
 
-  const doLangsExist = AllCountryLanguages.filter((lang) => {
-    return lang.code.toLowerCase() === nativeLanguage.trim().toLowerCase() || lang.code.toLowerCase() === targetLanguage.trim().toLowerCase()
-  })
+  const doLangsExist = checkingOfLanguages(nativeLanguage as string, targetLanguage as string)
 
-  if (doLangsExist.length !== 2) {
-    return reply.send(errorResult(null, i18next.t(messages.language_not_found)))
-  }
+  if (!doLangsExist?.success) return reply.send(errorResult(null, i18next.t(doLangsExist?.message as string)))
 
   const wordFromDb = await prisma.words.findFirst({
     where: {

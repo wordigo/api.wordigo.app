@@ -1,19 +1,5 @@
 import { FastifyInstance } from 'fastify'
-import {
-  AddWord,
-  Create,
-  Delete,
-  GetList,
-  GetUserDictionaries,
-  GetUserDictionaryBySlug,
-  GetUserPublicDictionaries,
-  GetWords,
-  RemoveWord,
-  Subscribe,
-  Unsubscribe,
-  Update,
-  UpdateImage,
-} from './dictionaries.controller'
+import { AddWord, Create, Delete, GetList, GetUserDictionaries, GetUserDictionaryBySlug, GetWords, RemoveWord, Update, UpdateImage } from './dictionaries.controller'
 import {
   AddWordSchema,
   CreateDictionarySchema,
@@ -21,7 +7,6 @@ import {
   GetListSchema,
   GetUserDictionariesSchema,
   GetUserDictionaryBySlugSchema,
-  GetUserPublicDictionariesSchema,
   GetWordsSchema,
   RemoveWordSchema,
   UpdateDictionarySchema,
@@ -48,6 +33,4 @@ export default async (fastify: FastifyInstance) => {
   fastify.get('/getUserDictionaryBySlug', { schema: GetUserDictionaryBySlugSchema, preValidation: fastify.authVerify }, GetUserDictionaryBySlug)
 
   fastify.get('/getWords', { schema: GetWordsSchema, preValidation: fastify.authVerify }, GetWords)
-
-  fastify.get('/getUserPublicDictionaries', { schema: GetUserPublicDictionariesSchema, preValidation: fastify.authVerify }, GetUserPublicDictionaries)
 }
