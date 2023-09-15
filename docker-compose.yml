@@ -9,8 +9,12 @@ services:
       - db
   db:
     image: postgres
+    ports:
+      - 5432:5432
     restart: always
     environment:
       - POSTGRES_PASSWORD=password123
       - POSTGRES_USER=password123
       - POSTGRES_DB=password123
+      - PGPORT=5433
+
