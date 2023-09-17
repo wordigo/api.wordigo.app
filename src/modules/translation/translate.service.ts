@@ -1,15 +1,15 @@
 import messages from '@/utils/constants/messages'
+import { errorResult, successResult } from '@/utils/constants/results'
+import axios from 'axios'
 import { AllCountryLanguages } from '../words/words.types'
-import i18next from 'i18next'
-import { errorResult } from '@/utils/constants/results'
 
-export const options = {
+export const translateApi = axios.create({
   headers: {
-    'content-type': 'application/json',
+    'content-type': 'application/x-www-form-urlencoded',
     'X-RapidAPI-Key': process.env.RAPID_API_KEY,
     'X-RapidAPI-Host': process.env.RAPID_API_HOST,
   },
-}
+})
 
 export const checkingOfLanguages = (nativeLanguage: string, targetLanguage: string) => {
   const doLangsExist = AllCountryLanguages.filter((lang) => {
@@ -19,4 +19,5 @@ export const checkingOfLanguages = (nativeLanguage: string, targetLanguage: stri
   if (doLangsExist.length !== 2) {
     return errorResult(null, messages.language_not_found)
   }
+  return successResult(null, messages.success)
 }

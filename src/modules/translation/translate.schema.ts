@@ -6,7 +6,7 @@ export const TranslationValidationBody = {
   properties: {
     sourceLanguage: {
       type: 'string',
-      default:"detech"
+      default: 'auto',
     },
     targetLanguage: {
       type: 'string',
