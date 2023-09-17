@@ -5,31 +5,37 @@ import { TranslationValidationBody } from './translate.schema'
 import messages from '@/utils/constants/messages'
 import { successResult } from '@/utils/constants/results'
 import i18next from 'i18next'
-
-import { options } from './translate.service'
-import axios from 'axios'
+import { translateApi } from './translate.service'
 
 type TranslationValidationTye = FromSchema<typeof TranslationValidationBody>
 
 export interface ITranslateOptions {
-  to?: string
-  from?: string
-  data?: string
-  platform: 'api'
+  target_language?: string
+  source_language?: string
+  text?: string
 }
 
 export async function TextTranslate(request: FastifyRequest<{ Body: TranslationValidationTye }>, reply: FastifyReply) {
   const { query, targetLanguage, sourceLanguage } = request.body
   const translateOptions: ITranslateOptions = {
-    data: query,
-    to: targetLanguage,
-    platform: 'api',
+    text: query,
+    target_language: targetLanguage,
+    source_language: 'auto',
   }
-  if (sourceLanguage !== 'detech') translateOptions.from = sourceLanguage
 
-  const { data } = await axios.create(options).post('https://lingvanex-translate.p.rapidapi.com/translate', translateOptions)
+  if (sourceLanguage !== 'auto') translateOptions.source_language = sourceLanguage
 
-  const { translatedText, detectedSourceLanguage } = { translatedText: data.result, detectedSourceLanguage: data?.from }
+  const encodedParams = new URLSearchParams()
+  encodedParams.set('source_language', translateOptions.source_language as string)
+  encodedParams.set('target_language', translateOptions.target_language as string)
+  encodedParams.set('text', translateOptions.text as string)
+
+  const { data: response } = await translateApi.post('https://text-translator2.p.rapidapi.com/translate', encodedParams).catch((err) => {
+    console.log(err)
+    return err
+  })
+
+  const { translatedText, detectedSourceLanguage } = { translatedText: response.data?.translatedText, detectedSourceLanguage: response?.data?.detectedSourceLanguage?.code }
 
   return reply.send(
     successResult(

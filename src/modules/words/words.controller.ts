@@ -1,15 +1,14 @@
+import { LearningStatuses } from '@/utils/constants/enums'
 import messages from '@/utils/constants/messages'
 import { errorResult, successResult } from '@/utils/constants/results'
-import { FastifyReply, FastifyRequest } from 'fastify'
-import { FromSchema } from 'json-schema-to-ts'
-import { CreateValidation, DeleteValidation } from './words.schema'
-import { AllCountryLanguages } from './words.types'
-import { DictionaryInitialTitle } from '../dictionaries/dictionaries.types'
-import { LearningStatuses } from '@/utils/constants/enums'
-import i18next from 'i18next'
 import { randomUUID } from 'crypto'
+import { FastifyReply, FastifyRequest } from 'fastify'
+import i18next from 'i18next'
+import { FromSchema } from 'json-schema-to-ts'
 import slugify from 'slugify'
+import { DictionaryInitialTitle } from '../dictionaries/dictionaries.types'
 import { checkingOfLanguages } from '../translation/translate.service'
+import { CreateValidation, DeleteValidation } from './words.schema'
 
 type CreateType = FromSchema<typeof CreateValidation>
 type GetDictionaryByIdType = FromSchema<typeof DeleteValidation>

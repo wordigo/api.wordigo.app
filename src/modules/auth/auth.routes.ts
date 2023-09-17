@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify'
-import { SignIn, GoogleOAuth, SignUp } from './auth.controller'
+import { GoogleOAuth, SignIn, SignUp } from './auth.controller'
 import { GoogleAuthSchema, SignInSchema, SignUpSchema } from './auth.schema'
 
 export default async function (fastify: FastifyInstance) {

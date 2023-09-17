@@ -4,13 +4,13 @@ import slugify from 'slugify'
 
 import messages from '@/utils/constants/messages'
 import { errorResult, successResult } from '@/utils/constants/results'
-import { AddWordValidation, CreateDictionaryValidation, GetDictionaryBySlugValidation, RemoveWordValidation, UpdateDictionaryValidation, UpdateImageValidation } from './dictionaries.schema'
 import { Words } from '@prisma/client'
-import { DictionaryInitialTitle } from './dictionaries.types'
-import { UploadingType, uploadImage } from '../../utils/helpers/fileUploading.helper'
 import { randomUUID } from 'crypto'
 import i18next from 'i18next'
+import { UploadingType, uploadImage } from '../../utils/helpers/fileUploading.helper'
 import { checkingOfLanguages } from '../translation/translate.service'
+import { AddWordValidation, CreateDictionaryValidation, GetDictionaryBySlugValidation, RemoveWordValidation, UpdateDictionaryValidation, UpdateImageValidation } from './dictionaries.schema'
+import { DictionaryInitialTitle } from './dictionaries.types'
 
 type GetDictionaryBySlugType = FromSchema<typeof GetDictionaryBySlugValidation>
 type CreateDictionaryType = FromSchema<typeof CreateDictionaryValidation>
@@ -23,10 +23,12 @@ export const Create = async (req: FastifyRequest<{ Body: CreateDictionaryType }>
   const userId = req.user?.id
   const { title, targetLang, sourceLang } = req.body
   const prisma = req.server.prisma
+  console.log(messages.dictionary_already_exists)
 
   if (title && title.trim().toLowerCase() === DictionaryInitialTitle) return reply.send(errorResult(null, i18next.t(messages.dictionary_already_exists)))
 
   const doLangsExist = checkingOfLanguages(sourceLang as string, targetLang as string)
+  console.log(doLangsExist)
 
   if (!doLangsExist?.success) return reply.send(errorResult(null, i18next.t(doLangsExist?.message as string)))
 
