@@ -8,4 +8,5 @@ export const tags = {
   Words: 'Words',
   UserWords: 'UserWords',
   Dashboard: 'Dashboard',
+  General: 'General'
 }

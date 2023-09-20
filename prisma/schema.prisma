@@ -9,6 +9,16 @@ datasource db {
   directUrl = env("DIRECT_URL_DOCKER")
 }
 
+model Feedbacks {
+  id          Int      @id @default(autoincrement())
+  userId      String
+  user        Users?   @relation(fields: [userId], references: [id], onDelete: NoAction)
+  description String
+  rate        Int
+  createdDate DateTime @default(now())
+  updatedDate DateTime @default(now()) @updatedAt
+}
+
 model UserWords {
   id             Int                @id @default(autoincrement())
   wordId         Int
@@ -56,6 +66,7 @@ model Users {
   UserWords      UserWords[]
   Dictionaries   Dictionaries[]
   SubDics        SubscribedDics[]
+  Feedbacks      Feedbacks[]
 }
 
 model SubscribedDics {
