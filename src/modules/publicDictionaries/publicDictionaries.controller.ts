@@ -16,12 +16,17 @@ type GetUserPublicDictionariesType = FromSchema<typeof GetUserPublicDictionaries
 export const GetPublicDictionaries = async (req: FastifyRequest<{ Querystring: GetPublicDictionariesType }>, reply: FastifyReply) => {
   const prisma = req.server.prisma
 
-  const { page = 1, size = 10 } = req.query
+  const { page = 1, size = 10, search } = req.query
+
+  let where: any = { published: true }
+
+  if (search && search.length > 0) {
+    const title = { contains: search.trim().toLowerCase() }
+    where = { ...where, title }
+  }
 
   const publicDics = await prisma.dictionaries.findMany({
-    where: {
-      published: true,
-    },
+    where,
     include: { author: { select: { name: true, avatar_url: true } } },
     skip: (page - 1) * size,
     take: size,
