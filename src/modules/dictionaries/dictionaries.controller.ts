@@ -74,7 +74,7 @@ export const Update = async (req: FastifyRequest<{ Body: UpdateDictionaryType }>
   let { slug, title, published, description, rate, level, targetLang, sourceLang } = req.body
   const prisma = req.server.prisma
 
-  if (title && title.trim().toLowerCase() === DictionaryInitialTitle) return reply.send(errorResult(null, i18next.t(messages.dictionary_already_exists)))
+  if (title && title.trim().toLowerCase() === DictionaryInitialTitle) return reply.send(errorResult(null, i18next.t(messages.dictionary_initial_update)))
 
   const dictionary = await prisma.dictionaries.findFirst({
     where: { authorId: userId, slug },
@@ -160,7 +160,7 @@ export const GetUserDictionaryBySlug = async (req: FastifyRequest<{ Querystring:
   const { slug } = req.query
   const prisma = req.server.prisma
 
-  const userDictionaries = await prisma.dictionaries.findMany({
+  const userDictionaries = await prisma.dictionaries.findFirst({
     where: {
       authorId: req.user?.id,
       slug,
