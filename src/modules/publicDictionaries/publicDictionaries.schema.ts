@@ -22,6 +22,9 @@ export const GetPublicDictionariesValidation = {
       type: 'number',
       default: 10,
     },
+    search: {
+      type: 'string',
+    }
   },
   required: ['page', 'size'],
 } as const satisfies JSONSchema
