@@ -25,6 +25,8 @@ import publicDictionaryRoute from '@/modules/publicDictionaries/publicDictionari
 import subscribedUserRoute from '@/modules/subscribedUsers/subscribedUsers.routes'
 import wordRoute from '@/modules/words/words.routes'
 import dashboardRoute from '@/modules/dashboard/dashboard.routes'
+import generalRoute from '@/modules/general/general.routes'
+
 import CheckAuthMiddleware from '@/middlewares/auth/checkAuth.middleware'
 import { i18next, registeringi18nextMiddleware } from './utils/helpers/i18n.helper'
 
@@ -95,6 +97,7 @@ const main = async () => {
       api.register(subscribedUserRoute, { prefix: '/subscribedUsers' })
       api.register(translateRoute, { prefix: '/translation' })
       api.register(dashboardRoute, { prefix: '/dashboard' })
+      api.register(generalRoute, { prefix: '/general' })
     },
     { prefix: '/api/v1' }
   )
