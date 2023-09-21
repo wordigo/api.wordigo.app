@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import i18next from 'i18next'
 
-import messages from '@//utils/constants/messages'
+import messages from '@/utils/constants/messages'
 import { errorResult, successResult } from '@/utils/constants/results'
 import { prisma } from '@/lib/prisma'
 import { FromSchema } from 'json-schema-to-ts'
