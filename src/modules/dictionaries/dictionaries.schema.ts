@@ -62,7 +62,7 @@ export const CreateDictionaryValidation = {
       type: 'string',
     },
   },
-  required: ['title', 'sourceLang', 'targetLang'],
+  required: ['title'],
 } as const satisfies JSONSchema
 
 export const CreateDictionarySchema = {
