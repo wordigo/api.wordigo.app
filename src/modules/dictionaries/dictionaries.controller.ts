@@ -23,14 +23,14 @@ export const Create = async (req: FastifyRequest<{ Body: CreateDictionaryType }>
   const userId = req.user?.id
   const { title, targetLang, sourceLang } = req.body
   const prisma = req.server.prisma
-  console.log(messages.dictionary_already_exists)
 
   if (title && title.trim().toLowerCase() === DictionaryInitialTitle) return reply.send(errorResult(null, i18next.t(messages.dictionary_already_exists)))
 
-  const doLangsExist = checkingOfLanguages(sourceLang as string, targetLang as string)
-  console.log(doLangsExist)
+  if (sourceLang && targetLang) {
+    const doLangsExist = checkingOfLanguages(sourceLang as string, targetLang as string)
 
-  if (!doLangsExist?.success) return reply.send(errorResult(null, i18next.t(doLangsExist?.message as string)))
+    if (!doLangsExist?.success) return reply.send(errorResult(null, i18next.t(doLangsExist?.message as string)))
+  }
 
   // const doLangsExist = AllCountryLanguages.filter((lang) => {
   //   return lang.code.toLowerCase() === sourceLang?.trim().toLowerCase() || lang.code.toLowerCase() === targetLang?.trim().toLowerCase()
