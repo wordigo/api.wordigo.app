@@ -27,9 +27,18 @@ export const GetPublicDictionaries = async (req: FastifyRequest<{ Querystring: G
 
   const publicDics = await prisma.dictionaries.findMany({
     where,
-    include: { author: { select: { name: true, avatar_url: true } } },
+    include: { author: { select: { name: true, avatar_url: true } }, UserWords: { include: { userWord: { include: { word: true } } } } },
     skip: (page - 1) * size,
     take: size,
+  })
+
+  const result = publicDics.map((dic) => {
+    let numberOfWords = dic.UserWords.length
+
+    //@ts-ignore
+    delete dic.UserWords
+
+    return { ...dic, numberOfWords }
   })
 
   const numberOfPublicDics = await prisma.dictionaries.count({
@@ -45,7 +54,7 @@ export const GetPublicDictionaries = async (req: FastifyRequest<{ Querystring: G
     totalCount: numberOfPublicDics,
   }
 
-  return reply.send(successPaginationResult(publicDics, pagination, i18next.t(messages.success)))
+  return reply.send(successPaginationResult(result, pagination, i18next.t(messages.success)))
 }
 
 export const GetPublicDictionaryBySlug = async (req: FastifyRequest<{ Querystring: GetDictionaryBySlugType }>, reply: FastifyReply) => {
