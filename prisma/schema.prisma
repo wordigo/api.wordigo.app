@@ -12,7 +12,7 @@ datasource db {
 model Feedbacks {
   id          Int      @id @default(autoincrement())
   userId      String
-  user        Users?   @relation(fields: [userId], references: [id], onDelete: NoAction)
+  user        Users?   @relation(fields: [userId], references: [id], onDelete: SetDefault)
   description String
   rate        Int
   createdDate DateTime @default(now())
