@@ -7,7 +7,8 @@ export const SignUpValidation = {
   properties: {
     email: {
       type: 'string',
-      format: 'email'
+      format: 'email',
+      default: 'string'
     },
     password: {
       type: 'string',
