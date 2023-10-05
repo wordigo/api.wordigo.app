@@ -34,6 +34,8 @@ export const SignInValidation = {
     },
     email: {
       type: 'string',
+      format: 'email',
+      default: 'string'
     },
     password: {
       type: 'string',
