@@ -52,7 +52,7 @@ model Dictionaries {
 
 model Users {
   id             String           @id @default(cuid())
-  email          String           @db.VarChar(320)
+  email          String           @db.VarChar(100000)
   username       String?
   name           String?
   passwordHash   String?

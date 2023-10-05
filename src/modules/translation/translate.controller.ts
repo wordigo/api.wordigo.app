@@ -30,10 +30,7 @@ export async function TextTranslate(request: FastifyRequest<{ Body: TranslationV
   encodedParams.set('target_language', translateOptions.target_language as string)
   encodedParams.set('text', translateOptions.text as string)
 
-  const { data: response } = await translateApi.post('https://text-translator2.p.rapidapi.com/translate', encodedParams).catch((err) => {
-    console.log(err)
-    return err
-  })
+  const { data: response } = await translateApi.post('https://text-translator2.p.rapidapi.com/translate', encodedParams)
 
   const { translatedText, detectedSourceLanguage } = { translatedText: response.data?.translatedText, detectedSourceLanguage: response?.data?.detectedSourceLanguage?.code }
 
