@@ -61,7 +61,6 @@ export const SignUp = async (req: FastifyRequest<{ Body: SignUpValidationType }>
 
   // await sendMail(email as string, i18next.t("welcome_user"), render(reactEmail));
 
-  try {
     await prisma.users.create({
       data: {
         avatar_url: `https://wordigo.app/api/dynamic-avatar?username=${username}?size=256`,
@@ -72,11 +71,8 @@ export const SignUp = async (req: FastifyRequest<{ Body: SignUpValidationType }>
         passwordSalt: passwordHashAndSalt.salt,
         nativeLanguage,
         provider: Providers.Local,
-      }}) 
-  } catch (err) {
-    console.log(err);
-    
-  }
+      },
+  })
 
   return reply.send(successResult(null, i18next.t(messages.success)))
 }
