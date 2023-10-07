@@ -1,6 +1,6 @@
 import { main } from '@/app'
 import { gracefullyShutdown, unexpectedErrorHandler } from '@/lib/exit-handler'
-import prompt from '../prompt'
+// import prompt from '../prompt'
 
 /*
  * Build service
