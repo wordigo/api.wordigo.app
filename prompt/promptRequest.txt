@@ -1,0 +1,34 @@
+ONLY NEEDS TO DO IS CHANGE THE "Software" TO WHAT YOU WANT TO CREATE ABOUT
+
+
+Words {
+  "text":"string",
+  "translatedText":"string",
+  "nativeLanguage":"string", 
+  "targetLanguage":"string" 
+}
+
+"Software" is our topic for this json formatsI want from you to create 30 words appropriate for this structure 
+
+"text" is going to our word which you proivde to me
+"translatedText" is going to translated version of word which you provide to me in Turkish
+"nativeLanguage" is going to "en"
+"targetLanguage" is going to "tr"
+
+can you provide to me these all in format of json and lowercase and title needs to be set as topic then I will use it as request to my backend
+
+desired json format -->
+
+{
+    "titleOfDic": "string",
+    "nativeLanguage:"string",
+    "targetLanguage:"string",
+    "words": [
+        {
+            "text": "application",
+            "translatedText": "uygulama",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        }
+    ]
+}

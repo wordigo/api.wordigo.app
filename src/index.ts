@@ -1,5 +1,6 @@
 import { main } from '@/app'
 import { gracefullyShutdown, unexpectedErrorHandler } from '@/lib/exit-handler'
+import prompt from '../prompt'
 
 /*
  * Build service
@@ -18,6 +19,7 @@ main()
     app
       .listen({ port: app.config.PORT, host: app.config.BIND_ADDR })
       .then((_) => {
+        //prompt()
         app.log.info('Ready, Waiting for connections...')
       })
       .catch((err) => {

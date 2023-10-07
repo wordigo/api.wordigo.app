@@ -9,7 +9,8 @@
     "./src/index.ts",
     "./src/types/prisma.d.ts",
     "./src/types/requests.d.ts",
-    "./src/types/config.d.ts"
+    "./src/types/config.d.ts",
+    "./prompt/newFile.ts"
   ],
   "compilerOptions": {
     "target": "es2016",

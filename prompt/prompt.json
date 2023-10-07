@@ -1,0 +1,169 @@
+{
+    "titleOfDic": "Kitchen",
+    "nativeLanguage": "en",
+    "targetLanguage": "tr",
+    "words": [
+        {
+            "text": "knife",
+            "translatedText": "bıçak",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "fork",
+            "translatedText": "çatal",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "spoon",
+            "translatedText": "kaşık",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "plate",
+            "translatedText": "tabak",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "cup",
+            "translatedText": "bardak",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "pot",
+            "translatedText": "tencere",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "pan",
+            "translatedText": "tava",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "oven",
+            "translatedText": "fırın",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "microwave",
+            "translatedText": "mikrodalga",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "refrigerator",
+            "translatedText": "buzdolabı",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "sink",
+            "translatedText": "lavabo",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "stove",
+            "translatedText": "ocak",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "cutting board",
+            "translatedText": "kesme tahtası",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "kettle",
+            "translatedText": "su ısıtıcısı",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "dishwasher",
+            "translatedText": "bulaşık makinesi",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "oven mitts",
+            "translatedText": "fırın eldivenleri",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "utensils",
+            "translatedText": "mutfak gereçleri",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "measuring cup",
+            "translatedText": "ölçü kabı",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "saucepan",
+            "translatedText": "sos tenceresi",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "mixer",
+            "translatedText": "mikser",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "grater",
+            "translatedText": "rendeci",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "can opener",
+            "translatedText": "konserve açacağı",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "serving platter",
+            "translatedText": "sunum tabağı",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "napkin",
+            "translatedText": "peçete",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "bowl",
+            "translatedText": "kase",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "cutlery",
+            "translatedText": "kesici aletler",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "oven tray",
+            "translatedText": "fırın tepsisi",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        }
+    ]
+}

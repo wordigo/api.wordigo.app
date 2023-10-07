@@ -8,7 +8,6 @@ export const SignUpValidation = {
     email: {
       type: 'string',
       format: 'email',
-      default: 'string'
     },
     password: {
       type: 'string',
@@ -35,7 +34,6 @@ export const SignInValidation = {
     email: {
       type: 'string',
       format: 'email',
-      default: 'string'
     },
     password: {
       type: 'string',

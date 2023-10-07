@@ -11,6 +11,7 @@ import { UploadingType, uploadImage } from '../../utils/helpers/fileUploading.he
 import { checkingOfLanguages } from '../translation/translate.service'
 import { AddWordValidation, CreateDictionaryValidation, GetDictionaryBySlugValidation, RemoveWordValidation, UpdateDictionaryValidation, UpdateImageValidation } from './dictionaries.schema'
 import { DictionaryInitialTitle } from './dictionaries.types'
+import { create } from './dictionaries.service'
 
 type GetDictionaryBySlugType = FromSchema<typeof GetDictionaryBySlugValidation>
 type CreateDictionaryType = FromSchema<typeof CreateDictionaryValidation>
@@ -22,51 +23,10 @@ type UpdateImageType = FromSchema<typeof UpdateImageValidation>
 export const Create = async (req: FastifyRequest<{ Body: CreateDictionaryType }>, reply: FastifyReply) => {
   const userId = req.user?.id
   const { title, targetLang, sourceLang } = req.body
-  const prisma = req.server.prisma
 
-  if (title && title.trim().toLowerCase() === DictionaryInitialTitle) return reply.send(errorResult(null, i18next.t(messages.dictionary_already_exists)))
-
-  if (sourceLang && targetLang) {
-    const doLangsExist = checkingOfLanguages(sourceLang as string, targetLang as string)
-
-    if (!doLangsExist?.success) return reply.send(errorResult(null, i18next.t(doLangsExist?.message as string)))
-  }
-
-  // const doLangsExist = AllCountryLanguages.filter((lang) => {
-  //   return lang.code.toLowerCase() === sourceLang?.trim().toLowerCase() || lang.code.toLowerCase() === targetLang?.trim().toLowerCase()
-  // })
-
-  // if (doLangsExist.length !== 2) {
-  //   return reply.send(errorResult(null, i18next.t(messages.language_not_found)))
-  // }
-
-  let slug
-  while (true) {
-    const randomUID = randomUUID().split('-')
-    slug = slugify(`${title}-${randomUID[0]}${randomUID[1]}${randomUID[2]}`, {
-      replacement: '-',
-      remove: undefined, // remove characters that match regex, defaults to `undefined`
-      lower: true,
-      strict: false, // strip special characters except replacement, defaults to `false`
-      locale: 'vi', // language code of the locale to use
-      trim: true,
-    })
-
-    const doesSlugExist = await prisma.dictionaries.findFirst({ where: { slug } })
-    if (!doesSlugExist) break
-  }
-
-  const newDictionary = await prisma.dictionaries.create({
-    data: {
-      title: title.trim().toLowerCase(),
-      authorId: userId,
-      slug,
-      targetLang,
-      sourceLang,
-    },
-  })
-
-  return reply.send(successResult(newDictionary, i18next.t(messages.success)))
+  return reply.send(
+    await create(title, targetLang as string, sourceLang as string, false, userId)
+  )
 }
 
 export const Update = async (req: FastifyRequest<{ Body: UpdateDictionaryType }>, reply: FastifyReply) => {
@@ -102,7 +62,7 @@ export const Delete = async (req: FastifyRequest<{ Querystring: GetDictionaryByS
   })
 
   if (!dictionary) {
-    return errorResult(null, i18next.t(messages.dictionary_not_found))
+    return reply.send(errorResult(null, i18next.t(messages.dictionary_not_found)))
   }
 
   await prisma.dictionaries.delete({
