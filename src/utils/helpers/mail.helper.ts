@@ -30,7 +30,7 @@ export const sendMail = async (to: string, subject: string, html: string) => {
 }
 
 export const getMailTemplate = (template: 'welcome' = 'welcome', language: string, replaceVariables: object) => {
-  const templatePath = path.join(__dirname, `../../templates/${template}/${language}.html`)
+  const templatePath = path.join(__dirname, `../../../templates/${template}/${language}.html`)
   let templateContent = fs.readFileSync(templatePath, 'utf8')
 
   for (const [key, value] of Object.entries(replaceVariables)) {
