@@ -1,6 +1,6 @@
 import { FastifySchema } from 'fastify'
-import { tags } from '../../utils/constants/Tags'
 import { JSONSchema } from 'json-schema-to-ts'
+import { tags } from '../../utils/constants/Tags'
 
 export const GetByIdValidation = {
   type: 'object',

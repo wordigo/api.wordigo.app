@@ -10,6 +10,7 @@ import { Providers } from '@/utils/constants/enums'
 import messages from '@/utils/constants/messages'
 import { errorResult, successResult } from '@/utils/constants/results'
 import { pathsOfLanguages } from '@/utils/helpers/i18n.helper'
+import { getMailTemplate, sendMail } from '@/utils/helpers/mail.helper'
 import { createPasswordHash, verifyPasswordHash } from '@/utils/helpers/password.helper'
 import { createToken } from '@/utils/helpers/token.helper'
 import { GoogleAuthValidation, SignInValidation, SignUpValidation } from './auth.schema'
@@ -57,21 +58,26 @@ export const SignUp = async (req: FastifyRequest<{ Body: SignUpValidationType }>
     nativeLanguage = 'en'
   }
 
-  // const reactEmail = GetEmailTemplate({ type: "welcome", language: nativeLanguage as string, props: { name } });
+  const formattedDate = new Intl.DateTimeFormat(nativeLanguage, {
+    dateStyle: 'medium',
+    timeStyle: 'medium',
+  }).format(new Date())
 
-  // await sendMail(email as string, i18next.t("welcome_user"), render(reactEmail));
+  const renderEmail = getMailTemplate('welcome', nativeLanguage, { username: name, createdDate: formattedDate })
 
-    await prisma.users.create({
-      data: {
-        avatar_url: `https://wordigo.app/api/dynamic-avatar?username=${username}?size=256`,
-        email,
-        name,
-        username,
-        passwordHash: passwordHashAndSalt.hash,
-        passwordSalt: passwordHashAndSalt.salt,
-        nativeLanguage,
-        provider: Providers.Local,
-      },
+  await sendMail(email as string, i18next.t('welcome_user'), renderEmail)
+
+  await prisma.users.create({
+    data: {
+      avatar_url: `https://wordigo.app/api/dynamic-avatar?username=${username}?size=256`,
+      email,
+      name,
+      username,
+      passwordHash: passwordHashAndSalt.hash,
+      passwordSalt: passwordHashAndSalt.salt,
+      nativeLanguage,
+      provider: Providers.Local,
+    },
   })
 
   return reply.send(successResult(null, i18next.t(messages.success)))
