@@ -24,6 +24,31 @@ export const GetPublicDictionariesValidation = {
     },
     search: {
       type: 'string',
+    },
+    rate: {
+      type: 'number'
+    },
+    level: {
+      type: 'number',
+      description: 'Restrictions are according to A1, A2, B1, B2, C1 and C2 levels (1-6 are allowed!)'
+    },
+    sourceLang: {
+      type: 'string',
+    },
+    targetLang: {
+      type: 'string',
+    },
+    fromDate: {
+      type: 'string',
+    },
+    toDate: {
+      type: 'string',
+    },
+    fromNumOfWords: {
+      type: 'number'
+    },
+    toNumOfWords: {
+      type: 'number'
     }
   },
   required: ['page', 'size'],

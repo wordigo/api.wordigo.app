@@ -16,21 +16,86 @@ type GetUserPublicDictionariesType = FromSchema<typeof GetUserPublicDictionaries
 export const GetPublicDictionaries = async (req: FastifyRequest<{ Querystring: GetPublicDictionariesType }>, reply: FastifyReply) => {
   const prisma = req.server.prisma
 
-  const { page = 1, size = 10, search } = req.query
+  const {
+    page = 1,
+    size = 10,
+    search,
+    rate,
+    level,
+    sourceLang,
+    targetLang,
+    fromNumOfWords,
+    toNumOfWords,
+    fromDate,
+    toDate
+  } = req.query
 
-  let where: any = { published: true }
 
-  if (search && search.length > 0) {
-    const title = { contains: search.trim().toLowerCase() }
-    where = { ...where, title }
-  }
+  const filters = [
+    {
+      condition: search && search.length > 0,
+      filter: { contains: search?.trim().toLowerCase() },
+    },
+    {
+      condition: rate && rate > 0,
+      filter: { rate },
+    },
+    {
+      condition: level && level > 0,
+      filter: { level },
+    },
+    {
+      condition: sourceLang && sourceLang.length > 0,
+      filter: { sourceLang },
+    },
+    {
+      condition: targetLang && targetLang.length > 0,
+      filter: { targetLang },
+    },
+    {
+      condition: fromDate && fromDate.length > 0,
+      filter: { createdDate: { gte: new Date(fromDate as string) } }
+    },
+    {
+      condition: toDate && toDate.length > 0,
+      filter: { createdDate: { lte: new Date(toDate as string) } }
+    }
+  ]
 
-  const publicDics = await prisma.dictionaries.findMany({
+  const where: any = filters.reduce((where, filter) => {
+    if (filter.condition) {
+      return { ...where, ...filter.filter }
+    }
+    return where
+  }, { published: true })
+
+  let publicDics = await prisma.dictionaries.findMany({
     where,
     include: { author: { select: { name: true, avatar_url: true } }, UserWords: { include: { userWord: { include: { word: true } } } } },
-    skip: (page - 1) * size,
-    take: size,
+    //skip: (page - 1) * size,
+    //take: size
   })
+
+  publicDics = publicDics.filter(dic => {
+    if (toNumOfWords && toNumOfWords as number > 0 && fromNumOfWords && fromNumOfWords as number > 0)
+      return dic.UserWords.length < (toNumOfWords as number) && dic.UserWords.length > (fromNumOfWords as number)
+
+    else if (fromNumOfWords && fromNumOfWords > 0)
+      return dic.UserWords.length > fromNumOfWords
+
+    else if (toNumOfWords && toNumOfWords > 0)
+      return dic.UserWords.length < toNumOfWords
+
+    else
+      return true
+  })
+
+  const numberOfDics = publicDics.length
+
+  publicDics = publicDics
+    .slice((page - 1) * size) //skip
+    .slice(0, size) //take
+    .sort((a, b) => a.createdDate.getTime() - b.createdDate.getTime()) //sort
 
   const result = publicDics.map((dic) => {
     let numberOfWords = dic.UserWords.length
@@ -41,17 +106,11 @@ export const GetPublicDictionaries = async (req: FastifyRequest<{ Querystring: G
     return { ...dic, numberOfWords }
   })
 
-  const numberOfPublicDics = await prisma.dictionaries.count({
-    where: {
-      published: true,
-    },
-  })
-
   const pagination: PaginationType = {
     page,
     size,
-    totalPage: Math.ceil(numberOfPublicDics / size),
-    totalCount: numberOfPublicDics,
+    totalPage: Math.ceil(numberOfDics / size),
+    totalCount: numberOfDics,
   }
 
   return reply.send(successPaginationResult(result, pagination, i18next.t(messages.success)))
