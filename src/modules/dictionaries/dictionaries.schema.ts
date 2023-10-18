@@ -86,6 +86,8 @@ export const UpdateDictionaryValidation = {
     },
     level: {
       type: 'number',
+      maximum: 6,
+      minimum: 1
     },
     rate: {
       type: 'number',
