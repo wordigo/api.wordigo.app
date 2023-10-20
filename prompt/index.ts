@@ -1,8 +1,8 @@
-import { create as createDic } from '@/modules/dictionaries/dictionaries.service'
-import { create as createWord } from '@/modules/words/words.service'
+import { create as createDic } from '../src/modules/dictionaries/dictionaries.service'
+import { create as createWord } from '../src/modules/words/words.service'
 import * as fs from 'fs'
 import { Dictionaries, prisma } from '../src/lib/prisma'
-import messages from '@/utils/constants/messages'
+import messages from '../src/utils/constants/messages'
 
 export const promptJsonPath = '/prompt.json'
 
@@ -17,6 +17,8 @@ export interface Prompt {
     titleOfDic: string,
     nativeLanguage: string,
     targetLanguage: string,
+    description: string,
+    level: number,
     words: WordObject[]
 }
 
@@ -43,7 +45,15 @@ export default async () => {
             if (!user)
                 return console.error(messages.user_not_found)
 
-            const createDicResult = await createDic(prompt.titleOfDic, prompt.targetLanguage, prompt.nativeLanguage, true, user?.id as string)
+            const createDicResult = await createDic(
+                prompt.titleOfDic,
+                prompt.targetLanguage,
+                prompt.nativeLanguage,
+                prompt.description,
+                prompt.level,
+                true,
+                user?.id as string
+            )
             if (!createDicResult.success)
                 return console.error(createDicResult.message)
 

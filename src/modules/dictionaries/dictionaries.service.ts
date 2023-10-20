@@ -8,8 +8,12 @@ import messages from '../../utils/constants/messages'
 import { errorResult, successResult } from '../../utils/constants/results'
 import { checkingOfLanguages } from '../translation/translate.service'
 
-export const create = async (title: string, targetLang: string, sourceLang: string, published: boolean, userId: string) => {
+export const create = async (title: string, targetLang: string, sourceLang: string, description: string, level: number, published: boolean, userId: string) => {
     if (title && title.trim().toLowerCase() === DictionaryInitialTitle) return errorResult(null, i18next.t(messages.dictionary_already_exists))
+
+    const dicFromDb = await prisma.dictionaries.findFirst({ where: { title: title.trim().toLowerCase() } })
+    if (dicFromDb)
+        return errorResult(null, i18next.t(messages.dictionary_already_exists))
 
     if (sourceLang && targetLang) {
         const doLangsExist = checkingOfLanguages(sourceLang as string, targetLang as string)
@@ -40,7 +44,9 @@ export const create = async (title: string, targetLang: string, sourceLang: stri
             slug,
             targetLang,
             sourceLang,
-            published
+            published,
+            description,
+            level
         },
     })
 

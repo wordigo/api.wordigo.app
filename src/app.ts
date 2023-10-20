@@ -33,7 +33,10 @@ import { i18next, registeringi18nextMiddleware } from './utils/helpers/i18n.help
 import path from 'path'
 
 const main = async () => {
-  const app = fastify({ logger: loggerConfig })
+  const app = fastify({
+    logger: loggerConfig,
+    bodyLimit: 5 * 1024 * 1024
+  })
 
   await app.register(registeringi18nextMiddleware, { i18next })
 

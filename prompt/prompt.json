@@ -1,167 +1,319 @@
 {
-    "titleOfDic": "Kitchen",
+    "titleOfDic": "First 50 Intermediate Words in English",
     "nativeLanguage": "en",
     "targetLanguage": "tr",
+    "description": "This dictionary contains the first 50 intermediate-level words in English.",
+    "level": 3,
     "words": [
         {
-            "text": "knife",
-            "translatedText": "bıçak",
+            "text": "application",
+            "translatedText": "uygulama",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "fork",
-            "translatedText": "çatal",
+            "text": "beneficial",
+            "translatedText": "yararlı",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "spoon",
-            "translatedText": "kaşık",
+            "text": "consequence",
+            "translatedText": "sonuç",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "plate",
-            "translatedText": "tabak",
+            "text": "diligent",
+            "translatedText": "gayretli",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "cup",
-            "translatedText": "bardak",
+            "text": "efficient",
+            "translatedText": "verimli",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "pot",
-            "translatedText": "tencere",
+            "text": "flexible",
+            "translatedText": "esnek",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "pan",
-            "translatedText": "tava",
+            "text": "gratitude",
+            "translatedText": "minnettarlık",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "oven",
-            "translatedText": "fırın",
+            "text": "hypothesis",
+            "translatedText": "hipotez",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "microwave",
-            "translatedText": "mikrodalga",
+            "text": "implement",
+            "translatedText": "uygulamak",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "refrigerator",
-            "translatedText": "buzdolabı",
+            "text": "juxtapose",
+            "translatedText": "yan yana koymak",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "sink",
-            "translatedText": "lavabo",
+            "text": "knowledgeable",
+            "translatedText": "bilgili",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "stove",
-            "translatedText": "ocak",
+            "text": "legitimate",
+            "translatedText": "meşru",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "cutting board",
-            "translatedText": "kesme tahtası",
+            "text": "meticulous",
+            "translatedText": "titiz",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "kettle",
-            "translatedText": "su ısıtıcısı",
+            "text": "negotiate",
+            "translatedText": "pazarlık yapmak",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "dishwasher",
-            "translatedText": "bulaşık makinesi",
+            "text": "obligation",
+            "translatedText": "yükümlülük",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "oven mitts",
-            "translatedText": "fırın eldivenleri",
+            "text": "perspective",
+            "translatedText": "bakış açısı",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "utensils",
-            "translatedText": "mutfak gereçleri",
+            "text": "qualitative",
+            "translatedText": "niteliksel",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "measuring cup",
-            "translatedText": "ölçü kabı",
+            "text": "reliable",
+            "translatedText": "güvenilir",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "saucepan",
-            "translatedText": "sos tenceresi",
+            "text": "sustainable",
+            "translatedText": "sürdürülebilir",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "mixer",
-            "translatedText": "mikser",
+            "text": "transparent",
+            "translatedText": "şeffaf",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "grater",
-            "translatedText": "rendeci",
+            "text": "unambiguous",
+            "translatedText": "açık",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "can opener",
-            "translatedText": "konserve açacağı",
+            "text": "versatile",
+            "translatedText": "çok yönlü",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "serving platter",
-            "translatedText": "sunum tabağı",
+            "text": "warrant",
+            "translatedText": "garanti etmek",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "napkin",
-            "translatedText": "peçete",
+            "text": "xenophobia",
+            "translatedText": "yabancı düşmanlığı",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "bowl",
-            "translatedText": "kase",
+            "text": "yield",
+            "translatedText": "verim",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "cutlery",
-            "translatedText": "kesici aletler",
+            "text": "zeal",
+            "translatedText": "şevk",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "oven tray",
-            "translatedText": "fırın tepsisi",
+            "text": "analyze",
+            "translatedText": "analiz etmek",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "brevity",
+            "translatedText": "kısalık",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "coherent",
+            "translatedText": "tutarlı",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "determine",
+            "translatedText": "belirlemek",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "evaluate",
+            "translatedText": "değerlendirmek",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "formulate",
+            "translatedText": "formüle etmek",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "generate",
+            "translatedText": "üretmek",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "hypothesize",
+            "translatedText": "varsayım yapmak",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "integrate",
+            "translatedText": "bütünleşmek",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "justify",
+            "translatedText": "haklı çıkarmak",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "kinetic",
+            "translatedText": "kinetik",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "leverage",
+            "translatedText": "kaldıraç",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "manipulate",
+            "translatedText": "manipüle etmek",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "navigate",
+            "translatedText": "yönlendirmek",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "optimize",
+            "translatedText": "optimize etmek",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "paradigm",
+            "translatedText": "paradigma",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "quantify",
+            "translatedText": "nicellemek",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "reiterate",
+            "translatedText": "tekrar etmek",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "synthesize",
+            "translatedText": "sentezlemek",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "trivial",
+            "translatedText": "önemsiz",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "undermine",
+            "translatedText": "zayıflatmak",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "validate",
+            "translatedText": "doğrulamak",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "widespread",
+            "translatedText": "yaygın",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "xenophile",
+            "translatedText": "yabancı seven",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "yielding",
+            "translatedText": "verimli",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "zealous",
+            "translatedText": "gayretli",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         }
