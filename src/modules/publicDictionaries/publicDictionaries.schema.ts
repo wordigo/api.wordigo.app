@@ -20,7 +20,7 @@ export const GetPublicDictionariesValidation = {
     },
     size: {
       type: 'number',
-      default: 10,
+      default: 30,
     },
     search: {
       type: 'string',

@@ -34,7 +34,7 @@ export const GetPublicDictionaries = async (req: FastifyRequest<{ Querystring: G
   const filters = [
     {
       condition: search && search.length > 0,
-      filter: { contains: search?.trim().toLowerCase() },
+      filter: { title: { contains: search?.trim().toLowerCase() as string } },
     },
     {
       condition: rate && rate > 0,

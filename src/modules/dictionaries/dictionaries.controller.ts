@@ -22,10 +22,10 @@ type UpdateImageType = FromSchema<typeof UpdateImageValidation>
 
 export const Create = async (req: FastifyRequest<{ Body: CreateDictionaryType }>, reply: FastifyReply) => {
   const userId = req.user?.id
-  const { title, targetLang, sourceLang } = req.body
+  const { title, targetLang, sourceLang, description, level } = req.body
 
   return reply.send(
-    await create(title, targetLang as string, sourceLang as string, false, userId)
+    await create(title, targetLang as string, sourceLang as string, description as string, level as number, false, userId)
   )
 }
 
