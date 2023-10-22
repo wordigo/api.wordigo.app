@@ -5,7 +5,7 @@ const Config = {
     properties: {
       PORT: {
         type: 'number',
-        default: 4000,
+        default: 8080,
       },
       BIND_ADDR: {
         type: 'string',
