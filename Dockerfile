@@ -8,6 +8,10 @@ RUN yarn
 
 COPY . ./
 
-EXPOSE 4000
+RUN yarn db:generate
+RUN yarn db:push
+RUN yarn build
 
-CMD sh -c "yarn db:generate && yarn db:push && yarn dev"
+EXPOSE 8080
+
+CMD yarn start
