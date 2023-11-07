@@ -5,3 +5,5 @@ export enum TypesOfPublics {
 }
 
 export const DictionaryInitialTitle = 'initial'
+
+export const AWSFolderName = 'Dictionaries'

@@ -51,7 +51,7 @@ export const uploadImage = (tableName: string, name: string, encodedImage: strin
         //reject({ url: '', success: false } as UploadingType)
         resolve({ url: null, success: false } as UploadingType)
       } else {
-        resolve({ url: `https://wordigo.s3.eu-west-2.amazonaws.com/${tableName}/${name}.${extension}`, success: true } as UploadingType)
+        resolve({ url: `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_S3_REGION}.amazonaws.com/${tableName}/${name}.${extension}`, success: true } as UploadingType)
       }
     })
   })
