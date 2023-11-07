@@ -1,319 +1,325 @@
 {
-    "titleOfDic": "First 50 Intermediate Words in English",
+    "titleOfDic": "greetings and phrases",
     "nativeLanguage": "en",
     "targetLanguage": "tr",
-    "description": "This dictionary contains the first 50 intermediate-level words in English.",
-    "level": 3,
+    "description": "A collection of common greetings and phrases used in everyday conversation, translated from English to Turkish.",
+    "level": 2,
     "words": [
         {
-            "text": "application",
-            "translatedText": "uygulama",
+            "text": "hello",
+            "translatedText": "merhaba",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "beneficial",
-            "translatedText": "yararlı",
+            "text": "goodbye",
+            "translatedText": "güle güle",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "consequence",
-            "translatedText": "sonuç",
+            "text": "please",
+            "translatedText": "lütfen",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "diligent",
-            "translatedText": "gayretli",
+            "text": "thank you",
+            "translatedText": "teşekkür ederim",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "efficient",
-            "translatedText": "verimli",
+            "text": "sorry",
+            "translatedText": "özür dilerim",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "flexible",
-            "translatedText": "esnek",
+            "text": "yes",
+            "translatedText": "evet",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "gratitude",
-            "translatedText": "minnettarlık",
+            "text": "no",
+            "translatedText": "hayır",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "hypothesis",
-            "translatedText": "hipotez",
+            "text": "good morning",
+            "translatedText": "günaydın",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "implement",
-            "translatedText": "uygulamak",
+            "text": "good night",
+            "translatedText": "iyi geceler",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "juxtapose",
-            "translatedText": "yan yana koymak",
+            "text": "how are you?",
+            "translatedText": "nasılsınız?",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "knowledgeable",
-            "translatedText": "bilgili",
+            "text": "fine, thanks",
+            "translatedText": "iyiyim, teşekkürler",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "legitimate",
-            "translatedText": "meşru",
+            "text": "you're welcome",
+            "translatedText": "bir şey değil",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "meticulous",
-            "translatedText": "titiz",
+            "text": "excuse me",
+            "translatedText": "afedersiniz",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "negotiate",
-            "translatedText": "pazarlık yapmak",
+            "text": "what's your name?",
+            "translatedText": "adınız ne?",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "obligation",
-            "translatedText": "yükümlülük",
+            "text": "my name is...",
+            "translatedText": "benim adım...",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "perspective",
-            "translatedText": "bakış açısı",
+            "text": "where are you from?",
+            "translatedText": "nerelisiniz?",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "qualitative",
-            "translatedText": "niteliksel",
+            "text": "i'm from...",
+            "translatedText": "ben...",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "reliable",
-            "translatedText": "güvenilir",
+            "text": "do you speak English?",
+            "translatedText": "ingilizce konuşuyor musunuz?",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "sustainable",
-            "translatedText": "sürdürülebilir",
+            "text": "i don't understand",
+            "translatedText": "anlamıyorum",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "transparent",
-            "translatedText": "şeffaf",
+            "text": "could you repeat that?",
+            "translatedText": "tekrar eder misiniz?",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "unambiguous",
-            "translatedText": "açık",
+            "text": "i speak a little Turkish",
+            "translatedText": "biraz türkçe konuşabiliyorum",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "versatile",
-            "translatedText": "çok yönlü",
+            "text": "how much is this?",
+            "translatedText": "bu ne kadar?",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "warrant",
-            "translatedText": "garanti etmek",
+            "text": "where is the bathroom?",
+            "translatedText": "tuvalet nerede?",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "xenophobia",
-            "translatedText": "yabancı düşmanlığı",
+            "text": "help!",
+            "translatedText": "imdat!",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "yield",
-            "translatedText": "verim",
+            "text": "i need a doctor",
+            "translatedText": "bir doktora ihtiyacım var",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "zeal",
-            "translatedText": "şevk",
+            "text": "i'm lost",
+            "translatedText": "kayboldum",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "analyze",
-            "translatedText": "analiz etmek",
+            "text": "cheers!",
+            "translatedText": "şerefe!",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "brevity",
-            "translatedText": "kısalık",
+            "text": "welcome",
+            "translatedText": "hoş geldiniz",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "coherent",
-            "translatedText": "tutarlı",
+            "text": "have a nice day",
+            "translatedText": "iyi günler",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "determine",
-            "translatedText": "belirlemek",
+            "text": "enjoy your meal",
+            "translatedText": "afiyet olsun",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "evaluate",
-            "translatedText": "değerlendirmek",
+            "text": "see you later",
+            "translatedText": "görüşürüz",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "formulate",
-            "translatedText": "formüle etmek",
+            "text": "take care",
+            "translatedText": "kendine iyi bak",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "generate",
-            "translatedText": "üretmek",
+            "text": "i love you",
+            "translatedText": "seni seviyorum",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "hypothesize",
-            "translatedText": "varsayım yapmak",
+            "text": "congratulations",
+            "translatedText": "tebrikler",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "integrate",
-            "translatedText": "bütünleşmek",
+            "text": "happy birthday",
+            "translatedText": "doğum günün kutlu olsun",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "justify",
-            "translatedText": "haklı çıkarmak",
+            "text": "i'm sorry for your loss",
+            "translatedText": "başınız sağ olsun",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "kinetic",
-            "translatedText": "kinetik",
+            "text": "what time is it?",
+            "translatedText": "saat kaç?",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "leverage",
-            "translatedText": "kaldıraç",
+            "text": "can you help me?",
+            "translatedText": "bana yardım eder misiniz?",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "manipulate",
-            "translatedText": "manipüle etmek",
+            "text": "i'm here on vacation",
+            "translatedText": "buraya tatile geldim",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "navigate",
-            "translatedText": "yönlendirmek",
+            "text": "i would like...",
+            "translatedText": "ben ... isterim",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "optimize",
-            "translatedText": "optimize etmek",
+            "text": "can i get the bill please?",
+            "translatedText": "hesabı alabilir miyim lütfen?",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "paradigm",
-            "translatedText": "paradigma",
+            "text": "where can I find a taxi?",
+            "translatedText": "bir taksi nerede bulabilirim?",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "quantify",
-            "translatedText": "nicellemek",
+            "text": "i need a hotel",
+            "translatedText": "bir otele ihtiyacım var",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "reiterate",
-            "translatedText": "tekrar etmek",
+            "text": "i'm allergic to...",
+            "translatedText": "...'e alerjim var",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "synthesize",
-            "translatedText": "sentezlemek",
+            "text": "i'm looking for...",
+            "translatedText": "... arıyorum",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "trivial",
-            "translatedText": "önemsiz",
+            "text": "can I have a bag?",
+            "translatedText": "bir poşet alabilir miyim?",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "undermine",
-            "translatedText": "zayıflatmak",
+            "text": "i would like to exchange money",
+            "translatedText": "para bozdurmak istiyorum",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "validate",
-            "translatedText": "doğrulamak",
+            "text": "i would like to make a reservation",
+            "translatedText": "bir rezervasyon yapmak istiyorum",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "widespread",
-            "translatedText": "yaygın",
+            "text": "can you show me on the map?",
+            "translatedText": "bana haritada gösterir misiniz?",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "xenophile",
-            "translatedText": "yabancı seven",
+            "text": "i'm here for business",
+            "translatedText": "iş için buradayım",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "yielding",
-            "translatedText": "verimli",
+            "text": "what is the Wi-Fi password?",
+            "translatedText": "Wi-Fi şifresi nedir?",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         },
         {
-            "text": "zealous",
-            "translatedText": "gayretli",
+            "text": "i would like a coffee",
+            "translatedText": "bir kahve alabilir miyim",
+            "nativeLanguage": "en",
+            "targetLanguage": "tr"
+        },
+        {
+            "text": "where is the nearest ATM?",
+            "translatedText": "en yakın ATM nerede?",
             "nativeLanguage": "en",
             "targetLanguage": "tr"
         }

@@ -10,7 +10,7 @@ import i18next from 'i18next'
 import { UploadingType, uploadImage } from '../../utils/helpers/fileUploading.helper'
 import { checkingOfLanguages } from '../translation/translate.service'
 import { AddWordValidation, CreateDictionaryValidation, GetDictionaryBySlugValidation, RemoveWordValidation, UpdateDictionaryValidation, UpdateImageValidation } from './dictionaries.schema'
-import { DictionaryInitialTitle } from './dictionaries.types'
+import { AWSFolderName, DictionaryInitialTitle } from './dictionaries.types'
 import { create } from './dictionaries.service'
 
 type GetDictionaryBySlugType = FromSchema<typeof GetDictionaryBySlugValidation>
@@ -259,7 +259,7 @@ export const UpdateImage = async (req: FastifyRequest<{ Body: UpdateImageType }>
     return reply.send(errorResult(null, i18next.t(messages.dictionary_not_found)))
   }
 
-  const resultOfUploading: UploadingType = await uploadImage('dictionary', dictionary.slug, encodedImage as string)
+  const resultOfUploading: UploadingType = await uploadImage(AWSFolderName, dictionary.slug, encodedImage as string)
   if (!resultOfUploading.success) {
     return reply.send(errorResult(null, i18next.t(messages.uploading_file)))
   }

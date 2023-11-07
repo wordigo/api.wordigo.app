@@ -24,3 +24,5 @@ export interface UpdateUserType {
   nativeLanguage?: string
   targetLanguage?: string
 }
+
+export const AWSFolderName = 'Users'
