@@ -3,13 +3,13 @@ import { FromSchema } from 'json-schema-to-ts'
 import slugify from 'slugify'
 
 import messages from '@/utils/constants/messages'
-import { errorResult, successResult } from '@/utils/constants/results'
+import { PaginationType, errorResult, successPaginationResult, successResult } from '@/utils/constants/results'
 import { Words } from '@prisma/client'
 import { randomUUID } from 'crypto'
 import i18next from 'i18next'
 import { UploadingType, uploadImage } from '../../utils/helpers/fileUploading.helper'
 import { checkingOfLanguages } from '../translation/translate.service'
-import { AddWordValidation, CreateDictionaryValidation, GetDictionaryBySlugValidation, RemoveWordValidation, UpdateDictionaryValidation, UpdateImageValidation } from './dictionaries.schema'
+import { AddWordValidation, CreateDictionaryValidation, GetDictionaryBySlugValidation, GetUserDictionariesFilterValidation, RemoveWordValidation, UpdateDictionaryValidation, UpdateImageValidation } from './dictionaries.schema'
 import { AWSFolderName, DictionaryInitialTitle } from './dictionaries.types'
 import { create } from './dictionaries.service'
 
@@ -19,6 +19,7 @@ type UpdateDictionaryType = FromSchema<typeof UpdateDictionaryValidation>
 type RemoveWordType = FromSchema<typeof RemoveWordValidation>
 type AddWordType = FromSchema<typeof AddWordValidation>
 type UpdateImageType = FromSchema<typeof UpdateImageValidation>
+type GetUserDictionariesFilterType = FromSchema<typeof GetUserDictionariesFilterValidation>
 
 export const Create = async (req: FastifyRequest<{ Body: CreateDictionaryType }>, reply: FastifyReply) => {
   const userId = req.user?.id
@@ -114,6 +115,64 @@ export const GetUserDictionaries = async (request: FastifyRequest, reply: Fastif
   })
 
   return reply.send(successResult(result, i18next.t(messages.success)))
+}
+
+export const GetUserDictionariesFilter = async (request: FastifyRequest<{ Querystring: GetUserDictionariesFilterType }>, reply: FastifyReply) => {
+  const userId = request.user?.id
+  const prisma = request.server.prisma
+
+  const { page = 1, size = 10, title } = request.query
+
+  let where = { authorId: userId } as { authorId: string, title: { contains: string } }
+
+  if (title && title.trim().length > 0)
+    where = { ...where, title: { contains: title?.trim().toLowerCase() } }
+
+  let userDictionaries = await prisma.dictionaries.findMany({
+    where,
+    include: {
+      UserWords: {
+        include: {
+          userWord: {
+            include: {
+              word: {
+                select: {
+                  id: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    }
+  })
+
+  const numberOfDics = userDictionaries.length
+
+  userDictionaries = userDictionaries
+    .slice((page - 1) * size) //skip
+    .slice(0, size) //take
+    .sort((a, b) => a.createdDate.getTime() - b.createdDate.getTime()) //sort
+
+  const result = userDictionaries.map((dic) => {
+    let numberOfWords = dic.UserWords.length
+
+    //@ts-ignore
+    delete dic.UserWords
+
+    return { ...dic, numberOfWords }
+  })
+  console.log(result.length, size)
+  const pagination: PaginationType = {
+    page,
+    size,
+    totalPage: Math.ceil(numberOfDics / size),
+    totalCount: numberOfDics,
+  }
+
+  return reply.send(successPaginationResult(result, pagination, i18next.t(messages.success)))
+
+  //return reply.send(successResult(result, i18next.t(messages.success)))
 }
 
 export const GetUserDictionaryBySlug = async (req: FastifyRequest<{ Querystring: GetDictionaryBySlugType }>, reply: FastifyReply) => {

@@ -25,6 +25,31 @@ export const GetUserDictionariesSchema = {
   security: [{ JWT: [] }],
 }
 
+export const GetUserDictionariesFilterValidation = {
+  type: 'object',
+  properties: {
+    page: {
+      type: 'number',
+      default: 1,
+    },
+    size: {
+      type: 'number',
+      default: 10,
+    },
+    title: {
+      type: 'string',
+    },
+  },
+  required: ['page', 'size'],
+} as const satisfies JSONSchema
+
+export const GetUserDictionariesFilterSchema = {
+  querystring: GetUserDictionariesFilterValidation,
+  tags: [tags.Dictionaries],
+  summary: 'Get User Dictionaries With Pagination and Title Filter',
+  security: [{ JWT: [] }],
+}
+
 export const GetDictionaryBySlugValidation = {
   type: 'object',
   properties: {
