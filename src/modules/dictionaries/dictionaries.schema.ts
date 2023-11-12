@@ -56,6 +56,14 @@ export const GetDictionaryBySlugValidation = {
     slug: {
       type: 'string',
     },
+    page: {
+      type: 'number',
+      default: 1,
+    },
+    size: {
+      type: 'number',
+      default: 10,
+    }
   },
   required: ['slug'],
 } as const satisfies JSONSchema

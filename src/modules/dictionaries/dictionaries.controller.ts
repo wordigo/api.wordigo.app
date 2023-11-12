@@ -275,7 +275,7 @@ export const AddWord = async (req: FastifyRequest<{ Body: AddWordType }>, reply:
 }
 
 export const GetWords = async (req: FastifyRequest<{ Querystring: GetDictionaryBySlugType }>, reply: FastifyReply) => {
-  const { slug } = req.query
+  const { page = 1, size = 10, slug } = req.query
   const userId = req.user?.id
   const prisma = req.server.prisma
 
@@ -297,12 +297,18 @@ export const GetWords = async (req: FastifyRequest<{ Querystring: GetDictionaryB
     },
   })
 
-  const responseData = {
+
+  let responseData = {
     words: [] as Words[],
     numberOfWords: dictionary?.UserWords.length,
   }
 
   dictionary?.UserWords.map((w) => responseData.words.push(w.userWord.word))
+
+  responseData.words = responseData.words
+    .slice((page - 1) * size) //skip
+    .slice(0, size) //take
+    .sort((a, b) => a.createdDate.getTime() - b.createdDate.getTime()) //sort
 
   if (!dictionary) return reply.send(errorResult(null, i18next.t(messages.dictionary_not_found)))
 
