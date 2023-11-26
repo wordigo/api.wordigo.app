@@ -34,11 +34,36 @@ export const WordInteraction = async (req: FastifyRequest, reply: FastifyReply) 
 
   //const { typeOfStatistic } = req.query
 
-  const userWords = await prisma.userWords.findMany({ where: { authorId: user.id } })
+  const dates = (await prisma.userWords.findMany({ where: { authorId: user.id } })).map(w => w.createdDate)
 
-  const firstDate = new Date(Math.min(...userWords.map(u => u.createdDate.getTime())))
-  const day = 30 * firstDate.getMonth() + firstDate.getDay()
-  const week = 4 * firstDate.getMonth() + Math.ceil(firstDate.getDay() / 7)
+  /*
+
+  let sumOfInsert = 0     all days, all months
+  let numberOfInsert = 0  number of data with respect to context (daily, monthly)
+  let numberOfDateValue = 0     how many days/months
+  let dateValue = 0   current date (1. day or 4. month)
+
+  loop(dates)
+  {
+    if(dates[i].day(or month) != dateValue){
+      numberOfDateValue ++
+      dateValue = dates[i].day(or month)
+      sumOfInsert+=numberOfInsert
+      numberOfInsert=0
+    }
+
+    if(numberOfInsert == 0 && dates[i].day(or month) == dateValue){
+      loop(dates){
+        if(dates[i].day(or month) == dateValue){
+          numberOfInsert++
+        }else{
+          break
+        }
+      }
+    }
+  }
+
+  */
 
   //console.log(firstDate, lastDate)
 }
