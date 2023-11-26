@@ -1,7 +1,9 @@
 import { FastifyInstance } from 'fastify'
-import { GetSchema } from './dashboard.schema'
-import { GetStatistics } from './dashboard.controller'
+import { GeneralStatisticSchema, WordInteractionSchema } from './dashboard.schema'
+import { GeneralStatistic, WordInteraction } from './dashboard.controller'
 
 export default async function (fastify: FastifyInstance) {
-  fastify.get('/getStatistics', { schema: GetSchema, preValidation: fastify.authVerify }, GetStatistics)
+  fastify.get('/generalStatistic', { schema: GeneralStatisticSchema, preValidation: fastify.authVerify }, GeneralStatistic)
+
+  fastify.get('/wordInteraction', { schema: WordInteractionSchema, preValidation: fastify.authVerify }, WordInteraction)
 }
