@@ -51,21 +51,23 @@ export const WordInteraction = async (req: FastifyRequest<{ Querystring: WordInt
 
     // to evaluating the value of day or month, getting 01 from 01.01.2023 
     if (typeOfStatistic == TypesOfStatistic.daily) {
-      parsedDate = parseInt(dates[i].toString().slice(0, 2))
+      parsedDate = parseInt(dates[i].toISOString().slice(8, 11))
     }
     else if (typeOfStatistic == TypesOfStatistic.monthly) {
-      parsedDate = parseInt(dates[i].toString().slice(3, 5))
+      parsedDate = parseInt(dates[i].toISOString().slice(5, 8))
     }
     else if (typeOfStatistic == TypesOfStatistic.weekly) {
       parsedDate = 0
     }
-
+    console.log(parsedDate)
 
     if (parsedDate != dateValue) {
       numberOfDateValue++
       dateValue = parsedDate
+      console.log(1, sumOfInsert, numberOfInsert)
       sumOfInsert += numberOfInsert
       numberOfInsert = 0
+      console.log(2, sumOfInsert, numberOfInsert)
     }
 
     if (numberOfInsert == 0 && parsedDate == dateValue) {
@@ -74,54 +76,32 @@ export const WordInteraction = async (req: FastifyRequest<{ Querystring: WordInt
 
         // to evaluating the value of day or month, getting 01 from 01.01.2023 
         if (typeOfStatistic == TypesOfStatistic.daily) {
-          nestedParsedDate = parseInt(dates[i].toString().slice(0, 2))
+          nestedParsedDate = parseInt(dates[j].toISOString().slice(8, 11))
         }
         else if (typeOfStatistic == TypesOfStatistic.monthly) {
-          nestedParsedDate = parseInt(dates[i].toString().slice(3, 5))
+          nestedParsedDate = parseInt(dates[j].toISOString().slice(5, 8))
         }
-        else if (typeOfStatistic == TypesOfStatistic.monthly) {
+        else if (typeOfStatistic == TypesOfStatistic.weekly) {
           nestedParsedDate = 0
         }
 
-        if (nestedParsedDate == dateValue)
+        if (nestedParsedDate == dateValue) {
           numberOfInsert++
+        }
         else
           break
       }
     }
+
+    if (numberOfInsert > 0 && i == dates.length - 1) {
+      //console.log(dates.length, numberOfInsert, sumOfInsert)
+      console.log(3, sumOfInsert, numberOfInsert)
+      sumOfInsert += numberOfInsert
+      console.log(4, sumOfInsert, numberOfInsert)
+    }
   }
 
   console.log(numberOfDateValue, sumOfInsert)
-  console.log(Math.ceil(sumOfInsert / numberOfDateValue))
+  console.log(sumOfInsert / numberOfDateValue)
 
-  /*
-
-  let sumOfInsert = 0     all days, all months
-  let numberOfInsert = 0  number of data with respect to context (daily, monthly)
-  let numberOfDateValue = 0     how many days/months
-  let dateValue = 0   current date (1. day or 4. month)
-
-  loop(dates)
-  {
-    if(dates[i].day(or month) != dateValue){
-      numberOfDateValue ++
-      dateValue = dates[i].day(or month)
-      sumOfInsert+=numberOfInsert
-      numberOfInsert=0
-    }
-
-    if(numberOfInsert == 0 && dates[i].day(or month) == dateValue){
-      loop(dates){
-        if(dates[i].day(or month) == dateValue){
-          numberOfInsert++
-        }else{
-          break
-        }
-      }
-    }
-  }
-
-  */
-
-  //console.log(firstDate, lastDate)
 }
