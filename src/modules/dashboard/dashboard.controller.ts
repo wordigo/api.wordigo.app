@@ -35,11 +35,13 @@ export const GeneralStatistic = async (req: FastifyRequest, reply: FastifyReply)
 }
 
 export const WordInteraction = async (req: FastifyRequest<{ Querystring: WordInteractionValidationType }>, reply: FastifyReply) => {
-  const user = req.user
+  //const user = req.user
+  const user = await prisma.users.findFirst({ where: { id: "cloestp9w0000mc11ujktu21s" } })
+
 
   const { typeOfStatistic } = req.query as any
 
-  const dates = (await prisma.userWords.findMany({ where: { authorId: user.id } })).map(w => w.createdDate)
+  const dates = (await prisma.userWords.findMany({ where: { authorId: user!.id } })).map(w => w.createdDate)
 
   let sumOfInsert = 0
   let numberOfInsert = 0
@@ -59,19 +61,16 @@ export const WordInteraction = async (req: FastifyRequest<{ Querystring: WordInt
     else if (typeOfStatistic == TypesOfStatistic.weekly) {
       parsedDate = 0
     }
-    console.log(parsedDate)
 
     if (parsedDate != dateValue) {
       numberOfDateValue++
       dateValue = parsedDate
-      console.log(1, sumOfInsert, numberOfInsert)
       sumOfInsert += numberOfInsert
       numberOfInsert = 0
-      console.log(2, sumOfInsert, numberOfInsert)
     }
 
     if (numberOfInsert == 0 && parsedDate == dateValue) {
-      for (let j = 0;j < dates.length;j++) {
+      for (let j = i;j < dates.length;j++) {
         let nestedParsedDate = 0
 
         // to evaluating the value of day or month, getting 01 from 01.01.2023 
@@ -85,8 +84,10 @@ export const WordInteraction = async (req: FastifyRequest<{ Querystring: WordInt
           nestedParsedDate = 0
         }
 
+        console.log(nestedParsedDate, dateValue)
         if (nestedParsedDate == dateValue) {
           numberOfInsert++
+          console.log(numberOfInsert)
         }
         else
           break
@@ -94,11 +95,11 @@ export const WordInteraction = async (req: FastifyRequest<{ Querystring: WordInt
     }
 
     if (numberOfInsert > 0 && i == dates.length - 1) {
-      //console.log(dates.length, numberOfInsert, sumOfInsert)
-      console.log(3, sumOfInsert, numberOfInsert)
       sumOfInsert += numberOfInsert
-      console.log(4, sumOfInsert, numberOfInsert)
     }
+
+    // if (dates.length - 1 == i)
+    //   console.log(parsedDate, i)
   }
 
   console.log(numberOfDateValue, sumOfInsert)
