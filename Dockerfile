@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:20
 
 WORKDIR /app
 
@@ -12,6 +12,6 @@ RUN yarn db:generate
 RUN yarn db:push
 RUN yarn build
 
-EXPOSE 8080
+EXPOSE 4000
 
 CMD yarn start
