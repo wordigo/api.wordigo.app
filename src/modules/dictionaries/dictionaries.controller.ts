@@ -1,17 +1,15 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { FromSchema } from 'json-schema-to-ts'
-import slugify from 'slugify'
 
 import messages from '@/utils/constants/messages'
 import { PaginationType, errorResult, successPaginationResult, successResult } from '@/utils/constants/results'
+import { UploadingType, uploadImage } from '@/utils/helpers/fileUploading.helper'
+import ImageCompress from '@/utils/helpers/imageCompress.helper'
 import { Words } from '@prisma/client'
-import { randomUUID } from 'crypto'
 import i18next from 'i18next'
-import { UploadingType, uploadImage } from '../../utils/helpers/fileUploading.helper'
-import { checkingOfLanguages } from '../translation/translate.service'
 import { AddWordValidation, CreateDictionaryValidation, GetDictionaryBySlugValidation, GetUserDictionariesFilterValidation, RemoveWordValidation, UpdateDictionaryValidation, UpdateImageValidation } from './dictionaries.schema'
-import { AWSFolderName, DictionaryInitialTitle } from './dictionaries.types'
 import { create } from './dictionaries.service'
+import { AWSFolderName, DictionaryInitialTitle } from './dictionaries.types'
 
 type GetDictionaryBySlugType = FromSchema<typeof GetDictionaryBySlugValidation>
 type CreateDictionaryType = FromSchema<typeof CreateDictionaryValidation>
@@ -316,15 +314,17 @@ export const GetWords = async (req: FastifyRequest<{ Querystring: GetDictionaryB
 }
 
 export const UpdateImage = async (req: FastifyRequest<{ Body: UpdateImageType }>, reply: FastifyReply) => {
-  const { dictionaryId, encodedImage } = req.body
   const prisma = req.server.prisma
+  const { dictionaryId, encodedImage } = req.body
 
   const dictionary = await prisma.dictionaries.findFirst({ where: { id: dictionaryId } })
   if (!dictionary) {
     return reply.send(errorResult(null, i18next.t(messages.dictionary_not_found)))
   }
 
-  const resultOfUploading: UploadingType = await uploadImage(AWSFolderName, dictionary.slug, encodedImage as string)
+  const compress = await ImageCompress(encodedImage as string, 0.8)
+
+  const resultOfUploading: UploadingType = await uploadImage(AWSFolderName, dictionary.slug, compress)
   if (!resultOfUploading.success) {
     return reply.send(errorResult(null, i18next.t(messages.uploading_file)))
   }
