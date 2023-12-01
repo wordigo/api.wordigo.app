@@ -35,92 +35,105 @@ export const GeneralStatistic = async (req: FastifyRequest, reply: FastifyReply)
 }
 
 export const WordInteraction = async (req: FastifyRequest<{ Querystring: WordInteractionValidationType }>, reply: FastifyReply) => {
-  const user = req.user
+  //const user = req.user
+  const user = await prisma.users.findFirst({ where: { id: 'cloestp9w0000mc11ujktu21s' } })
 
   const { typeOfStatistic } = req.query as any
 
-  const dates = (await prisma.userWords.findMany({ where: { authorId: user.id } })).map(w => w.createdDate)
+  const dates = (await prisma.userWords.findMany({ where: { authorId: user!.id } })).map(w => w.createdDate)
 
   let sumOfInsert = 0
   let numberOfInsert = 0
   let numberOfDateValue = 0
   let dateValue = 0
   let firstDayOfDates = 0
-  let firstDayOfWeek = 0
+  let dayOfWeek = 0
+  let monday = 0
+  let sunday = 0
 
-  for (let i = 0;i < dates.length;i++) {
-    switch (typeOfStatistic) {
-      case TypesOfStatistic.daily || TypesOfStatistic.monthly:
-        {
-          let parsedDate = 0
+  if (typeOfStatistic == TypesOfStatistic.daily || typeOfStatistic == TypesOfStatistic.monthly) {
+    for (let i = 0;i < dates.length;i++) {
+      let parsedDate = 0
+
+      // to evaluating the value of day or month, getting 01 from 01.01.2023 
+      if (typeOfStatistic == TypesOfStatistic.daily) {
+        parsedDate = parseInt(dates[i].toISOString().slice(8, 11))
+      }
+      else if (typeOfStatistic == TypesOfStatistic.monthly) {
+        parsedDate = parseInt(dates[i].toISOString().slice(5, 8))
+      }
+
+      if (parsedDate != dateValue) {
+        numberOfDateValue++
+        dateValue = parsedDate
+        sumOfInsert += numberOfInsert
+        numberOfInsert = 0
+      }
+
+      if (numberOfInsert == 0 && parsedDate == dateValue) {
+        for (let j = i;j < dates.length;j++) {
+          let nestedParsedDate = 0
 
           // to evaluating the value of day or month, getting 01 from 01.01.2023 
           if (typeOfStatistic == TypesOfStatistic.daily) {
-            parsedDate = parseInt(dates[i].toISOString().slice(8, 11))
+            nestedParsedDate = parseInt(dates[j].toISOString().slice(8, 11))
           }
           else if (typeOfStatistic == TypesOfStatistic.monthly) {
-            parsedDate = parseInt(dates[i].toISOString().slice(5, 8))
+            nestedParsedDate = parseInt(dates[j].toISOString().slice(5, 8))
+          }
+          else if (typeOfStatistic == TypesOfStatistic.weekly) {
+            nestedParsedDate = 0
           }
 
-          if (parsedDate != dateValue) {
-            numberOfDateValue++
-            dateValue = parsedDate
-            sumOfInsert += numberOfInsert
-            numberOfInsert = 0
-          }
-
-          if (numberOfInsert == 0 && parsedDate == dateValue) {
-            for (let j = i;j < dates.length;j++) {
-              let nestedParsedDate = 0
-
-              // to evaluating the value of day or month, getting 01 from 01.01.2023 
-              if (typeOfStatistic == TypesOfStatistic.daily) {
-                nestedParsedDate = parseInt(dates[j].toISOString().slice(8, 11))
-              }
-              else if (typeOfStatistic == TypesOfStatistic.monthly) {
-                nestedParsedDate = parseInt(dates[j].toISOString().slice(5, 8))
-              }
-              else if (typeOfStatistic == TypesOfStatistic.weekly) {
-                nestedParsedDate = 0
-              }
-
-              if (nestedParsedDate == dateValue)
-                numberOfInsert++
-              else
-                break
-            }
-          }
-
-          if (numberOfInsert > 0 && i == dates.length - 1) {
-            sumOfInsert += numberOfInsert
-          }
-        }
-      case TypesOfStatistic.weekly: {
-        if (firstDayOfWeek == 0 || (firstDayOfWeek != 0 && dates[i].getDay() + 1 > 7)) {
-          firstDayOfWeek = dates[i].getDay()
-          firstDayOfDates = parseInt(dates[i].toISOString().slice(8, 11))
-          numberOfDateValue++
-          sumOfInsert += numberOfInsert
-          numberOfInsert = 0
-        }
-
-        let firstDay = firstDayOfDates - firstDayOfWeek
-        let lastDay = firstDayOfDates + (7 - (firstDayOfWeek + 1))
-
-        for (let j = 0;j < dates.length;j++) {
-          const dayNumber = parseInt(dates[j].toISOString().slice(8, 11))
-          if (dayNumber <= lastDay && dayNumber >= firstDay) {
+          if (nestedParsedDate == dateValue)
             numberOfInsert++
-          }
+          else
+            break
         }
       }
-      default:
-        break
-    }
 
-    console.log(numberOfDateValue, sumOfInsert)
-    console.log(sumOfInsert / numberOfDateValue)
+      if (numberOfInsert > 0 && i == dates.length - 1) {
+        sumOfInsert += numberOfInsert
+      }
+    }
+  } else {
+    for (let i = 0;i < dates.length;i++) {
+      const dateValue = parseInt(dates[i].toISOString().slice(8, 11))
+
+      //console.log({ dayOfWeek }, { dayOfDate: dates[i].getDay(), date: dates[i] })
+      if (dayOfWeek == 0 || (dayOfWeek != 0 && dateValue > sunday)) {
+        dayOfWeek = dates[i].getDay()
+        firstDayOfDates = dateValue
+        numberOfDateValue++
+        sumOfInsert += numberOfInsert
+        numberOfInsert = 0
+        monday = firstDayOfDates - (dayOfWeek - 1)
+        sunday = firstDayOfDates + (7 - (dayOfWeek))
+      }
+
+      if (firstDayOfDates <= sunday) {
+        for (let j = 0;j < dates.length;j++) {
+          const dayNumber = parseInt(dates[j].toISOString().slice(8, 11))
+
+          if (dayNumber <= sunday && dayNumber >= monday)
+            numberOfInsert++
+          else
+            break
+        }
+      }
+
+      if (numberOfInsert > 0 && i == dates.length - 1) {
+        sumOfInsert += numberOfInsert
+      }
+    }
   }
+
+  console.log(numberOfDateValue, sumOfInsert)
+  console.log(sumOfInsert / numberOfDateValue)
+
+  var result = sumOfInsert / numberOfDateValue
+
+  return reply.send(successResult(result, i18next.t(messages.success)))
 }
 
 // const GetDay = (date: Date): string => {
