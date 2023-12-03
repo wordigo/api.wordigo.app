@@ -38,133 +38,42 @@ export const WordInteraction = async (req: FastifyRequest<{ Querystring: WordInt
   //const user = req.user
   const user = await prisma.users.findFirst({ where: { id: 'cloestp9w0000mc11ujktu21s' } })
 
-  const { typeOfStatistic } = req.query as any
+  const userWords = (await prisma.userWords.findMany({ where: { authorId: user?.id } }))//.sort((a, b) => Number(b.createdDate) - Number(b.createdDate))
 
-  const dates = (await prisma.userWords.findMany({ where: { authorId: user!.id } })).map(w => w.createdDate)
+  let monthly: { day: number, words: number }[] = []
 
-  let sumOfInsert = 0
-  let numberOfInsert = 0
-  let numberOfDateValue = 0
-  let dateValue = 0
-  let firstDayOfDates = 0
-  let dayOfWeek = 0
-  let monday = 0
-  let sunday = 0
+  // const month = new Date().getMonth()
+  // const day = new Date().getDate()
 
-  if (typeOfStatistic == TypesOfStatistic.daily || typeOfStatistic == TypesOfStatistic.monthly) {
-    for (let i = 0;i < dates.length;i++) {
-      let parsedDate = 0
+  let day: number = 0
+  let month: number = 0
+  let numberOfWord: number = 0
+  let counterOfDays: number = 30
 
-      // to evaluating the value of day or month, getting 01 from 01.01.2023 
-      if (typeOfStatistic == TypesOfStatistic.daily) {
-        parsedDate = parseInt(dates[i].toISOString().slice(8, 11))
-      }
-      else if (typeOfStatistic == TypesOfStatistic.monthly) {
-        parsedDate = parseInt(dates[i].toISOString().slice(5, 8))
-      }
 
-      if (parsedDate != dateValue) {
-        numberOfDateValue++
-        dateValue = parsedDate
-        sumOfInsert += numberOfInsert
-        numberOfInsert = 0
-      }
+  for (let i = 0;i < 30;i++) {
+    const currentDate = new Date()
+    const previousDate = currentDate.setDate(currentDate.getDate() - i)
 
-      if (numberOfInsert == 0 && parsedDate == dateValue) {
-        for (let j = i;j < dates.length;j++) {
-          let nestedParsedDate = 0
+    console.log(new Date(previousDate))
 
-          // to evaluating the value of day or month, getting 01 from 01.01.2023 
-          if (typeOfStatistic == TypesOfStatistic.daily) {
-            nestedParsedDate = parseInt(dates[j].toISOString().slice(8, 11))
-          }
-          else if (typeOfStatistic == TypesOfStatistic.monthly) {
-            nestedParsedDate = parseInt(dates[j].toISOString().slice(5, 8))
-          }
-          else if (typeOfStatistic == TypesOfStatistic.weekly) {
-            nestedParsedDate = 0
-          }
+    const numberOfWordsOfCurrentDate = userWords.filter(w =>
+      w.createdDate.getDate() == new Date(previousDate).getDate()
+      && w.createdDate.getMonth() == new Date(previousDate).getMonth())
+      .length
 
-          if (nestedParsedDate == dateValue)
-            numberOfInsert++
-          else
-            break
-        }
-      }
+    if (numberOfWordsOfCurrentDate > 0)
+      console.log()
 
-      if (numberOfInsert > 0 && i == dates.length - 1) {
-        sumOfInsert += numberOfInsert
-      }
-    }
-  } else {
-    for (let i = 0;i < dates.length;i++) {
-      const dateValue = parseInt(dates[i].toISOString().slice(8, 11))
+    console.log({ d: new Date(previousDate).getDate() }, { m: new Date(previousDate).getMonth() }, { w: numberOfWordsOfCurrentDate })
 
-      //console.log({ dayOfWeek }, { dayOfDate: dates[i].getDay(), date: dates[i] })
-      if (dayOfWeek == 0 || (dayOfWeek != 0 && dateValue > sunday)) {
-        dayOfWeek = dates[i].getDay()
-        firstDayOfDates = dateValue
-        numberOfDateValue++
-        sumOfInsert += numberOfInsert
-        numberOfInsert = 0
-        monday = firstDayOfDates - (dayOfWeek - 1)
-        sunday = firstDayOfDates + (7 - (dayOfWeek))
-      }
+    monthly.push({ day: counterOfDays - i, words: numberOfWordsOfCurrentDate })
 
-      if (firstDayOfDates <= sunday) {
-        for (let j = 0;j < dates.length;j++) {
-          const dayNumber = parseInt(dates[j].toISOString().slice(8, 11))
 
-          if (dayNumber <= sunday && dayNumber >= monday)
-            numberOfInsert++
-          else
-            break
-        }
-      }
-
-      if (numberOfInsert > 0 && i == dates.length - 1) {
-        sumOfInsert += numberOfInsert
-      }
-    }
   }
 
-  console.log(numberOfDateValue, sumOfInsert)
-  console.log(sumOfInsert / numberOfDateValue)
+  console.log(monthly)
 
-  var result = sumOfInsert / numberOfDateValue
+  return reply.send(successResult(monthly, i18next.t(messages.success)))
 
-  return reply.send(successResult(result, i18next.t(messages.success)))
 }
-
-// const GetDay = (date: Date): string => {
-//   const dayOfNumber = date.getDay()
-
-//   switch (dayOfNumber) {
-//     case 0:
-//       return Days.monday
-//     case 1:
-//       return Days.tuesday
-//     case 2:
-//       return Days.wednesday
-//     case 3:
-//       return Days.thursday
-//     case 4:
-//       return Days.friday
-//     case 5:
-//       return Days.saturday
-//     case 6:
-//       return Days.sunday
-//     default:
-//       return ''
-//   }
-// }
-
-// enum Days {
-//   monday = "Monday",
-//   tuesday = "Tuesday",
-//   wednesday = "Wednesday",
-//   thursday = "Thursday",
-//   friday = "Friday",
-//   saturday = "Saturday",
-//   sunday = "Sunday",
-// }
