@@ -6,10 +6,8 @@ import { successResult } from '../../utils/constants/results'
 import { prisma } from '@/lib/prisma'
 import { DictionaryInitialTitle } from '../dictionaries/dictionaries.types'
 import { FromSchema } from 'json-schema-to-ts'
-import { WordInteractionValidation } from './dashboard.schema'
 import { TypesOfStatistic } from './dashboard.types'
 
-type WordInteractionValidationType = FromSchema<typeof WordInteractionValidation>
 
 export const GeneralStatistic = async (req: FastifyRequest, reply: FastifyReply) => {
   const user = req.user
@@ -34,7 +32,7 @@ export const GeneralStatistic = async (req: FastifyRequest, reply: FastifyReply)
   return reply.send(successResult(result, i18next.t(messages.success)))
 }
 
-export const WordInteraction = async (req: FastifyRequest<{ Querystring: WordInteractionValidationType }>, reply: FastifyReply) => {
+export const WordInteraction = async (req: FastifyRequest, reply: FastifyReply) => {
   //const user = req.user
   const user = await prisma.users.findFirst({ where: { id: 'cloestp9w0000mc11ujktu21s' } })
 
@@ -42,14 +40,7 @@ export const WordInteraction = async (req: FastifyRequest<{ Querystring: WordInt
 
   let monthly: { day: number, words: number, todayDate: Date }[] = []
 
-  // const month = new Date().getMonth()
-  // const day = new Date().getDate()
-
-  let day: number = 0
-  let month: number = 0
-  let numberOfWord: number = 0
   let counterOfDays: number = 30
-
 
   for (let i = 0;i < 30;i++) {
     const currentDate = new Date()
