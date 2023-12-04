@@ -40,7 +40,7 @@ export const WordInteraction = async (req: FastifyRequest<{ Querystring: WordInt
 
   const userWords = (await prisma.userWords.findMany({ where: { authorId: user?.id } }))//.sort((a, b) => Number(b.createdDate) - Number(b.createdDate))
 
-  let monthly: { day: number, words: number }[] = []
+  let monthly: { day: number, words: number, todayDate: Date }[] = []
 
   // const month = new Date().getMonth()
   // const day = new Date().getDate()
@@ -55,25 +55,13 @@ export const WordInteraction = async (req: FastifyRequest<{ Querystring: WordInt
     const currentDate = new Date()
     const previousDate = currentDate.setDate(currentDate.getDate() - i)
 
-    console.log(new Date(previousDate))
-
     const numberOfWordsOfCurrentDate = userWords.filter(w =>
       w.createdDate.getDate() == new Date(previousDate).getDate()
       && w.createdDate.getMonth() == new Date(previousDate).getMonth())
       .length
 
-    if (numberOfWordsOfCurrentDate > 0)
-      console.log()
-
-    console.log({ d: new Date(previousDate).getDate() }, { m: new Date(previousDate).getMonth() }, { w: numberOfWordsOfCurrentDate })
-
-    monthly.push({ day: counterOfDays - i, words: numberOfWordsOfCurrentDate })
-
-
+    monthly.push({ day: counterOfDays - i, words: numberOfWordsOfCurrentDate, todayDate: new Date(previousDate) })
   }
 
-  console.log(monthly)
-
   return reply.send(successResult(monthly, i18next.t(messages.success)))
-
 }
