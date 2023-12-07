@@ -5,6 +5,7 @@ WORKDIR /app
 COPY package.json .
 
 RUN yarn
+RUN npm install --os=linux --cpu=x64 sharp
 
 COPY . ./
 

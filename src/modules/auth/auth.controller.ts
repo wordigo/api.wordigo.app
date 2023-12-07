@@ -13,6 +13,7 @@ import { pathsOfLanguages } from '@/utils/helpers/i18n.helper'
 import { getMailTemplate, sendMail } from '@/utils/helpers/mail.helper'
 import { createPasswordHash, verifyPasswordHash } from '@/utils/helpers/password.helper'
 import { createToken } from '@/utils/helpers/token.helper'
+import { DictionaryInitialTitle } from '../dictionaries/dictionaries.types'
 import { GoogleAuthValidation, SignInValidation, SignUpValidation } from './auth.schema'
 import { IGoogleUser } from './auth.types'
 
@@ -65,9 +66,19 @@ export const SignUp = async (req: FastifyRequest<{ Body: SignUpValidationType }>
 
   const renderEmail = getMailTemplate('welcome', nativeLanguage, { username: name, createdDate: formattedDate })
 
+  const randomUID = randomUUID().split('-')
+  const slug = slugify(`${DictionaryInitialTitle}-${randomUID[0]}${randomUID[1]}${randomUID[2]}`, {
+    replacement: '-',
+    remove: undefined, // remove characters that match regex, defaults to `undefined`
+    lower: true,
+    strict: false, // strip special characters except replacement, defaults to `false`
+    locale: 'vi', // language code of the locale to use
+    trim: true,
+  })
+
   await sendMail(email as string, i18next.t('welcome_user'), renderEmail)
 
-  await prisma.users.create({
+  const newUser = await prisma.users.create({
     data: {
       avatar_url: `https://wordigo.app/api/dynamic-avatar?username=${username}?size=256`,
       email,
@@ -77,6 +88,14 @@ export const SignUp = async (req: FastifyRequest<{ Body: SignUpValidationType }>
       passwordSalt: passwordHashAndSalt.salt,
       nativeLanguage,
       provider: Providers.Local,
+    },
+  })
+
+  await prisma.dictionaries.create({
+    data: {
+      title: DictionaryInitialTitle,
+      authorId: newUser.id,
+      slug,
     },
   })
 

@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify'
-import { CreateSchema, DeleteSchema, GetListSchema } from './words.schema'
 import { Create, Delete, GetList } from './words.controller'
+import { CreateSchema, DeleteSchema, GetListSchema } from './words.schema'
 
 export default async (fastify: FastifyInstance) => {
   fastify.post(
