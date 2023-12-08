@@ -17,15 +17,14 @@ export const CreateFeedback = async (req: FastifyRequest<{ Body: CreateFeedBackT
     data: {
       userId: user.id,
       description,
-      rate
-    }
+      rate,
+    },
   })
 
   return reply.send(successResult(feedback, i18next.t(messages.success)))
 }
 
 export const GetAllFeedback = async (req: FastifyRequest, reply: FastifyReply) => {
-
   const feedbacks = await prisma.feedbacks.findMany()
 
   return reply.send(successResult(feedbacks, i18next.t(messages.success)))
