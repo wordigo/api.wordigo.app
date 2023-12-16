@@ -20,5 +20,6 @@
     "dictionary_initial_update": "Başlangıç Sözlüğü Güncellenmez!",
     "only_subscribers": "Sadece Abonelere İzin Verilir!",
     "uploading_file": "Dosya Yükleme Başarısız!",
-    "welcome_user": "Wordigo'ya Hoş geldin"
+    "welcome_user": "Wordigo'ya Hoş geldin",
+    "languages_not_match": "Kelimenin Kaynak&Hedef Dili ile Sözlüğünki Uyuşmuyor!"
 }

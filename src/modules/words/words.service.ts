@@ -9,12 +9,36 @@ import { checkingOfLanguages } from '../translation/translate.service'
 import { DictionaryInitialTitle } from '../dictionaries/dictionaries.types'
 import { LearningStatuses } from '@/utils/constants/enums'
 
-export const create = async (text: string, translatedText: string, nativeLanguage: string, targetLanguage: string, dictionaryId: number, userId: string) => {
-    if (nativeLanguage?.trim().toLowerCase() === targetLanguage?.trim().toLowerCase()) return errorResult(null, i18next.t(messages.languages_cant_same))
+export const create = async (text: string, translatedText: string, nativeLanguage: string, targetLanguage: string, dictionaryId: number, slug: string, userId: string) => {
+    if (nativeLanguage?.trim().toLowerCase() === targetLanguage?.trim().toLowerCase())
+        return errorResult(null, i18next.t(messages.languages_cant_same))
 
     let dicFromDb
 
-    if ((dictionaryId as number) > 0) {
+    if (slug.length > 0 && dictionaryId > 0) {
+        dicFromDb = await prisma.dictionaries.findFirst({
+            where: {
+                slug,
+                authorId: userId,
+                id: dictionaryId
+            }
+        })
+
+        if (!dicFromDb)
+            return errorResult(null, i18next.t(messages.dictionary_not_found))
+    }
+    else if (slug.length > 0) {
+        dicFromDb = await prisma.dictionaries.findFirst({
+            where: {
+                slug,
+                authorId: userId,
+            },
+        })
+
+        if (!dicFromDb)
+            return errorResult(null, i18next.t(messages.dictionary_not_found))
+    }
+    else if (dictionaryId > 0) {
         dicFromDb = await prisma.dictionaries.findFirst({
             where: {
                 id: dictionaryId,
@@ -22,9 +46,30 @@ export const create = async (text: string, translatedText: string, nativeLanguag
             },
         })
 
-        if (!dicFromDb) {
+        if (!dicFromDb)
             return errorResult(null, i18next.t(messages.dictionary_not_found))
+    }
+
+    if (dicFromDb) {
+        const nativeOfDbDic = dicFromDb.sourceLang
+        const targetOfDbDic = dicFromDb.targetLang
+
+        if (
+            nativeLanguage.trim().toLowerCase() !== nativeOfDbDic.trim().toLowerCase()
+            ||
+            targetOfDbDic.trim().toLowerCase() !== targetOfDbDic.trim().toLowerCase()) {
+            return errorResult(null, i18next.t(messages.languages_not_match))
         }
+    }
+
+    if ((!nativeLanguage || nativeLanguage.length === 0)
+        ||
+        (!targetLanguage || targetLanguage.length === 0)) {
+        if (dicFromDb) {
+            nativeLanguage = dicFromDb?.sourceLang as string
+            targetLanguage = dicFromDb?.targetLang as string
+        } else
+            return errorResult(null, i18next.t(messages.language_not_found))
     }
 
     const doLangsExist = checkingOfLanguages(nativeLanguage as string, targetLanguage as string)
@@ -78,8 +123,10 @@ export const create = async (text: string, translatedText: string, nativeLanguag
         },
     })
 
+    const allDictionaries = await prisma.dictionaries.findMany()
+
     if (!initialDictionary) {
-        let slug
+        let slug: string
         while (true) {
             const randomUID = randomUUID().split('-')
             slug = slugify(`${DictionaryInitialTitle}-${randomUID[0]}${randomUID[1]}${randomUID[2]}`, {
@@ -90,8 +137,8 @@ export const create = async (text: string, translatedText: string, nativeLanguag
                 locale: 'vi', // language code of the locale to use
                 trim: true,
             })
+            const doesSlugExist = allDictionaries.find(d => d.slug.trim().toLowerCase() === (slug as string))
 
-            const doesSlugExist = await prisma.dictionaries.findFirst({ where: { slug } })
             if (!doesSlugExist) break
         }
 
@@ -103,13 +150,16 @@ export const create = async (text: string, translatedText: string, nativeLanguag
             },
         })
     }
-    // CHECK IT WORKS OR NOT AND THEN PUBLISH IT
-    const dictAndUserWordsExists = await prisma.dictAndUserWords.findFirst({
-        where: {
-            userWordId: userWord.id,
-            dictionaryId: initialDictionary?.id,
-        },
-    })
+
+    let dictAndUserWordsExists
+
+    if (userWord)
+        dictAndUserWordsExists = await prisma.dictAndUserWords.findFirst({
+            where: {
+                userWordId: userWord.id,
+                dictionaryId: initialDictionary?.id,
+            },
+        })
 
     if (!dictAndUserWordsExists)
         await prisma.dictAndUserWords.create({
@@ -119,11 +169,11 @@ export const create = async (text: string, translatedText: string, nativeLanguag
             },
         })
 
-    if (dictionaryId) {
+    if (dicFromDb) {
         const dictExisting = await prisma.dictAndUserWords.findFirst({
             where: {
                 userWordId: userWord.id,
-                dictionaryId,
+                dictionaryId: dicFromDb.id,
             },
         })
 
@@ -131,7 +181,7 @@ export const create = async (text: string, translatedText: string, nativeLanguag
             await prisma.dictAndUserWords.create({
                 data: {
                     userWordId: userWord.id,
-                    dictionaryId,
+                    dictionaryId: dicFromDb.id,
                 },
             })
     }

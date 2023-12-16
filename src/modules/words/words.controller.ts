@@ -15,11 +15,19 @@ type CreateType = FromSchema<typeof CreateValidation>
 type GetDictionaryByIdType = FromSchema<typeof DeleteValidation>
 
 export const Create = async (req: FastifyRequest<{ Body: CreateType }>, reply: FastifyReply) => {
-  const { text, translatedText, nativeLanguage, targetLanguage, dictionaryId } = req.body
+  const { text, translatedText, nativeLanguage, targetLanguage, dictionaryId, slug } = req.body
   const userId = req.user?.id
   const prisma = req.server.prisma
 
-  return reply.send(await create(text, translatedText, nativeLanguage, targetLanguage, dictionaryId as number, userId))
+  return reply.send(await create(
+    text,
+    translatedText,
+    nativeLanguage as string,
+    targetLanguage as string,
+    dictionaryId as number,
+    slug as string,
+    userId)
+  )
 }
 
 export const Delete = async (req: FastifyRequest<{ Querystring: GetDictionaryByIdType }>, reply: FastifyReply) => {

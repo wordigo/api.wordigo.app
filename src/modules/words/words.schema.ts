@@ -19,8 +19,11 @@ export const CreateValidation = {
     dictionaryId: {
       type: 'number',
     },
+    slug: {
+      type: 'string',
+    },
   },
-  required: ['text', 'translatedText', 'nativeLanguage', 'targetLanguage'],
+  required: ['text', 'translatedText'],
 } as const satisfies JSONSchema
 
 export const CreateSchema = {

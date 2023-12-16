@@ -20,5 +20,6 @@
     "dictionary_initial_update": "Initial dictionary can't be change!",
     "only_subscribers": "Only Subscribers are allowed!",
     "uploading_file": "File Uploading Failed!",
-    "welcome_user": "Welcome to Wordigo"
+    "welcome_user": "Welcome to Wordigo",
+    "languages_not_match": "The Native&Target Language of the Dictionary Don't Match with the Word's!"
 }
