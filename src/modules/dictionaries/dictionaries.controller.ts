@@ -7,7 +7,15 @@ import { UploadingType, uploadImage } from '@/utils/helpers/fileUploading.helper
 import ImageCompress from '@/utils/helpers/imageCompress.helper'
 import { Words } from '@prisma/client'
 import i18next from 'i18next'
-import { AddWordValidation, CreateDictionaryValidation, GetDictionaryBySlugValidation, GetUserDictionariesFilterValidation, RemoveWordValidation, UpdateDictionaryValidation, UpdateImageValidation } from './dictionaries.schema'
+import {
+  AddWordValidation,
+  CreateDictionaryValidation,
+  GetDictionaryBySlugValidation,
+  GetUserDictionariesFilterValidation,
+  RemoveWordValidation,
+  UpdateDictionaryValidation,
+  UpdateImageValidation,
+} from './dictionaries.schema'
 import { create } from './dictionaries.service'
 import { AWSFolderName, DictionaryInitialTitle } from './dictionaries.types'
 
@@ -23,9 +31,7 @@ export const Create = async (req: FastifyRequest<{ Body: CreateDictionaryType }>
   const userId = req.user?.id
   const { title, targetLang, sourceLang, description, level } = req.body
 
-  return reply.send(
-    await create(title, targetLang as string, sourceLang as string, description as string, level as number, false, userId)
-  )
+  return reply.send(await create(title, targetLang as string, sourceLang as string, description as string, level as number, false, userId))
 }
 
 export const Update = async (req: FastifyRequest<{ Body: UpdateDictionaryType }>, reply: FastifyReply) => {
@@ -121,10 +127,9 @@ export const GetUserDictionariesFilter = async (request: FastifyRequest<{ Querys
 
   const { page = 1, size = 10, title } = request.query
 
-  let where = { authorId: userId } as { authorId: string, title: { contains: string } }
+  let where = { authorId: userId } as { authorId: string; title: { contains: string } }
 
-  if (title && title.trim().length > 0)
-    where = { ...where, title: { contains: title?.trim().toLowerCase() } }
+  if (title && title.trim().length > 0) where = { ...where, title: { contains: title?.trim().toLowerCase() } }
 
   let userDictionaries = await prisma.dictionaries.findMany({
     where,
@@ -142,7 +147,7 @@ export const GetUserDictionariesFilter = async (request: FastifyRequest<{ Querys
           },
         },
       },
-    }
+    },
   })
 
   const numberOfDics = userDictionaries.length
@@ -294,7 +299,6 @@ export const GetWords = async (req: FastifyRequest<{ Querystring: GetDictionaryB
       },
     },
   })
-
 
   let responseData = {
     slug: dictionary?.slug,
