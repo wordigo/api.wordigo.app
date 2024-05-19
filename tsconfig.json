@@ -23,7 +23,7 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "lib": [
-      "DOM",
+      "DOM"
     ],
     "skipLibCheck": true,
     "baseUrl": "./",
