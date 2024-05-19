@@ -52,7 +52,7 @@ export async function TextTranslate(request: FastifyRequest<{ Body: TranslationV
   return reply.send(
     successResult(
       {
-        text,
+        translatedText: text,
         sourceLanguage: sourceLanguage || to,
         targetLanguage,
       },
