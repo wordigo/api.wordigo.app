@@ -1,11 +1,12 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { TranslationValidationBody } from './translate.schema'
 import { FromSchema } from 'json-schema-to-ts'
+import { TranslationValidationBody } from './translate.schema'
 
-import { Translate } from '@google-cloud/translate/build/src/v2'
-import { successResult } from '@/utils/constants/results'
 import messages from '@/utils/constants/messages'
+import { successResult } from '@/utils/constants/results'
+import { Translate } from '@google-cloud/translate/build/src/v2'
 import i18next from 'i18next'
+import { translateApi } from './translate.service'
 
 const translate = new Translate({
   projectId: process.env.CLOUD_TRANSLATE_PROJECT_ID,
@@ -15,28 +16,47 @@ const translate = new Translate({
 type TranslationValidationTye = FromSchema<typeof TranslationValidationBody>
 
 export interface ITranslateOptions {
-  to?: string
-  from?: string
+  params: {
+    'api-version': string
+    to: string
+    from?: string
+  }
+  data: {
+    text: string
+  }
 }
 
-export async function TextTranslate(
-  request: FastifyRequest<{ Body: TranslationValidationTye }>,
-  reply: FastifyReply
-) {
+export async function TextTranslate(request: FastifyRequest<{ Body: TranslationValidationTye }>, reply: FastifyReply) {
   const { query, targetLanguage, sourceLanguage } = request.body
-  const translateOptions: ITranslateOptions = {
+  const params: ITranslateOptions['params'] = {
+    'api-version': '3.0',
     to: targetLanguage,
   }
-  if (sourceLanguage) translateOptions.from = sourceLanguage
-  const [, { data }] = await translate.translate(query, translateOptions)
 
-  const { translatedText, detectedSourceLanguage } = data.translations[0]
+  if (sourceLanguage) params.from = sourceLanguage
 
+  const { data } = await translateApi.post(
+    '/translate',
+    [
+      {
+        text: query,
+      },
+    ],
+    {
+      params,
+    }
+  )
 
-  return reply.send(successResult({
-    translatedText,
-    sourceLanguage: sourceLanguage || detectedSourceLanguage,
-    targetLanguage,
-  }, i18next.t(messages.success)))
+  const { text, to } = data[0].translations[0]
 
+  return reply.send(
+    successResult(
+      {
+        text,
+        sourceLanguage: sourceLanguage || to,
+        targetLanguage,
+      },
+      i18next.t(messages.success)
+    )
+  )
 }
