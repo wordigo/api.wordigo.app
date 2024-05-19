@@ -79,21 +79,18 @@ To run automated tests:
 pnpm test
 ```
 
-## Contributing
+## Contributors
 
-We welcome your contributions! Please do not hesitate to send a pull request.
+Thank you for your contributions! We appreciate all the contributions from the community.
+
+<a href="https://github.com/wordigo/api.wordigo.app/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=wordigo/api.wordigo.app" />
+</a>
+
+## Contact
+
+For questions or feedback, please reach out to us at [support@wordigo.app](mailto:support@wordigo.app).
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](https://github.com/wordigo/api.wordigo.app/blob/main/LICENSE) file for details.
-
-## Contact
-
-If you have any questions, you can reach out to the maintainers:
-- Sefa Kapısız <m.sefa06@hotmail.com>
-- Osman Delişmen
-
----
-
-For more details, visit the project's main page: [Wordigo API GitHub](https://github.com/wordigo/api.wordigo.app).
-
